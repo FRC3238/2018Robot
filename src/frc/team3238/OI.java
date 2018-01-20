@@ -1,6 +1,7 @@
 package frc.team3238;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team3238.commands.Collect;
 import frc.team3238.commands.Eject;
@@ -11,12 +12,17 @@ public class OI
 {
     private Joystick mainStick = new Joystick(RobotMap.MAIN_JOYSTICK_PORT);
 
-    private JoystickButton collectButton = new JoystickButton(mainStick, RobotMap.COLLECT_BUTTON_ID);
-    private JoystickButton ejectButton = new JoystickButton(mainStick, RobotMap.EJECT_BUTTON_ID);
-    private JoystickButton extendButton = new JoystickButton(mainStick, RobotMap.EXTEND_BUTTON_ID);
-    private JoystickButton withdrawButton = new JoystickButton(mainStick, RobotMap.WITHDRAW_BUTTON_ID);
+    private Button collectButton = new JoystickButton(mainStick, RobotMap.COLLECT_BUTTON_ID);
+    private Button ejectButton = new JoystickButton(mainStick, RobotMap.EJECT_BUTTON_ID);
+    private Button extendButton = new JoystickButton(mainStick, RobotMap.EXTEND_BUTTON_ID);
+    private Button withdrawButton = new JoystickButton(mainStick, RobotMap.WITHDRAW_BUTTON_ID);
 
     public OI()
+    {
+
+    }
+
+    public void startButtons()
     {
         collectButton.whileHeld(new Collect());
         ejectButton.whileHeld(new Eject());

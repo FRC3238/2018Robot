@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.team3238.RobotMap;
+import frc.team3238.commands.Drive;
 
 public class Chassis extends Subsystem
 {
@@ -24,7 +25,7 @@ public class Chassis extends Subsystem
 
     public void initDefaultCommand()
     {
-
+        setDefaultCommand(new Drive());
     }
 
     public void drive(double y, double twist)

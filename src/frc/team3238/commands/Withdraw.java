@@ -1,5 +1,6 @@
 package frc.team3238.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team3238.OI;
 import frc.team3238.Robot;
@@ -12,6 +13,7 @@ public class Withdraw extends Command
 
     public Withdraw()
     {
+        super("Withdraw");
         requires(extender);
     }
 
@@ -26,7 +28,7 @@ public class Withdraw extends Command
     {
         double throttle = oi.getThrottleMult();
 
-        extender.setExtend(-throttle);
+        extender.setExtend(throttle);
     }
 
     @Override

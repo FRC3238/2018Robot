@@ -12,6 +12,7 @@ public class Eject extends Command
 
     public Eject()
     {
+        super("Eject");
         requires(collector);
     }
 

@@ -12,6 +12,7 @@ public class Drive extends Command
 
     public Drive()
     {
+        super("Drive");
         requires(chassis);
     }
 

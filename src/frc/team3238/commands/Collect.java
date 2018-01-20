@@ -13,6 +13,7 @@ public class Collect extends Command
 
     public Collect()
     {
+        super("Collect");
         requires(collector);
     }
 

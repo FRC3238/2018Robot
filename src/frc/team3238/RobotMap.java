@@ -20,9 +20,9 @@ public class RobotMap
     public static final int MAIN_JOYSTICK_PORT = 0;
 
     public static final int COLLECT_BUTTON_ID = 2;
-    public static final int EJECT_BUTTON_ID = 5;
-    public static final int EXTEND_BUTTON_ID = 4;
-    public static final int WITHDRAW_BUTTON_ID = 6;
+    public static final int EJECT_BUTTON_ID = 3;
+    public static final int EXTEND_BUTTON_ID = 6;
+    public static final int WITHDRAW_BUTTON_ID = 4;
 
     public static final int LEFT_DRIVE_TALON_ID = 0;
     public static final int LEFT_DRIVE_SLAVE_TALON_ID = 1;

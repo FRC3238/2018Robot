@@ -12,6 +12,7 @@ public class Extend extends Command
 
     public Extend()
     {
+        super("Extend");
         requires(extender);
     }
 
@@ -26,7 +27,7 @@ public class Extend extends Command
     {
         double throttle = oi.getThrottleMult();
 
-        extender.setExtend(throttle);
+        extender.setExtend(-throttle);
     }
 
     @Override
