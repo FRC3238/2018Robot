@@ -1,19 +1,14 @@
-package frc.team3238.commands;
+package frc.team3238.commands.collector;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team3238.OI;
 import frc.team3238.Robot;
-import frc.team3238.subsystems.Chassis;
 
-public class Drive extends Command
+public class Collect extends Command
 {
-    Chassis chassis = Robot.chassis;
-    OI oi = Robot.oi;
-
-    public Drive()
+    public Collect()
     {
-        super("Drive");
-        requires(chassis);
+        super("Collect");
+        requires(Robot.collector);
     }
 
     @Override
@@ -25,10 +20,9 @@ public class Drive extends Command
     @Override
     protected void execute()
     {
-        double y = oi.getDriveY();
-        double twist = oi.getDriveTwist();
+        double throttle = Robot.oi.getThrottleMult();
 
-        chassis.drive(y, twist);
+        Robot.collector.setCollector(throttle);
     }
 
     @Override
@@ -40,12 +34,13 @@ public class Drive extends Command
     @Override
     protected void end()
     {
-
+        Robot.collector.stopMotors();
     }
 
     @Override
     protected void interrupted()
     {
         super.interrupted();
+        end();
     }
 }

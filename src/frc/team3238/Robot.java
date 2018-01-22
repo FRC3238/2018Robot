@@ -1,12 +1,15 @@
 package frc.team3238;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3238.commands.*;
+import frc.team3238.commands.chassis.Drive;
+import frc.team3238.commands.collector.Collect;
+import frc.team3238.commands.collector.Eject;
+import frc.team3238.commands.extender.Extend;
+import frc.team3238.commands.extender.Withdraw;
 import frc.team3238.subsystems.Chassis;
 import frc.team3238.subsystems.Collector;
 import frc.team3238.subsystems.Extender;

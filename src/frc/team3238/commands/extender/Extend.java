@@ -1,19 +1,14 @@
-package frc.team3238.commands;
+package frc.team3238.commands.extender;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team3238.OI;
 import frc.team3238.Robot;
-import frc.team3238.subsystems.Extender;
 
 public class Extend extends Command
 {
-    Extender extender = Robot.extender;
-    OI oi = Robot.oi;
-
     public Extend()
     {
         super("Extend");
-        requires(extender);
+        requires(Robot.extender);
     }
 
     @Override
@@ -25,9 +20,9 @@ public class Extend extends Command
     @Override
     protected void execute()
     {
-        double throttle = oi.getThrottleMult();
+        double throttle = Robot.oi.getThrottleMult();
 
-        extender.setExtend(-throttle);
+        Robot.extender.setExtend(-throttle);
     }
 
     @Override
@@ -39,7 +34,7 @@ public class Extend extends Command
     @Override
     protected void end()
     {
-        extender.stopMotor();
+        Robot.extender.stopMotor();
     }
 
     @Override

@@ -1,19 +1,14 @@
-package frc.team3238.commands;
+package frc.team3238.commands.collector;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team3238.OI;
 import frc.team3238.Robot;
-import frc.team3238.subsystems.Collector;
 
 public class Eject extends Command
 {
-    Collector collector = Robot.collector;
-    OI oi = Robot.oi;
-
     public Eject()
     {
         super("Eject");
-        requires(collector);
+        requires(Robot.collector);
     }
 
     @Override
@@ -25,9 +20,9 @@ public class Eject extends Command
     @Override
     protected void execute()
     {
-        double throttle = oi.getThrottleMult();
+        double throttle = Robot.oi.getThrottleMult();
 
-        collector.setCollector(-throttle);
+        Robot.collector.setCollector(-throttle);
     }
 
     @Override
@@ -39,7 +34,7 @@ public class Eject extends Command
     @Override
     protected void end()
     {
-        collector.stopMotors();
+        Robot.collector.stopMotors();
     }
 
     @Override

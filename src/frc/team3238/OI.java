@@ -3,10 +3,10 @@ package frc.team3238;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.team3238.commands.Collect;
-import frc.team3238.commands.Eject;
-import frc.team3238.commands.Extend;
-import frc.team3238.commands.Withdraw;
+import frc.team3238.commands.collector.Collect;
+import frc.team3238.commands.collector.Eject;
+import frc.team3238.commands.extender.Extend;
+import frc.team3238.commands.extender.Withdraw;
 
 public class OI
 {
