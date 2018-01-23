@@ -13,7 +13,12 @@ package frc.team3238;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public class RobotMap 
+public class RobotMap
 {
-
+    public static final int TALON_RIGHT_2 = 3;
+    public static final int TALON_RIGHT_1 = 2;
+    public static final int TALON_lEFT_2 = 1;
+    public static final int TALON_LEFT_1 = 0;
+    public static final int ROBOT_JOYSTICK_PORT = 0;
+    public static final double ROBOTICS_DEAD_ZONE = 0.1;
 }
