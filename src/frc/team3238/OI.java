@@ -2,40 +2,51 @@ package frc.team3238;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.team3238.commands.collector.Collect;
 import frc.team3238.commands.collector.Eject;
 import frc.team3238.commands.extender.Extend;
 import frc.team3238.commands.extender.Withdraw;
+import frc.team3238.triggers.POVButton;
+
+import static frc.team3238.RobotMap.Global.*;
 
 public class OI
 {
-    private Joystick mainStick = new Joystick(RobotMap.MAIN_JOYSTICK_PORT);
+    private Joystick mainStick = new Joystick(MAIN_JOYSTICK_PORT);
 
-    private Button collectButton = new JoystickButton(mainStick, RobotMap.COLLECT_BUTTON_ID);
-    private Button ejectButton = new JoystickButton(mainStick, RobotMap.EJECT_BUTTON_ID);
-    private Button extendButton = new JoystickButton(mainStick, RobotMap.EXTEND_BUTTON_ID);
-    private Button withdrawButton = new JoystickButton(mainStick, RobotMap.WITHDRAW_BUTTON_ID);
+    private Button collectButton = new POVButton(mainStick, COLLECT_BUTTON_ID);
+    private Button ejectButton = new POVButton(mainStick, EJECT_BUTTON_ID);
+    private Button extendButton = new POVButton(mainStick, EXTEND_BUTTON_ID);
+    private Button withdrawButton = new POVButton(mainStick, WITHDRAW_BUTTON_ID);
+    private Button cancelButton = new POVButton(mainStick, CANCEL_BUTTON_ID);
 
     public OI()
     {
+        Collect collect = new Collect();
+        Eject eject = new Eject();
+        Extend extend = new Extend();
+        Withdraw withdraw = new Withdraw();
 
+        collectButton.whenPressed(collect);
+        ejectButton.whenPressed(eject);
+        extendButton.whenPressed(extend);
+        withdrawButton.whenPressed(withdraw);
+
+        cancelButton.cancelWhenPressed(collect);
+        cancelButton.cancelWhenPressed(eject);
+        cancelButton.whenPressed(withdraw);
     }
 
-    public void startButtons()
+    public boolean getEjectHeld()
     {
-        collectButton.whileHeld(new Collect());
-        ejectButton.whileHeld(new Eject());
-
-        extendButton.whileHeld(new Extend());
-        withdrawButton.whileHeld(new Withdraw());
+        return ejectButton.get();
     }
 
     public double getDriveY()
     {
         double y = -mainStick.getY();
 
-        y = scaleRawJoyVal(y, RobotMap.DEADZONE, RobotMap.DRIVE_POWER);
+        y = scaleRawJoyVal(y, DEADZONE, DRIVE_POWER);
 
         return y;
     }
@@ -44,7 +55,7 @@ public class OI
     {
         double twist = mainStick.getTwist();
 
-        twist = scaleRawJoyVal(twist, RobotMap.TWIST_DEADZONE, RobotMap.DRIVE_TWIST_POWER);
+        twist = scaleRawJoyVal(twist, TWIST_DEADZONE, DRIVE_TWIST_POWER);
 
         return twist;
     }

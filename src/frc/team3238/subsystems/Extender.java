@@ -1,9 +1,13 @@
 package frc.team3238.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team3238.RobotMap;
+
+import static frc.team3238.RobotMap.Extender.EXTENDER_TALON_ID;
+import static frc.team3238.RobotMap.Global.TALON_TIMEOUT;
 
 public class Extender extends Subsystem
 {
@@ -13,9 +17,15 @@ public class Extender extends Subsystem
 
     public Extender()
     {
-        extend = new TalonSRX(RobotMap.EXTENDER_TALON_ID);
+        extend = new TalonSRX(EXTENDER_TALON_ID);
 
         extend.enableVoltageCompensation(true);
+
+        extend.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen,
+                                              TALON_TIMEOUT);
+        extend.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen,
+                                              TALON_TIMEOUT);
+        extend.overrideLimitSwitchesEnable(true);
     }
 
     public void setExtend(double power)
@@ -26,6 +36,16 @@ public class Extender extends Subsystem
     public void stopMotor()
     {
         extend.set(extendMode, 0);
+    }
+
+    public boolean getForwardLimit()
+    {
+        return extend.getSensorCollection().isFwdLimitSwitchClosed();
+    }
+
+    public boolean getReverseLimit()
+    {
+        return extend.getSensorCollection().isRevLimitSwitchClosed();
     }
 
     public void initDefaultCommand()

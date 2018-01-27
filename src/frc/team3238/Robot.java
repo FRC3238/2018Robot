@@ -14,6 +14,8 @@ import frc.team3238.subsystems.Chassis;
 import frc.team3238.subsystems.Collector;
 import frc.team3238.subsystems.Extender;
 
+import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
+
 public class Robot extends TimedRobot
 {
 
@@ -26,7 +28,7 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit()
     {
-        setPeriod(RobotMap.ROBOT_PERIOD);
+        setPeriod(ROBOT_PERIOD);
 
         oi = new OI();
 
@@ -34,14 +36,12 @@ public class Robot extends TimedRobot
         collector = new Collector();
         extender = new Extender();
 
-        oi.startButtons();
-
         SmartDashboard.putData(Scheduler.getInstance());
+        SmartDashboard.putData(new PowerDistributionPanel());
 
         LiveWindow.add(chassis);
         LiveWindow.add(collector);
         LiveWindow.add(extender);
-
         LiveWindow.add(chassis);
 
         LiveWindow.add(new Collect());
@@ -49,8 +49,6 @@ public class Robot extends TimedRobot
         LiveWindow.add(new Eject());
         LiveWindow.add(new Withdraw());
         LiveWindow.add(new Extend());
-
-        SmartDashboard.putData(new PowerDistributionPanel());
     }
 
     @Override

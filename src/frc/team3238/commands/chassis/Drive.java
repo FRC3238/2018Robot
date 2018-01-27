@@ -1,14 +1,16 @@
 package frc.team3238.commands.chassis;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team3238.Robot;
+
+import static frc.team3238.Robot.chassis;
+import static frc.team3238.Robot.oi;
 
 public class Drive extends Command
 {
     public Drive()
     {
         super("Drive");
-        requires(Robot.chassis);
+        requires(chassis);
     }
 
     @Override
@@ -20,10 +22,10 @@ public class Drive extends Command
     @Override
     protected void execute()
     {
-        double y = Robot.oi.getDriveY();
-        double twist = Robot.oi.getDriveTwist();
+        double y = oi.getDriveY();
+        double twist = oi.getDriveTwist();
 
-        Robot.chassis.drive(y, twist);
+        chassis.drive(y, twist);
     }
 
     @Override
@@ -41,6 +43,6 @@ public class Drive extends Command
     @Override
     protected void interrupted()
     {
-        super.interrupted();
+
     }
 }

@@ -1,9 +1,14 @@
 package frc.team3238.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.team3238.RobotMap;
+
+import static frc.team3238.RobotMap.Collector.LEFT_COLLECT_TALON_ID;
+import static frc.team3238.RobotMap.Collector.RIGHT_COLLECT_TALON_ID;
+import static frc.team3238.RobotMap.Global.TALON_TIMEOUT;
 
 public class Collector extends Subsystem
 {
@@ -13,11 +18,15 @@ public class Collector extends Subsystem
 
     public Collector()
     {
-        left = new TalonSRX(RobotMap.LEFT_LIFT_TALON_ID);
-        right = new TalonSRX(RobotMap.RIGHT_LIFT_TALON_ID);
+        left = new TalonSRX(LEFT_COLLECT_TALON_ID);
+        right = new TalonSRX(RIGHT_COLLECT_TALON_ID);
 
         left.enableVoltageCompensation(true);
         right.enableVoltageCompensation(true);
+
+        left.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen,
+                                            TALON_TIMEOUT);
+        left.overrideLimitSwitchesEnable(true);
     }
 
     public void setCollector(double power)
@@ -30,6 +39,11 @@ public class Collector extends Subsystem
     {
         left.set(collectMode, 0);
         right.set(collectMode, 0);
+    }
+
+    public boolean getLimitSwitch()
+    {
+        return left.getSensorCollection().isFwdLimitSwitchClosed();
     }
 
     public void initDefaultCommand()
