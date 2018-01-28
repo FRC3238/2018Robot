@@ -38,11 +38,17 @@ public class RobotMap
         public static final int RIGHT_COLLECT_TALON_ID = 5;
         // timing
         public static final double EJECT_TIME = 2;
+        // sensing
+        public static final double CURRENT_THRESHOLD = 25;
+        public static final int CURRENT_MIN_DURATION = 10;
     }
 
     public static class Extender
     {
         // talon ids
         public static final int EXTENDER_TALON_ID = 6;
+        // sensing
+        public static final double CURRENT_THRESHOLD = 20;
+        public static final int CURRENT_MIN_DURATION = 10;
     }
 }

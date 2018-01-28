@@ -4,22 +4,34 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team3238.commands.extender.Extend;
 import frc.team3238.commands.extender.Withdraw;
+import frc.team3238.utils.CurrentSwitch;
 
 import static frc.team3238.Robot.collector;
 import static frc.team3238.Robot.oi;
+import static frc.team3238.RobotMap.Collector.CURRENT_MIN_DURATION;
+import static frc.team3238.RobotMap.Collector.CURRENT_THRESHOLD;
 
 public class Collect extends Command
 {
+    private boolean isFinished;
+
+    private CurrentSwitch currentSwitch;
+
     public Collect()
     {
         super("Collect");
         requires(collector);
+
+        currentSwitch = new CurrentSwitch(CURRENT_THRESHOLD, CURRENT_MIN_DURATION);
     }
 
     @Override
     protected void initialize()
     {
         Scheduler.getInstance().add(new Extend());
+        isFinished = false;
+
+        currentSwitch.reset();
     }
 
     @Override
@@ -28,13 +40,14 @@ public class Collect extends Command
         double throttle = oi.getThrottleMult();
 
         collector.setCollector(throttle);
+
+        isFinished = currentSwitch.get(collector.getMaxCurrent()) || collector.getLimitSwitch();
     }
 
     @Override
     protected boolean isFinished()
     {
-        // TODO: add current sensing in case of bad sensor
-        return collector.getLimitSwitch();
+        return isFinished;
     }
 
     private void endCommon()

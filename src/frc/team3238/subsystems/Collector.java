@@ -46,6 +46,16 @@ public class Collector extends Subsystem
         return left.getSensorCollection().isFwdLimitSwitchClosed();
     }
 
+    public double getMinCurrent()
+    {
+        return Math.min(left.getOutputCurrent(), right.getOutputCurrent());
+    }
+
+    public double getMaxCurrent()
+    {
+        return Math.max(left.getOutputCurrent(), right.getOutputCurrent());
+    }
+
     public void initDefaultCommand()
     {
 
