@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.commands.chassis.Drive;
+import frc.team3238.commands.chassis.RunMP;
 import frc.team3238.commands.collector.Collect;
 import frc.team3238.commands.collector.Eject;
 import frc.team3238.commands.extender.Extend;
@@ -15,8 +16,13 @@ import frc.team3238.commands.extender.Withdraw;
 import frc.team3238.subsystems.Chassis;
 import frc.team3238.subsystems.Collector;
 import frc.team3238.subsystems.Extender;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Waypoint;
 
-import static frc.team3238.RobotMap.Global.*;
+import static frc.team3238.RobotMap.Global.CAMERA_FPS;
+import static frc.team3238.RobotMap.Global.CAMERA_X_RES;
+import static frc.team3238.RobotMap.Global.CAMERA_Y_RES;
+import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
 
 public class Robot extends TimedRobot
 {
@@ -75,16 +81,24 @@ public class Robot extends TimedRobot
         Scheduler.getInstance().run();
     }
 
+    double turns = 4;
+
     @Override
     public void autonomousInit()
     {
-
+        chassis.resetAngle();
+        (new RunMP(new Waypoint[]{new Waypoint(0, 0, 0), new Waypoint(0, 0, Pathfinder.d2r(360 * turns))})).start();
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+        double newAngle = chassis.getAngle();
+        SmartDashboard.putNumber("Angle", newAngle);
+
+        double width = RobotMap.Chassis.MP_WHEELBASE_WIDTH * turns / (newAngle / 360);
+        SmartDashboard.putNumber("Effective wheelbase width", width);
     }
 
     @Override

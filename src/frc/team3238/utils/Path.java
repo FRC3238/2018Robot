@@ -2,6 +2,7 @@ package frc.team3238.utils;
 
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.team3238.RobotMap;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -18,12 +19,13 @@ public class Path
         try
         {
             Trajectory.Config config =
-                    new Trajectory.Config(Config.FIT_METHOD, Config.SAMPLE_RATE, Config.TIMESTEP, Config.MAX_VELOCITY,
-                                          Config.MAX_ACCEL, Config.MAX_JERK);
+                    new Trajectory.Config(RobotMap.Chassis.MP_FIT_METHOD, RobotMap.Chassis.MP_SAMPLE_RATE,
+                                          RobotMap.Chassis.MP_TIMESTEP, RobotMap.Chassis.MP_MAX_VELOCITY,
+                                          RobotMap.Chassis.MP_MAX_ACCEL, RobotMap.Chassis.MP_MAX_JERK);
             Trajectory trajectory = Pathfinder.generate(points, config);
 
             TankModifier modifier = new TankModifier(trajectory);
-            modifier.modify(Config.WHEELBASE_WIDTH);
+            modifier.modify(RobotMap.Chassis.MP_WHEELBASE_WIDTH);
 
             Trajectory leftTrajectory = modifier.getLeftTrajectory();
             Trajectory rightTrajectory = modifier.getRightTrajectory();
@@ -36,8 +38,9 @@ public class Path
                 Trajectory.Segment segment = leftTrajectory.get(i);
 
                 TrajectoryPoint point = new TrajectoryPoint();
-                point.position = segment.position * Config.SENSOR_UNITS_PER_ROTATION;
-                point.velocity = segment.velocity * Config.SENSOR_UNITS_PER_ROTATION / 600; // rpm to units per 100 ms
+                point.position = segment.position * RobotMap.Chassis.SENSOR_UNITS_PER_ROTATION;
+                point.velocity =
+                        segment.velocity * RobotMap.Chassis.SENSOR_UNITS_PER_ROTATION / 600; // rpm to units per 100 ms
                 point.headingDeg = 0;
                 point.profileSlotSelect0 = 0;
                 point.profileSlotSelect1 = 0;
@@ -52,10 +55,10 @@ public class Path
                 Trajectory.Segment segment = rightTrajectory.get(i);
 
                 TrajectoryPoint point = new TrajectoryPoint();
-                point.position =
-                        segment.position * Config.SENSOR_UNITS_PER_ROTATION / (Math.PI * Config.WHEEL_DIAMETER);
-                point.velocity = segment.velocity * Config.SENSOR_UNITS_PER_ROTATION /
-                                 (600 * Math.PI * Config.WHEEL_DIAMETER); // rpm to units per 100 ms
+                point.position = segment.position * RobotMap.Chassis.SENSOR_UNITS_PER_ROTATION /
+                                 (Math.PI * RobotMap.Chassis.MP_WHEEL_DIAMETER);
+                point.velocity = segment.velocity * RobotMap.Chassis.SENSOR_UNITS_PER_ROTATION /
+                                 (600 * Math.PI * RobotMap.Chassis.MP_WHEEL_DIAMETER); // rpm to units per 100 ms
                 point.headingDeg = 0;
                 point.profileSlotSelect0 = 0;
                 point.profileSlotSelect1 = 0;
@@ -95,20 +98,5 @@ public class Path
         }
 
         return duration;
-    }
-
-    private static class Config
-    {
-        static final Trajectory.FitMethod FIT_METHOD = Trajectory.FitMethod.HERMITE_QUINTIC;
-        static final int SAMPLE_RATE = Trajectory.Config.SAMPLES_LOW;
-        static final double TIMESTEP = 0.01; // s
-        static final double MAX_VELOCITY = 30; // ft/s
-        static final double MAX_ACCEL = 60; // ft/s/s
-        static final double MAX_JERK = 900; // ft/s/s/s
-
-        static final double WHEELBASE_WIDTH = 0.5; // ft
-        static final double WHEEL_DIAMETER = 0.66667; // ft
-
-        static final int SENSOR_UNITS_PER_ROTATION = 1440;
     }
 }

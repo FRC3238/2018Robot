@@ -7,11 +7,12 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3238.RobotMap;
 import frc.team3238.commands.chassis.Drive;
 
 import java.util.ArrayList;
@@ -27,8 +28,18 @@ public class Chassis extends Subsystem
 
     private MotionProfileStatus status = new MotionProfileStatus();
 
+    private AHRS navX;
+
     public Chassis()
     {
+        try
+        {
+            navX = new AHRS(SPI.Port.kMXP);
+        } catch(Exception e)
+        {
+            DriverStation.reportError("Failed to create navX object" + e.getMessage(), false);
+        }
+
         left = new TalonSRX(LEFT_DRIVE_TALON_ID);
         leftSlave = new TalonSRX(LEFT_DRIVE_SLAVE_TALON_ID);
         right = new TalonSRX(RIGHT_DRIVE_TALON_ID);
@@ -42,6 +53,7 @@ public class Chassis extends Subsystem
         leftSlave.follow(left);
         rightSlave.follow(right);
 
+        enableVoltageCompensation();
 
         left.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         right.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
@@ -148,6 +160,16 @@ public class Chassis extends Subsystem
     {
         right.getMotionProfileStatus(status);
         return status;
+    }
+
+    public double getAngle()
+    {
+        return navX.getAngle();
+    }
+
+    public void resetAngle()
+    {
+        navX.reset();
     }
 
     private void monitor()

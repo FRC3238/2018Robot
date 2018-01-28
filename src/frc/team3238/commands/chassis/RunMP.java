@@ -6,7 +6,6 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team3238.Robot;
-import frc.team3238.RobotMap;
 import frc.team3238.utils.Path;
 import jaci.pathfinder.Waypoint;
 
@@ -81,17 +80,22 @@ public class RunMP extends Command
 
         left = leftProfile;
         right = rightProfile;
-
-        if(Math.min(left.size(), right.size()) == 0)
-        {
-            isFinished = true;
-            return;
-        }
     }
 
     @Override
     protected void initialize()
     {
+        if(Math.min(left.size(), right.size()) < MP_MIN_POINTS_IN_TALON)
+        {
+            isFinished = true;
+            DriverStation.reportError("Motion Profile was too small, canceling", false);
+            return;
+        }
+        else
+        {
+            isFinished = false;
+        }
+
         Robot.chassis.fillMPBuffer(left, right);
     }
 
@@ -140,6 +144,6 @@ public class RunMP extends Command
     @Override
     protected void interrupted()
     {
-        super.interrupted();
+        end();
     }
 }
