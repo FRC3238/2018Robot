@@ -1,5 +1,7 @@
 package frc.team3238;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -14,7 +16,7 @@ import frc.team3238.subsystems.Chassis;
 import frc.team3238.subsystems.Collector;
 import frc.team3238.subsystems.Extender;
 
-import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
+import static frc.team3238.RobotMap.Global.*;
 
 public class Robot extends TimedRobot
 {
@@ -29,6 +31,10 @@ public class Robot extends TimedRobot
     public void robotInit()
     {
         setPeriod(ROBOT_PERIOD);
+
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture("Camera", 0);
+        camera.setResolution(CAMERA_X_RES, CAMERA_Y_RES);
+        camera.setFPS(CAMERA_FPS);
 
         oi = new OI();
 
