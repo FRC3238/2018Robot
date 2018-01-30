@@ -18,7 +18,7 @@ public class POVButton extends Button
     public POVButton(GenericHID joystick, int id, int povNum)
     {
         stick = joystick;
-        isPOV = id > stick.getButtonCount();
+        isPOV = id > Math.max(30, stick.getButtonCount());
         accessorID = id;
         povID = povNum;
     }

@@ -4,6 +4,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,9 +30,9 @@ public class Robot extends TimedRobot
 
     public static OI oi;
 
-    public static Chassis chassis;
-    public static Collector collector;
-    public static Extender extender;
+    public static Chassis chassis = new Chassis();
+    public static Collector collector = new Collector();
+    public static Extender extender = new Extender();
 
     @Override
     public void robotInit()
@@ -43,10 +44,6 @@ public class Robot extends TimedRobot
         camera.setFPS(CAMERA_FPS);
 
         oi = new OI();
-
-        chassis = new Chassis();
-        collector = new Collector();
-        extender = new Extender();
 
         SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData(new PowerDistributionPanel());
@@ -81,24 +78,16 @@ public class Robot extends TimedRobot
         Scheduler.getInstance().run();
     }
 
-    double turns = 4;
-
     @Override
     public void autonomousInit()
     {
-        chassis.resetAngle();
-        (new RunMP(new Waypoint[]{new Waypoint(0, 0, 0), new Waypoint(0, 0, Pathfinder.d2r(360 * turns))})).start();
+
     }
 
     @Override
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-        double newAngle = chassis.getAngle();
-        SmartDashboard.putNumber("Angle", newAngle);
-
-        double width = RobotMap.Chassis.MP_WHEELBASE_WIDTH * turns / (newAngle / 360);
-        SmartDashboard.putNumber("Effective wheelbase width", width);
     }
 
     @Override

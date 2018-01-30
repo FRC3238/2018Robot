@@ -18,9 +18,7 @@ import frc.team3238.commands.chassis.Drive;
 import java.util.ArrayList;
 
 import static frc.team3238.RobotMap.Chassis.*;
-import static frc.team3238.RobotMap.Global.TALON_MAX_TEMP;
-import static frc.team3238.RobotMap.Global.TALON_NEUTRAL_DEADBAND;
-import static frc.team3238.RobotMap.Global.TALON_TIMEOUT;
+import static frc.team3238.RobotMap.Global.*;
 
 public class Chassis extends Subsystem
 {
@@ -58,6 +56,9 @@ public class Chassis extends Subsystem
         left.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         right.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
 
+        left.configOpenloopRamp(OPEN_LOOP_RAMP_RATE, TALON_TIMEOUT);
+        right.configOpenloopRamp(OPEN_LOOP_RAMP_RATE, TALON_TIMEOUT);
+
         left.setSensorPhase(true);
         right.setSensorPhase(true);
 
@@ -73,12 +74,18 @@ public class Chassis extends Subsystem
         right.config_kD(MP_PIDF_SLOT, MP_D_VAL, TALON_TIMEOUT);
         right.config_kF(MP_PIDF_SLOT, MP_F_VAL, TALON_TIMEOUT);
 
-        setMPFramePeriod((int) (MOTION_PROFILE_FRAME_PERIOD * 1000));
+        left.configMotionCruiseVelocity(
+                (int) (MP_MAX_VELOCITY * 12 * SENSOR_UNITS_PER_ROTATION / (MP_WHEEL_DIAMETER * Math.PI)),
+                TALON_TIMEOUT);
+        right.configMotionCruiseVelocity(
+                (int) (MP_MAX_VELOCITY * 12 * SENSOR_UNITS_PER_ROTATION / (MP_WHEEL_DIAMETER * Math.PI)),
+                TALON_TIMEOUT);
+        left.configMotionAcceleration(
+                (int) (MP_MAX_ACCEL * 12 * SENSOR_UNITS_PER_ROTATION / (MP_WHEEL_DIAMETER * Math.PI)), TALON_TIMEOUT);
+        right.configMotionAcceleration(
+                (int) (MP_MAX_ACCEL * 12 * SENSOR_UNITS_PER_ROTATION / (MP_WHEEL_DIAMETER * Math.PI)), TALON_TIMEOUT);
 
-        left.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, (int) (MOTION_PROFILE_FRAME_PERIOD * 1000),
-                                  TALON_TIMEOUT);
-        right.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, (int) (MOTION_PROFILE_FRAME_PERIOD * 1000),
-                                   TALON_TIMEOUT);
+        setMPFramePeriod((int) (MOTION_PROFILE_FRAME_PERIOD * 1000));
 
         Notifier processLoop = new Notifier(this::processMPBuffer);
         processLoop.startPeriodic(MOTION_PROFILE_FRAME_PERIOD / 2);
@@ -87,8 +94,7 @@ public class Chassis extends Subsystem
     public void periodic()
     {
         monitor();
-        SmartDashboard.putNumber("Left Vel", left.getSensorCollection().getQuadratureVelocity());
-        SmartDashboard.putNumber("Right Vel", right.getSensorCollection().getQuadratureVelocity());
+        putSDData();
     }
 
     public void initDefaultCommand()
@@ -115,6 +121,17 @@ public class Chassis extends Subsystem
         drive(y, twist, scale);
     }
 
+    public void runMotionMagic(double leftVal, double rightVal)
+    {
+        left.set(ControlMode.MotionMagic, leftVal);
+        right.set(ControlMode.MotionMagic, rightVal);
+    }
+
+    public double getMinClosedLoopError()
+    {
+        return Math.min(left.getClosedLoopError(0), right.getClosedLoopError(0));
+    }
+
     public void runMotionProfile(SetValueMotionProfile setValue)
     {
         left.set(ControlMode.MotionProfile, setValue.value);
@@ -127,6 +144,11 @@ public class Chassis extends Subsystem
         left.configMotionProfileTrajectoryPeriod(ms, TALON_TIMEOUT);
         right.changeMotionControlFramePeriod(ms);
         right.configMotionProfileTrajectoryPeriod(ms, TALON_TIMEOUT);
+
+        left.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, ms, TALON_TIMEOUT);
+        right.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, ms, TALON_TIMEOUT);
+        left.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, ms, TALON_TIMEOUT);
+        right.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, ms, TALON_TIMEOUT);
     }
 
     private void processMPBuffer()
@@ -148,6 +170,17 @@ public class Chassis extends Subsystem
         {
             right.pushMotionProfileTrajectory(point);
         }
+    }
+
+    public void setTalonPIDSlot(int slot)
+    {
+        left.selectProfileSlot(slot, 0);
+    }
+
+    public void resetEncoders()
+    {
+        left.getSensorCollection().setQuadraturePosition(0, TALON_TIMEOUT);
+        right.getSensorCollection().setQuadraturePosition(0, TALON_TIMEOUT);
     }
 
     public MotionProfileStatus getLeftStatus()
@@ -196,6 +229,14 @@ public class Chassis extends Subsystem
     {
         left.enableVoltageCompensation(true);
         right.enableVoltageCompensation(true);
+    }
+
+    public void putSDData()
+    {
+        SmartDashboard.putNumber("Left Encoder", left.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Right Encoder", right.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Left output", left.getMotorOutputPercent());
+        SmartDashboard.putNumber("Right output", right.getMotorOutputPercent());
     }
 }
 

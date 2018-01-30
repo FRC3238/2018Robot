@@ -24,8 +24,9 @@ public class Drive extends Command
     {
         double y = oi.getDriveY();
         double twist = oi.getDriveTwist();
+        double throttle = oi.getThrottleMult();
 
-        chassis.drive(y, twist);
+        chassis.cheesyDrive(y, twist, 1.0, throttle);
     }
 
     @Override

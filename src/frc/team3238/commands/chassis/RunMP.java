@@ -5,13 +5,16 @@ import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.Robot;
 import frc.team3238.utils.Path;
 import jaci.pathfinder.Waypoint;
 
 import java.util.ArrayList;
 
+import static frc.team3238.Robot.chassis;
 import static frc.team3238.RobotMap.Chassis.MP_MIN_POINTS_IN_TALON;
+import static frc.team3238.RobotMap.Chassis.MP_PIDF_SLOT;
 
 public class RunMP extends Command
 {
@@ -19,7 +22,7 @@ public class RunMP extends Command
     private ArrayList<TrajectoryPoint> left, right;
 
     // Hold info on talon status
-    private SetValueMotionProfile setVal = SetValueMotionProfile.Disable;
+    private SetValueMotionProfile setVal;
     private MotionProfileStatus leftStatus;
     private MotionProfileStatus rightStatus;
 
@@ -76,7 +79,7 @@ public class RunMP extends Command
      */
     public RunMP(ArrayList<TrajectoryPoint> leftProfile, ArrayList<TrajectoryPoint> rightProfile)
     {
-        requires(Robot.chassis);
+        requires(chassis);
 
         left = leftProfile;
         right = rightProfile;
@@ -85,6 +88,14 @@ public class RunMP extends Command
     @Override
     protected void initialize()
     {
+        DriverStation.reportWarning("Motion Profile starting", false);
+
+        state = 0;
+        setVal = SetValueMotionProfile.Disable;
+
+        chassis.setTalonPIDSlot(MP_PIDF_SLOT);
+        chassis.resetEncoders();
+
         if(Math.min(left.size(), right.size()) < MP_MIN_POINTS_IN_TALON)
         {
             isFinished = true;
@@ -96,14 +107,14 @@ public class RunMP extends Command
             isFinished = false;
         }
 
-        Robot.chassis.fillMPBuffer(left, right);
+        chassis.fillMPBuffer(left, right);
     }
 
     @Override
     protected void execute()
     {
-        leftStatus = Robot.chassis.getLeftStatus();
-        rightStatus = Robot.chassis.getRightStatus();
+        leftStatus = chassis.getLeftStatus();
+        rightStatus = chassis.getRightStatus();
 
         switch(state)
         {
@@ -126,7 +137,8 @@ public class RunMP extends Command
                 DriverStation.reportError("Default case in RunMP.java", false);
         }
 
-        Robot.chassis.runMotionProfile(setVal);
+        SmartDashboard.putNumber("MP setval", setVal.value);
+        chassis.runMotionProfile(setVal);
     }
 
     @Override
