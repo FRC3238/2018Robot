@@ -48,6 +48,11 @@ public class Extender extends Subsystem
         return extend.getSensorCollection().isRevLimitSwitchClosed();
     }
 
+    public double getCurrent()
+    {
+        return extend.getOutputCurrent();
+    }
+
     public void initDefaultCommand()
     {
 
