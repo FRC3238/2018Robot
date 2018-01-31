@@ -16,7 +16,7 @@ public class Drive extends Command
     @Override
     protected void initialize()
     {
-
+        chassis.setCoastMode();
     }
 
     @Override
@@ -38,12 +38,12 @@ public class Drive extends Command
     @Override
     protected void end()
     {
-
+        chassis.setBrakeMode();
     }
 
     @Override
     protected void interrupted()
     {
-
+        end();
     }
 }

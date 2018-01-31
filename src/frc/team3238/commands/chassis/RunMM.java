@@ -3,7 +3,10 @@ package frc.team3238.commands.chassis;
 import edu.wpi.first.wpilibj.command.Command;
 
 import static frc.team3238.Robot.chassis;
-import static frc.team3238.RobotMap.Chassis.*;
+import static frc.team3238.RobotMap.Chassis.ALLOWED_ERROR;
+import static frc.team3238.RobotMap.Chassis.MP_WHEELBASE_WIDTH;
+import static frc.team3238.RobotMap.Chassis.MP_WHEEL_DIAMETER;
+import static frc.team3238.RobotMap.Chassis.SENSOR_UNITS_PER_ROTATION;
 
 public class RunMM extends Command
 {
@@ -31,6 +34,7 @@ public class RunMM extends Command
     @Override
     protected void initialize()
     {
+        chassis.setBrakeMode();
         chassis.resetEncoders();
     }
 
@@ -43,7 +47,7 @@ public class RunMM extends Command
     @Override
     protected boolean isFinished()
     {
-        return chassis.getMinClosedLoopError() < ALLOWED_ERROR;
+        return chassis.getClosedLoopError() < ALLOWED_ERROR;
     }
 
     @Override

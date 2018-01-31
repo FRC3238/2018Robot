@@ -6,7 +6,6 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3238.Robot;
 import frc.team3238.utils.Path;
 import jaci.pathfinder.Waypoint;
 
@@ -95,6 +94,7 @@ public class RunMP extends Command
 
         chassis.setTalonPIDSlot(MP_PIDF_SLOT);
         chassis.resetEncoders();
+        chassis.setBrakeMode();
 
         if(Math.min(left.size(), right.size()) < MP_MIN_POINTS_IN_TALON)
         {

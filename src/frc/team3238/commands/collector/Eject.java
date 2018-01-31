@@ -7,11 +7,14 @@ import frc.team3238.commands.extender.Withdraw;
 
 import static frc.team3238.Robot.collector;
 import static frc.team3238.Robot.oi;
+import static frc.team3238.RobotMap.Collector.EJECT_POWER;
 import static frc.team3238.RobotMap.Collector.EJECT_TIME;
 
 public class Eject extends Command
 {
     Timer timer;
+
+    private boolean isFinished;
 
     public Eject()
     {
@@ -24,6 +27,8 @@ public class Eject extends Command
     @Override
     protected void initialize()
     {
+        isFinished = false;
+
         timer.reset();
         timer.start();
     }
@@ -31,15 +36,15 @@ public class Eject extends Command
     @Override
     protected void execute()
     {
-        double throttle = oi.getThrottleMult();
+        collector.setCollector(EJECT_POWER);
 
-        collector.setCollector(-throttle);
+        isFinished = !oi.getEjectHeld() && timer.get() > EJECT_TIME;
     }
 
     @Override
     protected boolean isFinished()
     {
-        return timer.get() > EJECT_TIME && !oi.getEjectHeld();
+        return isFinished;
     }
 
     private void endCommon()

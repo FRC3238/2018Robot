@@ -22,13 +22,26 @@ public class RobotMap
         public static final double TWIST_DEADZONE = 0.25;
         public static final double DRIVE_POWER = 2;
         public static final double DRIVE_TWIST_POWER = 2;
+        public static final double CHEEZINESS = 0.75;
         // camera constants
         public static final int CAMERA_X_RES = 640;
         public static final int CAMERA_Y_RES = 480;
         public static final int CAMERA_FPS = 20;
         // misc
-        public static final int TALON_MAX_TEMP = 80;
         public static final double TALON_NEUTRAL_DEADBAND = 0.01;
+    }
+
+    public static class Auto
+    {
+        public static final String CENTER = "Center";
+        public static final String LEFT = "Left";
+        public static final String RIGHT = "Right";
+        public static final String NONE = "None";
+        public static final String SWITCH = "Switch";
+        public static final String SCALE = "Scale";
+
+        public static final String[] POSITIONS = new String[]{CENTER, LEFT, RIGHT};
+        public static final String[] PRIORITIES = new String[]{NONE, SWITCH, SCALE};
     }
 
     public static class Chassis
@@ -66,6 +79,9 @@ public class RobotMap
         // talon ids
         public static final int LEFT_COLLECT_TALON_ID = 4;
         public static final int RIGHT_COLLECT_TALON_ID = 5;
+        // power
+        public static final double COLLECT_POWER = 0.75;
+        public static final double EJECT_POWER = -0.5;
         // timing
         public static final double EJECT_TIME = 2;
         // sensing
@@ -77,6 +93,9 @@ public class RobotMap
     {
         // talon ids
         public static final int EXTENDER_TALON_ID = 6;
+        // power
+        public static final double EXTEND_POWER = -0.5;
+        public static final double WITHDRAW_POWER = -EXTEND_POWER;
         // sensing
         public static final double CURRENT_THRESHOLD = 20;
         public static final int CURRENT_MIN_DURATION = 10;

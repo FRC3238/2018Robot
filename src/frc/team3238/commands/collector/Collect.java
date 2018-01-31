@@ -7,7 +7,7 @@ import frc.team3238.commands.extender.Withdraw;
 import frc.team3238.utils.CurrentSwitch;
 
 import static frc.team3238.Robot.collector;
-import static frc.team3238.Robot.oi;
+import static frc.team3238.RobotMap.Collector.COLLECT_POWER;
 import static frc.team3238.RobotMap.Collector.CURRENT_MIN_DURATION;
 import static frc.team3238.RobotMap.Collector.CURRENT_THRESHOLD;
 
@@ -37,9 +37,7 @@ public class Collect extends Command
     @Override
     protected void execute()
     {
-        double throttle = oi.getThrottleMult();
-
-        collector.setCollector(throttle);
+        collector.setCollector(COLLECT_POWER);
 
         isFinished = currentSwitch.get(collector.getMaxCurrent()) || collector.getLimitSwitch();
     }

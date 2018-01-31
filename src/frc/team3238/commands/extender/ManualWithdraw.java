@@ -1,46 +1,33 @@
 package frc.team3238.commands.extender;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team3238.utils.CurrentSwitch;
 
 import static frc.team3238.Robot.extender;
-import static frc.team3238.RobotMap.Extender.CURRENT_MIN_DURATION;
-import static frc.team3238.RobotMap.Extender.CURRENT_THRESHOLD;
 import static frc.team3238.RobotMap.Extender.WITHDRAW_POWER;
 
-public class Withdraw extends Command
+public class ManualWithdraw extends Command
 {
-    private boolean isFinished;
-
-    private CurrentSwitch currentSwitch;
-
-    public Withdraw()
+    public ManualWithdraw()
     {
-        super("Withdraw");
         requires(extender);
-
-        currentSwitch = new CurrentSwitch(CURRENT_THRESHOLD, CURRENT_MIN_DURATION);
     }
 
     @Override
     protected void initialize()
     {
-        isFinished = false;
-        currentSwitch.reset();
+
     }
 
     @Override
     protected void execute()
     {
         extender.setExtend(WITHDRAW_POWER);
-
-        isFinished = currentSwitch.get(extender.getCurrent()) || extender.getForwardLimit();
     }
 
     @Override
     protected boolean isFinished()
     {
-        return isFinished;
+        return false;
     }
 
     @Override

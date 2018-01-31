@@ -6,8 +6,13 @@ import frc.team3238.commands.chassis.RunMM;
 import frc.team3238.commands.chassis.RunMP;
 import frc.team3238.commands.collector.Collect;
 import frc.team3238.commands.collector.Eject;
+import frc.team3238.commands.collector.ManualCollect;
+import frc.team3238.commands.collector.ManualEject;
 import frc.team3238.commands.extender.Extend;
+import frc.team3238.commands.extender.ManualExtend;
+import frc.team3238.commands.extender.ManualWithdraw;
 import frc.team3238.commands.extender.Withdraw;
+import frc.team3238.triggers.POV;
 import frc.team3238.triggers.POVButton;
 import frc.team3238.utils.Path;
 import jaci.pathfinder.Pathfinder;
@@ -23,8 +28,10 @@ public class OI
     private Button ejectButton = new POVButton(mainStick, EJECT_BUTTON_ID);
     private Button extendButton = new POVButton(mainStick, EXTEND_BUTTON_ID);
     private Button withdrawButton = new POVButton(mainStick, WITHDRAW_BUTTON_ID);
+
     private Button cancelButton = new POVButton(mainStick, CANCEL_BUTTON_ID);
 
+    // TODO: delete these once testing is finished
     private Button mpButton = new POVButton(mainStick, 11);
     private Button mmButton = new POVButton(mainStick, 12);
 
@@ -35,6 +42,8 @@ public class OI
         Extend extend = new Extend();
         Withdraw withdraw = new Withdraw();
 
+        new POV(mainStick, new ManualExtend(), new ManualWithdraw(), new ManualEject(), new ManualCollect());
+
         collectButton.whenPressed(collect);
         ejectButton.whenPressed(eject);
         extendButton.whenPressed(extend);
@@ -44,9 +53,9 @@ public class OI
         cancelButton.cancelWhenPressed(eject);
         cancelButton.whenPressed(withdraw);
 
+        // TODO: delete these when testing is finished
         Path path = new Path(
                 new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(0)), new Waypoint(-5, 5, Pathfinder.d2r(-90))});
-
         mpButton.whenPressed(new RunMP(path));
         mmButton.whenPressed(new RunMM(5));
     }
@@ -86,11 +95,8 @@ public class OI
 
     private double scaleRawJoyVal(double y, double deadzone, double power)
     {
-        double throttle = getThrottleMult();
-
         y = Math.abs(y) > deadzone ? y : 0.0;
-        y = (y > 0 && power % 2 == 0 ? 1 : -1) * Math.pow(y, power);
-        y *= throttle;
+        y = Math.copySign(Math.pow(y, power), y);
 
         return y;
     }

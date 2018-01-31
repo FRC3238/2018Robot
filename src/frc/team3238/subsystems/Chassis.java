@@ -1,10 +1,12 @@
 package frc.team3238.subsystems;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -18,18 +20,22 @@ import frc.team3238.commands.chassis.Drive;
 import java.util.ArrayList;
 
 import static frc.team3238.RobotMap.Chassis.*;
-import static frc.team3238.RobotMap.Global.*;
+import static frc.team3238.RobotMap.Global.TALON_NEUTRAL_DEADBAND;
+import static frc.team3238.RobotMap.Global.TALON_TIMEOUT;
 
 public class Chassis extends Subsystem
 {
     private TalonSRX left, leftSlave, right, rightSlave;
 
     private MotionProfileStatus status = new MotionProfileStatus();
+    private ArrayList<TrajectoryPoint> leftPoints, rightPoints;
 
+    // TODO: delete if not being used
     private AHRS navX;
 
     public Chassis()
     {
+        // TODO: delete if not being used
         try
         {
             navX = new AHRS(SPI.Port.kMXP);
@@ -38,20 +44,24 @@ public class Chassis extends Subsystem
             DriverStation.reportError("Failed to create navX object" + e.getMessage(), false);
         }
 
+        // initialize talons
         left = new TalonSRX(LEFT_DRIVE_TALON_ID);
         leftSlave = new TalonSRX(LEFT_DRIVE_SLAVE_TALON_ID);
         right = new TalonSRX(RIGHT_DRIVE_TALON_ID);
         rightSlave = new TalonSRX(RIGHT_DRIVE_SLAVE_TALON_ID);
 
+        // set right talons as reversed
         left.setInverted(false);
         leftSlave.setInverted(false);
         right.setInverted(true);
         rightSlave.setInverted(true);
 
+        // set slaves as followers
         leftSlave.follow(left);
         rightSlave.follow(right);
 
         enableVoltageCompensation();
+        setBrakeMode();
 
         left.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         right.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
@@ -65,6 +75,7 @@ public class Chassis extends Subsystem
         left.configNeutralDeadband(TALON_NEUTRAL_DEADBAND, TALON_TIMEOUT);
         right.configNeutralDeadband(TALON_NEUTRAL_DEADBAND, TALON_TIMEOUT);
 
+        // set PIDF params
         left.config_kP(MP_PIDF_SLOT, MP_P_VAL, TALON_TIMEOUT);
         left.config_kI(MP_PIDF_SLOT, MP_I_VAL, TALON_TIMEOUT);
         left.config_kD(MP_PIDF_SLOT, MP_D_VAL, TALON_TIMEOUT);
@@ -74,6 +85,7 @@ public class Chassis extends Subsystem
         right.config_kD(MP_PIDF_SLOT, MP_D_VAL, TALON_TIMEOUT);
         right.config_kF(MP_PIDF_SLOT, MP_F_VAL, TALON_TIMEOUT);
 
+        // set motion magic params
         left.configMotionCruiseVelocity(
                 (int) (MP_MAX_VELOCITY * 12 * SENSOR_UNITS_PER_ROTATION / (MP_WHEEL_DIAMETER * Math.PI)),
                 TALON_TIMEOUT);
@@ -85,15 +97,15 @@ public class Chassis extends Subsystem
         right.configMotionAcceleration(
                 (int) (MP_MAX_ACCEL * 12 * SENSOR_UNITS_PER_ROTATION / (MP_WHEEL_DIAMETER * Math.PI)), TALON_TIMEOUT);
 
-        setMPFramePeriod((int) (MOTION_PROFILE_FRAME_PERIOD * 1000));
+        setFramePeriod((int) (MOTION_PROFILE_FRAME_PERIOD * 1000));
 
+        // set up talon buffer process loop
         Notifier processLoop = new Notifier(this::processMPBuffer);
         processLoop.startPeriodic(MOTION_PROFILE_FRAME_PERIOD / 2);
     }
 
     public void periodic()
     {
-        monitor();
         putSDData();
     }
 
@@ -102,6 +114,8 @@ public class Chassis extends Subsystem
         setDefaultCommand(new Drive());
     }
 
+    // Drive Command
+    // -------------
     public void drive(double y, double twist, double scale)
     {
         double lSpeed = y + twist;
@@ -121,16 +135,8 @@ public class Chassis extends Subsystem
         drive(y, twist, scale);
     }
 
-    public void runMotionMagic(double leftVal, double rightVal)
-    {
-        left.set(ControlMode.MotionMagic, leftVal);
-        right.set(ControlMode.MotionMagic, rightVal);
-    }
-
-    public double getMinClosedLoopError()
-    {
-        return Math.min(left.getClosedLoopError(0), right.getClosedLoopError(0));
-    }
+    // Motion Profile Command
+    // ----------------------
 
     public void runMotionProfile(SetValueMotionProfile setValue)
     {
@@ -138,7 +144,7 @@ public class Chassis extends Subsystem
         right.set(ControlMode.MotionProfile, setValue.value);
     }
 
-    private void setMPFramePeriod(int ms)
+    private void setFramePeriod(int ms)
     {
         left.changeMotionControlFramePeriod(ms);
         left.configMotionProfileTrajectoryPeriod(ms, TALON_TIMEOUT);
@@ -153,34 +159,54 @@ public class Chassis extends Subsystem
 
     private void processMPBuffer()
     {
+        if(!leftPoints.isEmpty())
+        {
+            ErrorCode err = left.pushMotionProfileTrajectory(leftPoints.get(0));
+            if(err.value != ErrorCode.BufferFull.value)
+            {
+                leftPoints.remove(0);
+            }
+        }
+        if(!rightPoints.isEmpty())
+        {
+            ErrorCode err = right.pushMotionProfileTrajectory(rightPoints.get(0));
+            if(err.value != ErrorCode.BufferFull.value)
+            {
+                rightPoints.remove(0);
+            }
+        }
+
         left.processMotionProfileBuffer();
         right.processMotionProfileBuffer();
     }
 
-    public void fillMPBuffer(ArrayList<TrajectoryPoint> leftPoints, ArrayList<TrajectoryPoint> rightPoints)
+    public void fillMPBuffer(ArrayList<TrajectoryPoint> leftTrajPoints, ArrayList<TrajectoryPoint> rightTrajPoints)
     {
         left.clearMotionProfileTrajectories();
         right.clearMotionProfileTrajectories();
 
-        for(TrajectoryPoint point : leftPoints)
-        {
-            left.pushMotionProfileTrajectory(point);
-        }
-        for(TrajectoryPoint point : rightPoints)
-        {
-            right.pushMotionProfileTrajectory(point);
-        }
+        leftPoints = leftTrajPoints;
+        rightPoints = rightTrajPoints;
+
+        fillMPBufferSide(leftPoints, left);
+        fillMPBufferSide(rightPoints, right);
     }
 
-    public void setTalonPIDSlot(int slot)
+    private void fillMPBufferSide(ArrayList<TrajectoryPoint> points, TalonSRX talon)
     {
-        left.selectProfileSlot(slot, 0);
-    }
-
-    public void resetEncoders()
-    {
-        left.getSensorCollection().setQuadraturePosition(0, TALON_TIMEOUT);
-        right.getSensorCollection().setQuadraturePosition(0, TALON_TIMEOUT);
+        ErrorCode err;
+        while(!points.isEmpty())
+        {
+            err = talon.pushMotionProfileTrajectory(points.get(0));
+            if(err.value != ErrorCode.BufferFull.value)
+            {
+                points.remove(0);
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 
     public MotionProfileStatus getLeftStatus()
@@ -195,6 +221,49 @@ public class Chassis extends Subsystem
         return status;
     }
 
+    // Motion Magic Command
+    // --------------------
+    public void runMotionMagic(double leftVal, double rightVal)
+    {
+        left.set(ControlMode.MotionMagic, leftVal);
+        right.set(ControlMode.MotionMagic, rightVal);
+    }
+
+    // Common
+    // ------
+    public void setCoastMode()
+    {
+        left.setNeutralMode(NeutralMode.Coast);
+        leftSlave.setNeutralMode(NeutralMode.Coast);
+        right.setNeutralMode(NeutralMode.Coast);
+        rightSlave.setNeutralMode(NeutralMode.Coast);
+    }
+
+    public void setBrakeMode()
+    {
+        left.setNeutralMode(NeutralMode.Brake);
+        leftSlave.setNeutralMode(NeutralMode.Brake);
+        right.setNeutralMode(NeutralMode.Brake);
+        rightSlave.setNeutralMode(NeutralMode.Brake);
+    }
+
+    public double getClosedLoopError()
+    {
+        return Math.max(left.getClosedLoopError(0), right.getClosedLoopError(0));
+    }
+
+    public void resetEncoders()
+    {
+        left.getSensorCollection().setQuadraturePosition(0, TALON_TIMEOUT);
+        right.getSensorCollection().setQuadraturePosition(0, TALON_TIMEOUT);
+    }
+
+    public void setTalonPIDSlot(int slot)
+    {
+        left.selectProfileSlot(slot, 0);
+    }
+
+    // TODO: delete if not being used
     public double getAngle()
     {
         return navX.getAngle();
@@ -203,26 +272,6 @@ public class Chassis extends Subsystem
     public void resetAngle()
     {
         navX.reset();
-    }
-
-    private void monitor()
-    {
-        if(left.getTemperature() > TALON_MAX_TEMP)
-        {
-            DriverStation.reportError("Left Talon is hot!!!", false);
-        }
-        if(leftSlave.getTemperature() > TALON_MAX_TEMP)
-        {
-            DriverStation.reportError("Left Slave Talon is hot!!!", false);
-        }
-        if(right.getTemperature() > TALON_MAX_TEMP)
-        {
-            DriverStation.reportError("Right Talon is hot!!!", false);
-        }
-        if(rightSlave.getTemperature() > TALON_MAX_TEMP)
-        {
-            DriverStation.reportError("Right Slave Talon is hot!!!", false);
-        }
     }
 
     private void enableVoltageCompensation()
