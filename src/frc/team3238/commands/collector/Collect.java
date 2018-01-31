@@ -7,9 +7,7 @@ import frc.team3238.commands.extender.Withdraw;
 import frc.team3238.utils.CurrentSwitch;
 
 import static frc.team3238.Robot.collector;
-import static frc.team3238.RobotMap.Collector.COLLECT_POWER;
-import static frc.team3238.RobotMap.Collector.CURRENT_MIN_DURATION;
-import static frc.team3238.RobotMap.Collector.CURRENT_THRESHOLD;
+import static frc.team3238.RobotMap.Collector.*;
 
 public class Collect extends Command
 {

@@ -54,8 +54,10 @@ public class OI
         cancelButton.whenPressed(withdraw);
 
         // TODO: delete these when testing is finished
-        Path path = new Path(
-                new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(0)), new Waypoint(-5, 5, Pathfinder.d2r(-90))});
+        Path path = new Path(new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)),
+                                            //                               new Waypoint(2, 4, Pathfinder.d2r(-15)),
+                                            new Waypoint(5, 11.666, Pathfinder.d2r(90))});
+
         mpButton.whenPressed(new RunMP(path));
         mmButton.whenPressed(new RunMM(5));
     }

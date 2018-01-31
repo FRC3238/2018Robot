@@ -13,6 +13,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.commands.chassis.Drive;
@@ -185,8 +186,8 @@ public class Chassis extends Subsystem
         left.clearMotionProfileTrajectories();
         right.clearMotionProfileTrajectories();
 
-        leftPoints = leftTrajPoints;
-        rightPoints = rightTrajPoints;
+        leftPoints = (ArrayList<TrajectoryPoint>) leftTrajPoints.clone();
+        rightPoints = (ArrayList<TrajectoryPoint>) rightTrajPoints.clone();
 
         fillMPBufferSide(leftPoints, left);
         fillMPBufferSide(rightPoints, right);
@@ -207,6 +208,7 @@ public class Chassis extends Subsystem
                 break;
             }
         }
+        DriverStation.reportWarning("Finished filling talon", false);
     }
 
     public MotionProfileStatus getLeftStatus()

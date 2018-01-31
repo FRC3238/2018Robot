@@ -22,10 +22,7 @@ import frc.team3238.subsystems.Extender;
 
 import static frc.team3238.RobotMap.Auto.POSITIONS;
 import static frc.team3238.RobotMap.Auto.PRIORITIES;
-import static frc.team3238.RobotMap.Global.CAMERA_FPS;
-import static frc.team3238.RobotMap.Global.CAMERA_X_RES;
-import static frc.team3238.RobotMap.Global.CAMERA_Y_RES;
-import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
+import static frc.team3238.RobotMap.Global.*;
 
 public class Robot extends TimedRobot
 {
@@ -60,6 +57,10 @@ public class Robot extends TimedRobot
         sendAutoOptions(POSITIONS, posChooser);
         sendAutoOptions(PRIORITIES, priorityOneChooser);
         sendAutoOptions(PRIORITIES, priorityTwoChooser);
+
+        SmartDashboard.putData("Position", posChooser);
+        SmartDashboard.putData("Priority One", priorityOneChooser);
+        SmartDashboard.putData("Priority Two", priorityTwoChooser);
 
         SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData(new PowerDistributionPanel());
@@ -117,10 +118,8 @@ public class Robot extends TimedRobot
                 Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],
                                      PRIORITIES[priorityTwoChooser.getSelected()],
                                      DriverStation.getInstance().getGameSpecificMessage());
-        if(autoCommand != null)
-        {
-            autoCommand.start();
-        }
+        DriverStation.reportWarning("Starting command " + autoCommand.getName(), false);
+        autoCommand.start();
     }
 
     @Override

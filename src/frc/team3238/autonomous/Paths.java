@@ -7,10 +7,7 @@ import frc.team3238.utils.Path;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-import static frc.team3238.RobotMap.Auto.CENTER;
-import static frc.team3238.RobotMap.Auto.LEFT;
-import static frc.team3238.RobotMap.Auto.RIGHT;
-import static frc.team3238.RobotMap.Auto.SCALE;
+import static frc.team3238.RobotMap.Auto.*;
 
 public class Paths
 {

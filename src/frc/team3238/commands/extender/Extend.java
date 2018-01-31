@@ -4,9 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.team3238.utils.CurrentSwitch;
 
 import static frc.team3238.Robot.extender;
-import static frc.team3238.RobotMap.Extender.CURRENT_MIN_DURATION;
-import static frc.team3238.RobotMap.Extender.CURRENT_THRESHOLD;
-import static frc.team3238.RobotMap.Extender.EXTEND_POWER;
+import static frc.team3238.RobotMap.Extender.*;
 
 public class Extend extends Command
 {
