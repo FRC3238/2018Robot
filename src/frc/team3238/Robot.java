@@ -60,6 +60,10 @@ public class Robot extends TimedRobot
         sendAutoOptions(POSITIONS, posChooser);
         sendAutoOptions(PRIORITIES, priorityOneChooser);
         sendAutoOptions(PRIORITIES, priorityTwoChooser);
+        if(SmartDashboard.getNumber("Auto Wait", 0) == 0)
+        {
+            SmartDashboard.putNumber("Auto Wait", 0);
+        }
 
         SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData(new PowerDistributionPanel());
@@ -116,7 +120,8 @@ public class Robot extends TimedRobot
         autoCommand =
                 Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],
                                      PRIORITIES[priorityTwoChooser.getSelected()],
-                                     DriverStation.getInstance().getGameSpecificMessage());
+                                     DriverStation.getInstance().getGameSpecificMessage(),
+                                     SmartDashboard.getNumber("Auto Wait", 0));
         if(autoCommand != null)
         {
             autoCommand.start();

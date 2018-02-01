@@ -33,6 +33,8 @@ public class RobotMap
 
     public static class Auto
     {
+        public static final boolean INVERT_LEFT_PROFILES = false;
+
         public static final String CENTER = "Center";
         public static final String LEFT = "Left";
         public static final String RIGHT = "Right";
