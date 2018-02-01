@@ -65,6 +65,10 @@ public class Robot extends TimedRobot
             SmartDashboard.putNumber("Auto Wait", 0);
         }
 
+        SmartDashboard.putData("Position", posChooser);
+        SmartDashboard.putData("Priority One", priorityOneChooser);
+        SmartDashboard.putData("Priority Two", priorityTwoChooser);
+
         SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData(new PowerDistributionPanel());
 
@@ -122,10 +126,8 @@ public class Robot extends TimedRobot
                                      PRIORITIES[priorityTwoChooser.getSelected()],
                                      DriverStation.getInstance().getGameSpecificMessage(),
                                      SmartDashboard.getNumber("Auto Wait", 0));
-        if(autoCommand != null)
-        {
-            autoCommand.start();
-        }
+        autoCommand.start();
+        DriverStation.reportWarning("Starting command " + autoCommand.getName(), false);
     }
 
     @Override

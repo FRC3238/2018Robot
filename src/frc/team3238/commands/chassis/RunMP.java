@@ -105,9 +105,10 @@ public class RunMP extends Command
         else
         {
             isFinished = false;
-        }
 
-        chassis.fillMPBuffer(left, right);
+            chassis.fillMPBuffer(left, right);
+            DriverStation.reportWarning("Motion profile after filling", false);
+        }
     }
 
     @Override
@@ -119,6 +120,8 @@ public class RunMP extends Command
         switch(state)
         {
             case 0:
+                DriverStation.reportWarning("In case 0 runMp", false);
+                SmartDashboard.putNumber("Left buffer", leftStatus.btmBufferCnt);
                 if(Math.min(leftStatus.btmBufferCnt, rightStatus.btmBufferCnt) > MP_MIN_POINTS_IN_TALON)
                 {
                     state = 1;
@@ -126,6 +129,7 @@ public class RunMP extends Command
                 }
                 break;
             case 1:
+                DriverStation.reportWarning("In case 1 runMp", false);
                 if(leftStatus.activePointValid && leftStatus.isLast && rightStatus.activePointValid &&
                    rightStatus.isLast)
                 {

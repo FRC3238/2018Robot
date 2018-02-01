@@ -1,6 +1,5 @@
 package frc.team3238.triggers;
 
-import com.sun.istack.internal.NotNull;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,8 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class POV
 {
 
-    public POV(@NotNull Joystick joystick, @NotNull Command up, @NotNull Command down, @NotNull Command left,
-               @NotNull Command right)
+    public POV(Joystick joystick, Command up, Command down, Command left, Command right)
     {
 
         Button upPOV = new POVButton(joystick, 0);
