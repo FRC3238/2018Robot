@@ -12,6 +12,8 @@ import frc.team3238.commands.extender.Extend;
 import frc.team3238.commands.extender.ManualExtend;
 import frc.team3238.commands.extender.ManualWithdraw;
 import frc.team3238.commands.extender.Withdraw;
+import frc.team3238.commands.lift.LiftDown;
+import frc.team3238.commands.lift.LiftUp;
 import frc.team3238.triggers.POV;
 import frc.team3238.triggers.POVButton;
 import frc.team3238.utils.Path;
@@ -28,6 +30,8 @@ public class OI
     private Button ejectButton = new POVButton(mainStick, EJECT_BUTTON_ID);
     private Button extendButton = new POVButton(mainStick, EXTEND_BUTTON_ID);
     private Button withdrawButton = new POVButton(mainStick, WITHDRAW_BUTTON_ID);
+    private Button upButton = new POVButton(mainStick, UP_BUTTON_ID);
+    private Button downButton = new POVButton(mainStick, DOWN_BUTTON_ID);
 
     private Button cancelButton = new POVButton(mainStick, CANCEL_BUTTON_ID);
 
@@ -41,6 +45,8 @@ public class OI
         Eject eject = new Eject();
         Extend extend = new Extend();
         Withdraw withdraw = new Withdraw();
+        LiftUp up = new LiftUp();
+        LiftDown down = new LiftDown();
 
         new POV(mainStick, new ManualExtend(), new ManualWithdraw(), new ManualEject(), new ManualCollect());
 
@@ -48,6 +54,8 @@ public class OI
         ejectButton.whenPressed(eject);
         extendButton.whenPressed(extend);
         withdrawButton.whenPressed(withdraw);
+        upButton.whileHeld(up);
+        downButton.whileHeld(down);
 
         cancelButton.cancelWhenPressed(collect);
         cancelButton.cancelWhenPressed(eject);
@@ -57,7 +65,6 @@ public class OI
         Path path = new Path(new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)),
                                             //                               new Waypoint(2, 4, Pathfinder.d2r(-15)),
                                             new Waypoint(5, 11.666, Pathfinder.d2r(90))});
-
         mpButton.whenPressed(new RunMP(path));
         mmButton.whenPressed(new RunMM(5));
     }

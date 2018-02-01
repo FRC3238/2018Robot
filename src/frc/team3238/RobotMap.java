@@ -14,9 +14,11 @@ public class RobotMap
         // buttons - can be set to pov values to use pov
         public static final int COLLECT_BUTTON_ID = 2;
         public static final int EJECT_BUTTON_ID = 1;
-        public static final int EXTEND_BUTTON_ID = 6;
+        public static final int EXTEND_BUTTON_ID = 5;
         public static final int WITHDRAW_BUTTON_ID = 3;
         public static final int CANCEL_BUTTON_ID = 3;
+        public static final int UP_BUTTON_ID = 6;
+        public static final int DOWN_BUTTON_ID = 4;
         // driving constants
         public static final double DEADZONE = 0.1;
         public static final double TWIST_DEADZONE = 0.25;
@@ -101,5 +103,32 @@ public class RobotMap
         // sensing
         public static final double CURRENT_THRESHOLD = 20;
         public static final int CURRENT_MIN_DURATION = 10;
+    }
+
+    public static class Lift
+    {
+        // talon ids
+        public static final int LIFT_TALON_ID = 7;
+        public static final int LIFT_SLAVE_TALON_ID = 8;
+        // power
+        public static final double UP_POWER = 0.5;
+        public static final double DOWN_POWER = -0.5;
+        // encoder positions
+        public static final int UPPER_SOFT_LIMIT = 10000; // encoder clicks
+        public static final double SWITCH_HEIGHT = 2;
+        public static final double SCALE_HEIGHT = 7;
+        public static final int ENCODER_CLICKS_PER_FOOT = 4096;
+        // PID values
+        public static final int LIFT_PID_SLOT = 0;
+        public static final double LIFT_P_VAL = 0;
+        public static final double LIFT_I_VAL = 0;
+        public static final double LIFT_D_VAL = 0;
+        public static final double LIFT_F_VAL = 0;
+        public static final int ALLOWED_ERROR = 50;
+
+        public static final double NOMINAL_FORWARD_OUTPUT = 0;
+        public static final double NOMINAL_REVERSE_OUTPUT = 0;
+        public static final double PEAK_FORWARD_OUTPUT = 1;
+        public static final double PEAK_REVERSE_OUTPUT = 0.5;
     }
 }
