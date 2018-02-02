@@ -1,7 +1,6 @@
 package frc.team3238;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
 import frc.team3238.commands.chassis.RunMM;
 import frc.team3238.commands.chassis.RunMP;
 import frc.team3238.commands.collector.Collect;
@@ -16,28 +15,31 @@ import frc.team3238.commands.lift.LiftDown;
 import frc.team3238.commands.lift.LiftUp;
 import frc.team3238.triggers.POV;
 import frc.team3238.triggers.POVButton;
+import frc.team3238.utils.DriverConfig;
 import frc.team3238.utils.Path;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-import static frc.team3238.RobotMap.Global.*;
+import static frc.team3238.RobotMap.Global.MAIN_JOYSTICK_PORT;
 
 public class OI
 {
     private Joystick mainStick = new Joystick(MAIN_JOYSTICK_PORT);
 
-    private Button collectButton = new POVButton(mainStick, COLLECT_BUTTON_ID);
-    private Button ejectButton = new POVButton(mainStick, EJECT_BUTTON_ID);
-    private Button extendButton = new POVButton(mainStick, EXTEND_BUTTON_ID);
-    private Button withdrawButton = new POVButton(mainStick, WITHDRAW_BUTTON_ID);
-    private Button upButton = new POVButton(mainStick, UP_BUTTON_ID);
-    private Button downButton = new POVButton(mainStick, DOWN_BUTTON_ID);
+    private DriverConfig driver = new DriverConfig.Programmer();
 
-    private Button cancelButton = new POVButton(mainStick, CANCEL_BUTTON_ID);
+    private POVButton collectButton = new POVButton(mainStick, driver.collectID);
+    private POVButton ejectButton = new POVButton(mainStick, driver.ejectID);
+    private POVButton extendButton = new POVButton(mainStick, driver.extendID);
+    private POVButton withdrawButton = new POVButton(mainStick, driver.extendID);
+    private POVButton upButton = new POVButton(mainStick, driver.upID);
+    private POVButton downButton = new POVButton(mainStick, driver.downID);
+
+    private POVButton cancelButton = new POVButton(mainStick, driver.cancelID);
 
     // TODO: delete these once testing is finished
-    private Button mpButton = new POVButton(mainStick, 11);
-    private Button mmButton = new POVButton(mainStick, 12);
+    private POVButton mpButton = new POVButton(mainStick, 11);
+    private POVButton mmButton = new POVButton(mainStick, 12);
 
     public OI()
     {
@@ -69,6 +71,19 @@ public class OI
         mmButton.whenPressed(new RunMM(5));
     }
 
+    public void setDriver(DriverConfig driver)
+    {
+        this.driver = driver;
+
+        collectButton.setID(driver.collectID);
+        ejectButton.setID(driver.ejectID);
+        extendButton.setID(driver.extendID);
+        withdrawButton.setID(driver.withdrawID);
+        upButton.setID(driver.upID);
+        downButton.setID(driver.downID);
+        cancelButton.setID(driver.cancelID);
+    }
+
     public boolean getEjectHeld()
     {
         return ejectButton.get();
@@ -78,7 +93,7 @@ public class OI
     {
         double y = -mainStick.getY();
 
-        y = scaleRawJoyVal(y, DEADZONE, DRIVE_POWER);
+        y = scaleRawJoyVal(y, driver.deadzone, driver.drivePower);
 
         return y;
     }
@@ -87,7 +102,7 @@ public class OI
     {
         double twist = mainStick.getTwist();
 
-        twist = scaleRawJoyVal(twist, TWIST_DEADZONE, DRIVE_TWIST_POWER);
+        twist = scaleRawJoyVal(twist, driver.twistDeadzone, driver.driveTwistPower);
 
         return twist;
     }
@@ -100,6 +115,31 @@ public class OI
         throttle /= 2;
 
         return throttle;
+    }
+
+    public double getScale()
+    {
+        return driver.scale;
+    }
+
+    public double getCheeziness()
+    {
+        return driver.cheeziness;
+    }
+
+    public double getCheezyX()
+    {
+        return driver.cheezyX;
+    }
+
+    public double getTwistScale()
+    {
+        return driver.twistScale;
+    }
+
+    public double getCheezyScale()
+    {
+        return driver.cheezyScale;
     }
 
     private double scaleRawJoyVal(double y, double deadzone, double power)

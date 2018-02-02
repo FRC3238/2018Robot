@@ -20,6 +20,7 @@ import frc.team3238.subsystems.Chassis;
 import frc.team3238.subsystems.Collector;
 import frc.team3238.subsystems.Extender;
 import frc.team3238.subsystems.Lift;
+import frc.team3238.utils.DriverConfig;
 
 import static frc.team3238.RobotMap.Auto.POSITIONS;
 import static frc.team3238.RobotMap.Auto.PRIORITIES;
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot
     private SendableChooser<Integer> posChooser;
     private SendableChooser<Integer> priorityOneChooser;
     private SendableChooser<Integer> priorityTwoChooser;
+    private SendableChooser<DriverConfig> driverChooser;
 
     private Command autoCommand;
 
@@ -71,6 +73,10 @@ public class Robot extends TimedRobot
         SmartDashboard.putData("Priority One", priorityOneChooser);
         SmartDashboard.putData("Priority Two", priorityTwoChooser);
 
+        driverChooser = new SendableChooser<>();
+        sendDriverOptions(DriverConfig.configs, driverChooser);
+        SmartDashboard.putData("Driver Selection", driverChooser);
+
         SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData(new PowerDistributionPanel());
 
@@ -97,6 +103,21 @@ public class Robot extends TimedRobot
             else
             {
                 chooser.addObject(options[i], i);
+            }
+        }
+    }
+
+    private void sendDriverOptions(DriverConfig[] configs, SendableChooser chooser)
+    {
+        for(int i = 0; i < configs.length; i++)
+        {
+            if(i == 0)
+            {
+                chooser.addDefault(configs[i].getClass().getName(), configs[i]);
+            }
+            else
+            {
+                chooser.addObject(configs[i].getClass().getName(), configs[i]);
             }
         }
     }
@@ -141,6 +162,8 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit()
     {
+        oi.setDriver(driverChooser.getSelected());
+
         if(autoCommand != null && autoCommand.isRunning())
         {
             autoCommand.cancel();

@@ -11,20 +11,6 @@ public class RobotMap
         public static final int TALON_TIMEOUT = 0;
         // joysticks
         public static final int MAIN_JOYSTICK_PORT = 0;
-        // buttons - can be set to pov values to use pov
-        public static final int COLLECT_BUTTON_ID = 2;
-        public static final int EJECT_BUTTON_ID = 1;
-        public static final int EXTEND_BUTTON_ID = 5;
-        public static final int WITHDRAW_BUTTON_ID = 3;
-        public static final int CANCEL_BUTTON_ID = 3;
-        public static final int UP_BUTTON_ID = 6;
-        public static final int DOWN_BUTTON_ID = 4;
-        // driving constants
-        public static final double DEADZONE = 0.1;
-        public static final double TWIST_DEADZONE = 0.25;
-        public static final double DRIVE_POWER = 2;
-        public static final double DRIVE_TWIST_POWER = 2;
-        public static final double CHEEZINESS = 0.75;
         // camera constants
         public static final int CAMERA_X_RES = 640;
         public static final int CAMERA_Y_RES = 480;

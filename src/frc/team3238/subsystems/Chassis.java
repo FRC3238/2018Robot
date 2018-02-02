@@ -13,7 +13,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.commands.chassis.Drive;
@@ -129,9 +128,19 @@ public class Chassis extends Subsystem
         right.set(ControlMode.PercentOutput, rSpeed);
     }
 
-    public void cheesyDrive(double y, double twist, double scale, double cheeziness)
+    public void cheesyDrive(double y, double twist, double scale, double cheeziness, double cheezyX, double twistScale,
+                            double cheezyScale)
     {
-        twist *= (4 * cheeziness * (Math.abs(y) - Math.sqrt(Math.abs(y)))) + 1;
+        if(Math.abs(y) < cheezyX)
+        {
+            twist *= ((twistScale - 1 + cheeziness) / Math.pow(cheezyX, 2)) * Math.pow(Math.abs(y) - cheezyX, 2) + 1 -
+                     cheeziness;
+        }
+        else
+        {
+            twist *= ((cheezyScale - 1 + cheeziness) / Math.pow(1 - cheezyX, 2)) * Math.pow(Math.abs(y) - cheezyX, 2) +
+                     1 - cheeziness;
+        }
 
         drive(y, twist, scale);
     }

@@ -8,24 +8,23 @@ public class POVButton extends Button
     private GenericHID stick;
     private int accessorID;
     private boolean isPOV;
-    private int povID;
 
     public POVButton(GenericHID joystick, int id)
     {
-        this(joystick, id, 0);
+        stick = joystick;
+        isPOV = id > stick.getButtonCount() || id == 0;
+        accessorID = id;
     }
 
-    public POVButton(GenericHID joystick, int id, int povNum)
+    public void setID(int id)
     {
-        stick = joystick;
-        isPOV = id > Math.max(30, stick.getButtonCount()) || id == 0;
+        isPOV = id > stick.getButtonCount() || id == 0;
         accessorID = id;
-        povID = povNum;
     }
 
     @Override
     public boolean get()
     {
-        return isPOV ? stick.getPOV(povID) == accessorID : stick.getRawButton(accessorID);
+        return isPOV ? stick.getPOV() == accessorID : stick.getRawButton(accessorID);
     }
 }
