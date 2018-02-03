@@ -1,5 +1,6 @@
 package frc.team3238.commands.collector;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team3238.commands.extender.Extend;
@@ -29,6 +30,7 @@ public class Collect extends Command
         Scheduler.getInstance().add(new Extend());
         isFinished = false;
 
+        DriverStation.reportError("Starting collect", false);
         currentSwitch.reset();
     }
 

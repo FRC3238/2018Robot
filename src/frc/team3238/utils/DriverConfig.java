@@ -34,7 +34,7 @@ public class DriverConfig
     public double cheezyScale = 1; // probably shouldn't be changed, max val of twist with full forward movement
 
     // TODO: update this once driver is chosen. Main driver should be first.
-    public static DriverConfig[] configs = new DriverConfig[]{new Programmer()};
+    public static DriverConfig[] configs = new DriverConfig[]{new Programmer(), new Driver()};
 
     public static class Programmer extends DriverConfig
     {
@@ -56,6 +56,29 @@ public class DriverConfig
 
             super.cheeziness = 0.75;
             super.twistScale = 0.6;
+        }
+    }
+
+    public static class Driver extends DriverConfig
+    {
+        public Driver()
+        {
+            super.collectID = 2;
+            super.ejectID = 1;
+            super.extendID = 5;
+            super.withdrawID = 3;
+            super.cancelID = 3;
+            super.upID = 6;
+            super.downID = 4;
+
+            super.deadzone = 0.1;
+            super.twistDeadzone = 0.25;
+            super.drivePower = 2;
+            super.driveTwistPower = 2;
+            super.scale = 1;
+
+            super.cheeziness = 0.75;
+            super.twistScale = 0.9;
         }
     }
 }

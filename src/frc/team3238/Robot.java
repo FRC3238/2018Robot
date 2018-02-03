@@ -57,6 +57,8 @@ public class Robot extends TimedRobot
 
         oi = new OI();
 
+        DriverStation.reportError("" + Paths.ROBOT_WIDTH, false);
+
         posChooser = new SendableChooser<>();
         priorityOneChooser = new SendableChooser<>();
         priorityTwoChooser = new SendableChooser<>();
@@ -77,7 +79,6 @@ public class Robot extends TimedRobot
         sendDriverOptions(DriverConfig.configs, driverChooser);
         SmartDashboard.putData("Driver Selection", driverChooser);
 
-        SmartDashboard.putData(Scheduler.getInstance());
         SmartDashboard.putData(new PowerDistributionPanel());
 
         LiveWindow.add(chassis);
@@ -113,11 +114,11 @@ public class Robot extends TimedRobot
         {
             if(i == 0)
             {
-                chooser.addDefault(configs[i].getClass().getName(), configs[i]);
+                chooser.addDefault(configs[i].getClass().getSimpleName(), configs[i]);
             }
             else
             {
-                chooser.addObject(configs[i].getClass().getName(), configs[i]);
+                chooser.addObject(configs[i].getClass().getSimpleName(), configs[i]);
             }
         }
     }
@@ -127,6 +128,7 @@ public class Robot extends TimedRobot
     {
         // TODO: delete this after testing
         SmartDashboard.putNumber("Throttle Mult", oi.getThrottleMult());
+        SmartDashboard.putData(Scheduler.getInstance());
     }
 
     @Override
@@ -149,8 +151,8 @@ public class Robot extends TimedRobot
                                      PRIORITIES[priorityTwoChooser.getSelected()],
                                      DriverStation.getInstance().getGameSpecificMessage(),
                                      SmartDashboard.getNumber("Auto Wait", 0));
-        autoCommand.start();
         DriverStation.reportWarning("Starting command " + autoCommand.getName(), false);
+        autoCommand.start();
     }
 
     @Override

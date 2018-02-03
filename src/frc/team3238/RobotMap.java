@@ -56,8 +56,8 @@ public class RobotMap
         public static final Trajectory.FitMethod MP_FIT_METHOD = Trajectory.FitMethod.HERMITE_QUINTIC;
         public static final int MP_SAMPLE_RATE = Trajectory.Config.SAMPLES_LOW;
         public static final double MP_TIMESTEP = 0.01; // s
-        public static final double MP_MAX_VELOCITY = 5; // ft/s
-        public static final double MP_MAX_ACCEL = 30; // ft/s/s
+        public static final double MP_MAX_VELOCITY = 15; // ft/s
+        public static final double MP_MAX_ACCEL = 60; // ft/s/s
         public static final double MP_MAX_JERK = 600; // ft/s/s/s
         public static final double MP_WHEELBASE_WIDTH = 2.488; // ft, not actual width, calculated.
         public static final double MP_WHEEL_DIAMETER = 8; // in

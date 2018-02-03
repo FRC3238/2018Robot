@@ -1,6 +1,7 @@
 package frc.team3238;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.team3238.autonomous.Paths;
 import frc.team3238.commands.chassis.RunMM;
 import frc.team3238.commands.chassis.RunMP;
 import frc.team3238.commands.collector.Collect;
@@ -64,9 +65,10 @@ public class OI
         cancelButton.whenPressed(withdraw);
 
         // TODO: delete these when testing is finished
-        Path path = new Path(new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)),
-                                            //                               new Waypoint(2, 4, Pathfinder.d2r(-15)),
-                                            new Waypoint(5, 11.666, Pathfinder.d2r(90))});
+        Path path = Paths.CENTER_TO_LEFT_SWITCH;
+        //new Path(new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)),
+        //                                                                           new Waypoint(2, 4, Pathfinder.d2r(-15)),
+        //                                            new Waypoint(5, 11.666, Pathfinder.d2r(90))});
         mpButton.whenPressed(new RunMP(path));
         mmButton.whenPressed(new RunMM(5));
     }

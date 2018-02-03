@@ -28,7 +28,7 @@ public class Chassis extends Subsystem
     private TalonSRX left, leftSlave, right, rightSlave;
 
     private MotionProfileStatus status = new MotionProfileStatus();
-    private ArrayList<TrajectoryPoint> leftPoints, rightPoints;
+    private ArrayList<TrajectoryPoint> leftPoints = new ArrayList<>(), rightPoints = new ArrayList<>();
 
     // TODO: delete if not being used
     private AHRS navX;
@@ -107,6 +107,9 @@ public class Chassis extends Subsystem
     public void periodic()
     {
         putSDData();
+
+        fillMPBufferSide(leftPoints, left);
+        fillMPBufferSide(rightPoints, right);
     }
 
     public void initDefaultCommand()
@@ -169,22 +172,22 @@ public class Chassis extends Subsystem
 
     private void processMPBuffer()
     {
-        if(!leftPoints.isEmpty())
-        {
-            ErrorCode err = left.pushMotionProfileTrajectory(leftPoints.get(0));
-            if(err.value != ErrorCode.BufferFull.value)
-            {
-                leftPoints.remove(0);
-            }
-        }
-        if(!rightPoints.isEmpty())
-        {
-            ErrorCode err = right.pushMotionProfileTrajectory(rightPoints.get(0));
-            if(err.value != ErrorCode.BufferFull.value)
-            {
-                rightPoints.remove(0);
-            }
-        }
+        //        if(!leftPoints.isEmpty())
+        //        {
+        //            ErrorCode err = left.pushMotionProfileTrajectory(leftPoints.get(0));
+        //            if(err.value != ErrorCode.BufferFull.value)
+        //            {
+        //                leftPoints.remove(0);
+        //            }
+        //        }
+        //        if(!rightPoints.isEmpty())
+        //        {
+        //            ErrorCode err = right.pushMotionProfileTrajectory(rightPoints.get(0));
+        //            if(err.value != ErrorCode.BufferFull.value)
+        //            {
+        //                rightPoints.remove(0);
+        //            }
+        //        }
 
         left.processMotionProfileBuffer();
         right.processMotionProfileBuffer();
@@ -217,7 +220,6 @@ public class Chassis extends Subsystem
                 break;
             }
         }
-        DriverStation.reportWarning("Finished filling talon", false);
     }
 
     public MotionProfileStatus getLeftStatus()
