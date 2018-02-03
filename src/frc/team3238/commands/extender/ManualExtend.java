@@ -9,6 +9,7 @@ public class ManualExtend extends Command
 {
     public ManualExtend()
     {
+        super("Manual Extend");
         requires(extender);
     }
 

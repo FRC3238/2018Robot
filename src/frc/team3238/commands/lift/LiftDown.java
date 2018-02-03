@@ -9,6 +9,7 @@ public class LiftDown extends Command
 {
     public LiftDown()
     {
+        super("Lift Down");
         requires(lift);
     }
 

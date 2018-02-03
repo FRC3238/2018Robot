@@ -117,4 +117,13 @@ public class RobotMap
         public static final double PEAK_FORWARD_OUTPUT = 1;
         public static final double PEAK_REVERSE_OUTPUT = 0.5;
     }
+
+    public static class Climber
+    {
+        // talon ids
+        public static final int CLIMB_TALON_ID = 9;
+        public static final int CLIMB_SLAVE_TALON_ID = 10;
+        // power
+        public static final double UP_POWER = 0.75;
+    }
 }

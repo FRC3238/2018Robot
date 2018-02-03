@@ -15,6 +15,7 @@ public class CollectAuto extends CommandGroup
 
     public CollectAuto(Path profile, boolean flip)
     {
+        super("Autonomous Collect");
         addParallel(new RunMP(profile, flip));
         addParallel(new Collect());
     }

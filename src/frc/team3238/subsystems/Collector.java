@@ -18,6 +18,8 @@ public class Collector extends Subsystem
 
     public Collector()
     {
+        super("Collector");
+
         left = new TalonSRX(LEFT_COLLECT_TALON_ID);
         right = new TalonSRX(RIGHT_COLLECT_TALON_ID);
 

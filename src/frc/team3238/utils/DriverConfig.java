@@ -18,6 +18,7 @@ public class DriverConfig
     public int cancelID;
     public int upID;
     public int downID;
+    public int climbID;
 
     // drive constants
     public double deadzone;
@@ -47,6 +48,7 @@ public class DriverConfig
             super.cancelID = 3;
             super.upID = 6;
             super.downID = 4;
+            super.climbID = 11;
 
             super.deadzone = 0.1;
             super.twistDeadzone = 0.25;

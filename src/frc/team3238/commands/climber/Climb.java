@@ -1,16 +1,16 @@
-package frc.team3238.commands.collector;
+package frc.team3238.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3238.Robot.collector;
-import static frc.team3238.RobotMap.Collector.EJECT_POWER;
+import static frc.team3238.Robot.climber;
+import static frc.team3238.RobotMap.Climber.UP_POWER;
 
-public class ManualEject extends Command
+public class Climb extends Command
 {
-    public ManualEject()
+    public Climb()
     {
-        super("Manual Eject");
-        requires(collector);
+        super("Climb");
+        requires(climber);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class ManualEject extends Command
     @Override
     protected void execute()
     {
-        collector.setCollector(EJECT_POWER);
+        climber.set(UP_POWER);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ManualEject extends Command
     @Override
     protected void end()
     {
-        collector.stopMotors();
+
     }
 
     @Override

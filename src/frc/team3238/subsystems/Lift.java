@@ -18,6 +18,8 @@ public class Lift extends Subsystem
 
     public Lift()
     {
+        super("Lift");
+
         lift = new TalonSRX(LIFT_TALON_ID);
         liftSlave = new TalonSRX(LIFT_SLAVE_TALON_ID);
 

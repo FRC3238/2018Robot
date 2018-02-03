@@ -9,6 +9,7 @@ public class ManualWithdraw extends Command
 {
     public ManualWithdraw()
     {
+        super("Manual Withdraw");
         requires(extender);
     }
 

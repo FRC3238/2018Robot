@@ -16,6 +16,7 @@ public class PlaceSwitchAuto extends CommandGroup
 
     public PlaceSwitchAuto(Path profile, boolean reverse)
     {
+        super("Autonomous to Switch");
         addParallel(new LiftToSwitch());
         addSequential(new RunMP(profile, reverse));
         addSequential(new Eject());

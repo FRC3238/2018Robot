@@ -17,6 +17,7 @@ import frc.team3238.commands.collector.Eject;
 import frc.team3238.commands.extender.Extend;
 import frc.team3238.commands.extender.Withdraw;
 import frc.team3238.subsystems.Chassis;
+import frc.team3238.subsystems.Climber;
 import frc.team3238.subsystems.Collector;
 import frc.team3238.subsystems.Extender;
 import frc.team3238.subsystems.Lift;
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot
     public static Collector collector = new Collector();
     public static Extender extender = new Extender();
     public static Lift lift = new Lift();
+    public static Climber climber = new Climber();
 
     private SendableChooser<Integer> posChooser;
     private SendableChooser<Integer> priorityOneChooser;
@@ -85,6 +87,7 @@ public class Robot extends TimedRobot
         LiveWindow.add(collector);
         LiveWindow.add(extender);
         LiveWindow.add(lift);
+        LiveWindow.add(climber);
 
         LiveWindow.add(new Collect());
         LiveWindow.add(new Drive());

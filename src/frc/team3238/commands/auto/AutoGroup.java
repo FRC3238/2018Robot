@@ -9,6 +9,7 @@ public class AutoGroup extends CommandGroup
 
     public AutoGroup(double wait, Command... commands)
     {
+        super("Full Autonomous, wait: " + wait + "s");
         addSequential(new WaitCommand(wait));
         for(Command command : commands)
         {

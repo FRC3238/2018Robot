@@ -15,6 +15,7 @@ public class LowerAuto extends CommandGroup
 
     public LowerAuto(Path profile, boolean flip)
     {
+        super("Autonomous Lower Lift");
         addParallel(new RunMP(profile, flip));
         addParallel(new LowerLift());
     }

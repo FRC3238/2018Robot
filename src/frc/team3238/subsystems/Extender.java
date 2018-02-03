@@ -17,6 +17,8 @@ public class Extender extends Subsystem
 
     public Extender()
     {
+        super("Extender");
+
         extend = new TalonSRX(EXTENDER_TALON_ID);
 
         extend.enableVoltageCompensation(true);

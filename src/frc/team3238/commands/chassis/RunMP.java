@@ -78,6 +78,7 @@ public class RunMP extends Command
      */
     public RunMP(ArrayList<TrajectoryPoint> leftProfile, ArrayList<TrajectoryPoint> rightProfile)
     {
+        super("Run Motion Profile");
         requires(chassis);
 
         left = leftProfile;

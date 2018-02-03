@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.team3238.autonomous.Paths;
 import frc.team3238.commands.chassis.RunMM;
 import frc.team3238.commands.chassis.RunMP;
+import frc.team3238.commands.climber.Climb;
 import frc.team3238.commands.collector.Collect;
 import frc.team3238.commands.collector.Eject;
 import frc.team3238.commands.collector.ManualCollect;
@@ -18,8 +19,6 @@ import frc.team3238.triggers.POV;
 import frc.team3238.triggers.POVButton;
 import frc.team3238.utils.DriverConfig;
 import frc.team3238.utils.Path;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Waypoint;
 
 import static frc.team3238.RobotMap.Global.MAIN_JOYSTICK_PORT;
 
@@ -27,6 +26,7 @@ public class OI
 {
     private Joystick mainStick = new Joystick(MAIN_JOYSTICK_PORT);
 
+    // TODO: update with default
     private DriverConfig driver = new DriverConfig.Programmer();
 
     private POVButton collectButton = new POVButton(mainStick, driver.collectID);
@@ -35,6 +35,7 @@ public class OI
     private POVButton withdrawButton = new POVButton(mainStick, driver.extendID);
     private POVButton upButton = new POVButton(mainStick, driver.upID);
     private POVButton downButton = new POVButton(mainStick, driver.downID);
+    private POVButton climbButton = new POVButton(mainStick, driver.climbID);
 
     private POVButton cancelButton = new POVButton(mainStick, driver.cancelID);
 
@@ -50,6 +51,7 @@ public class OI
         Withdraw withdraw = new Withdraw();
         LiftUp up = new LiftUp();
         LiftDown down = new LiftDown();
+        Climb climb = new Climb();
 
         new POV(mainStick, new ManualExtend(), new ManualWithdraw(), new ManualEject(), new ManualCollect());
 
@@ -59,6 +61,7 @@ public class OI
         withdrawButton.whenPressed(withdraw);
         upButton.whileHeld(up);
         downButton.whileHeld(down);
+        climbButton.whileHeld(climb);
 
         cancelButton.cancelWhenPressed(collect);
         cancelButton.cancelWhenPressed(eject);
@@ -84,6 +87,7 @@ public class OI
         upButton.setID(driver.upID);
         downButton.setID(driver.downID);
         cancelButton.setID(driver.cancelID);
+        climbButton.setID(driver.climbID);
     }
 
     public boolean getEjectHeld()

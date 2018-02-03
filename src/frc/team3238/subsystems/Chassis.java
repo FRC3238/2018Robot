@@ -35,6 +35,8 @@ public class Chassis extends Subsystem
 
     public Chassis()
     {
+        super("Chassis");
+
         // TODO: delete if not being used
         try
         {
