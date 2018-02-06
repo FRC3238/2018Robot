@@ -3,19 +3,13 @@ package frc.team3238;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.autonomous.Paths;
-import frc.team3238.commands.chassis.Drive;
-import frc.team3238.commands.collector.Collect;
-import frc.team3238.commands.collector.Eject;
-import frc.team3238.commands.extender.Extend;
-import frc.team3238.commands.extender.Withdraw;
 import frc.team3238.subsystems.Chassis;
 import frc.team3238.subsystems.Climber;
 import frc.team3238.subsystems.Collector;
@@ -25,13 +19,11 @@ import frc.team3238.utils.DriverConfig;
 
 import static frc.team3238.RobotMap.Auto.POSITIONS;
 import static frc.team3238.RobotMap.Auto.PRIORITIES;
-import static frc.team3238.RobotMap.Global.CAMERA_FPS;
-import static frc.team3238.RobotMap.Global.CAMERA_X_RES;
-import static frc.team3238.RobotMap.Global.CAMERA_Y_RES;
-import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
+import static frc.team3238.RobotMap.Global.*;
 
 public class Robot extends TimedRobot
 {
+    public static boolean isCubeOnboard;
 
     public static OI oi;
 
@@ -81,19 +73,7 @@ public class Robot extends TimedRobot
         sendDriverOptions(DriverConfig.configs, driverChooser);
         SmartDashboard.putData("Driver Selection", driverChooser);
 
-        SmartDashboard.putData(new PowerDistributionPanel());
-
-        LiveWindow.add(chassis);
-        LiveWindow.add(collector);
-        LiveWindow.add(extender);
-        LiveWindow.add(lift);
-        LiveWindow.add(climber);
-
-        LiveWindow.add(new Collect());
-        LiveWindow.add(new Drive());
-        LiveWindow.add(new Eject());
-        LiveWindow.add(new Withdraw());
-        LiveWindow.add(new Extend());
+        isCubeOnboard = false;
     }
 
     private void sendAutoOptions(String[] options, SendableChooser chooser)
@@ -181,9 +161,12 @@ public class Robot extends TimedRobot
         Scheduler.getInstance().run();
     }
 
+    // TODO: remove this once finished w/ testing
+    Joystick stick = new Joystick(MAIN_JOYSTICK_PORT);
+
     @Override
     public void testPeriodic()
     {
-
+        SmartDashboard.putNumber("Lift feed-forward", lift.calcFeedForward(stick.getY()));
     }
 }

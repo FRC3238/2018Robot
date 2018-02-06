@@ -16,6 +16,9 @@ public class DriverConfig
     public int extendID;
     public int withdrawID;
     public int cancelID;
+    public int scaleID;
+    public int switchID;
+    public int lowerID;
     public int upID;
     public int downID;
     public int climbID;
@@ -46,6 +49,9 @@ public class DriverConfig
             super.extendID = 5;
             super.withdrawID = 3;
             super.cancelID = 3;
+            //            super.scaleID = 8;
+            //            super.switchID = 9;
+            //            super.lowerID = 10;
             super.upID = 6;
             super.downID = 4;
             super.climbID = 11;
@@ -70,14 +76,16 @@ public class DriverConfig
             super.extendID = 5;
             super.withdrawID = 3;
             super.cancelID = 3;
+            //            super.scaleID = 8;
+            //            super.switchID = 9;
+            //            super.lowerID = 10;
             super.upID = 6;
             super.downID = 4;
 
-            super.deadzone = 0.1;
-            super.twistDeadzone = 0.25;
+            super.deadzone = 0.05;
+            super.twistDeadzone = 0.15;
             super.drivePower = 2;
             super.driveTwistPower = 2;
-            super.scale = 1;
 
             super.cheeziness = 0.75;
             super.twistScale = 0.9;

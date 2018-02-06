@@ -1,6 +1,5 @@
 package frc.team3238.commands.collector;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.team3238.commands.extender.Withdraw;
@@ -12,8 +11,6 @@ import static frc.team3238.RobotMap.Collector.EJECT_TIME;
 
 public class Eject extends Command
 {
-    Timer timer;
-
     private boolean isFinished;
 
     public Eject()
@@ -21,16 +18,13 @@ public class Eject extends Command
         super("Eject");
         requires(collector);
 
-        timer = new Timer();
+        setTimeout(EJECT_TIME);
     }
 
     @Override
     protected void initialize()
     {
         isFinished = false;
-
-        timer.reset();
-        timer.start();
     }
 
     @Override
@@ -38,7 +32,7 @@ public class Eject extends Command
     {
         collector.setCollector(EJECT_POWER);
 
-        isFinished = !oi.getEjectHeld() && timer.get() > EJECT_TIME;
+        isFinished = !oi.getEjectHeld() && isTimedOut();
     }
 
     @Override
@@ -50,7 +44,6 @@ public class Eject extends Command
     private void endCommon()
     {
         collector.stopMotors();
-        timer.stop();
     }
 
     @Override

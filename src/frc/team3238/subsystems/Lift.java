@@ -37,6 +37,9 @@ public class Lift extends Subsystem
         lift.config_kD(LIFT_PID_SLOT, LIFT_D_VAL, TALON_TIMEOUT);
         lift.config_kF(LIFT_PID_SLOT, LIFT_F_VAL, TALON_TIMEOUT);
 
+        lift.configMotionCruiseVelocity((int) MM_MAX_VEL * ENCODER_CLICKS_PER_FOOT * 10, TALON_TIMEOUT);
+        lift.configMotionAcceleration((int) MM_MAX_VEL * ENCODER_CLICKS_PER_FOOT * 10, TALON_TIMEOUT);
+
         lift.configNominalOutputForward(NOMINAL_FORWARD_OUTPUT, TALON_TIMEOUT);
         lift.configNominalOutputReverse(NOMINAL_REVERSE_OUTPUT, TALON_TIMEOUT);
         lift.configPeakOutputForward(PEAK_FORWARD_OUTPUT, TALON_TIMEOUT);
@@ -75,7 +78,8 @@ public class Lift extends Subsystem
 
     public void setPosition(int pos)
     {
-        lift.set(ControlMode.Position, pos);
+        lift.set(ControlMode.Position, pos); // position
+        // lift.set(ControlMode.MotionMagic, pos); // motion magic
     }
 
     public boolean isOnTarget(int target)
@@ -83,10 +87,17 @@ public class Lift extends Subsystem
         return Math.abs(lift.getSelectedSensorPosition(0) - target) < ALLOWED_ERROR;
     }
 
+    public double calcFeedForward(double speed)
+    {
+        lift.set(ControlMode.PercentOutput, speed);
+
+        return speed * 1023 / lift.getSelectedSensorVelocity(0);
+    }
+
     @Override
     public void initDefaultCommand()
     {
-        // TODO: Set the default command, if any, for a subsystem here
+
     }
 }
 

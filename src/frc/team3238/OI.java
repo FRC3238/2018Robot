@@ -4,8 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.team3238.autonomous.Paths;
 import frc.team3238.commands.chassis.RunMM;
 import frc.team3238.commands.chassis.RunMP;
-import frc.team3238.commands.climber.Climb;
-import frc.team3238.commands.collector.Collect;
+import frc.team3238.commands.climber.ClimbUp;
 import frc.team3238.commands.collector.Eject;
 import frc.team3238.commands.collector.ManualCollect;
 import frc.team3238.commands.collector.ManualEject;
@@ -15,6 +14,7 @@ import frc.team3238.commands.extender.ManualWithdraw;
 import frc.team3238.commands.extender.Withdraw;
 import frc.team3238.commands.lift.LiftDown;
 import frc.team3238.commands.lift.LiftUp;
+import frc.team3238.commands.routines.Collect;
 import frc.team3238.triggers.POV;
 import frc.team3238.triggers.POVButton;
 import frc.team3238.utils.DriverConfig;
@@ -51,7 +51,7 @@ public class OI
         Withdraw withdraw = new Withdraw();
         LiftUp up = new LiftUp();
         LiftDown down = new LiftDown();
-        Climb climb = new Climb();
+        ClimbUp climb = new ClimbUp();
 
         new POV(mainStick, new ManualExtend(), new ManualWithdraw(), new ManualEject(), new ManualCollect());
 

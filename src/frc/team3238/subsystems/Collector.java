@@ -14,14 +14,15 @@ public class Collector extends Subsystem
 {
     private TalonSRX left, right;
 
-    private ControlMode collectMode = ControlMode.PercentOutput;
-
     public Collector()
     {
         super("Collector");
 
         left = new TalonSRX(LEFT_COLLECT_TALON_ID);
         right = new TalonSRX(RIGHT_COLLECT_TALON_ID);
+
+        left.setInverted(false);
+        right.setInverted(true);
 
         left.enableVoltageCompensation(true);
         right.enableVoltageCompensation(true);
@@ -33,14 +34,20 @@ public class Collector extends Subsystem
 
     public void setCollector(double power)
     {
-        left.set(collectMode, power);
-        right.set(collectMode, -power);
+        left.set(ControlMode.PercentOutput, power);
+        right.set(ControlMode.PercentOutput, power);
+    }
+
+    public void spinCollector(double leftPower, double rightPower)
+    {
+        left.set(ControlMode.PercentOutput, leftPower);
+        right.set(ControlMode.PercentOutput, rightPower);
     }
 
     public void stopMotors()
     {
-        left.set(collectMode, 0);
-        right.set(collectMode, 0);
+        left.set(ControlMode.PercentOutput, 0);
+        right.set(ControlMode.PercentOutput, 0);
     }
 
     public boolean getLimitSwitch()

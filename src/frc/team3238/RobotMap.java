@@ -72,8 +72,11 @@ public class RobotMap
         // power
         public static final double COLLECT_POWER = 0.75;
         public static final double EJECT_POWER = -0.5;
+        public static final double HOLD_POWER = 0.3;
         // timing
         public static final double EJECT_TIME = 2;
+        public static final double SHAKE_TIME = 0.5;
+        public static final double HOLD_TIMEOUT = 4;
         // sensing
         public static final double CURRENT_THRESHOLD = 25;
         public static final int CURRENT_MIN_DURATION = 10;
@@ -101,6 +104,7 @@ public class RobotMap
         public static final double DOWN_POWER = -0.5;
         // encoder positions
         public static final int UPPER_SOFT_LIMIT = 10000; // encoder clicks
+        public static final double HOLD_HEIGHT = 1;
         public static final double SWITCH_HEIGHT = 2;
         public static final double SCALE_HEIGHT = 7;
         public static final int ENCODER_CLICKS_PER_FOOT = 4096;
@@ -111,6 +115,9 @@ public class RobotMap
         public static final double LIFT_D_VAL = 0;
         public static final double LIFT_F_VAL = 0;
         public static final int ALLOWED_ERROR = 50;
+
+        public static final double MM_MAX_VEL = 3; // ft/s
+        public static final double MM_MAX_ACCCEL = 9; // ft/s/s
 
         public static final double NOMINAL_FORWARD_OUTPUT = 0;
         public static final double NOMINAL_REVERSE_OUTPUT = 0;

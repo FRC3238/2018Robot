@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import static frc.team3238.Robot.climber;
 import static frc.team3238.RobotMap.Climber.UP_POWER;
 
-public class Climb extends Command
+public class ClimbUp extends Command
 {
-    public Climb()
+    public ClimbUp()
     {
-        super("Climb");
+        super("ClimbUp");
         requires(climber);
     }
 

@@ -1,6 +1,5 @@
 package frc.team3238.autonomous;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team3238.commands.auto.AutoGroup;
 import frc.team3238.commands.auto.CollectAuto;
@@ -18,9 +17,6 @@ import static frc.team3238.RobotMap.Auto.*;
 
 public class Paths
 {
-    // All constants are in feet
-    // TODO: adjust robot dimensions, in ft
-    public static final double ROBOT_WIDTH = 2.667;
 
     private static String gameCharToString(char ch)
     {
@@ -45,9 +41,9 @@ public class Paths
         return (side.equals(LEFT)) == INVERT_LEFT_PROFILES;
     }
 
-    // Drive Forward
-    // -------------
-    public static Path DRIVE_FORWARD;
+    // All constants are in feet
+    // TODO: adjust robot dimensions, in ft
+    public static final double ROBOT_WIDTH = 2.833;
     private static final double ROBOT_LENGTH = 3;
     private static final double CUBE_WIDTH = 1.083;
 
@@ -62,6 +58,10 @@ public class Paths
     private static final double DIST_SIDE_TO_SWITCH_X = -6.375;
     private static final double DIST_SIDE_TO_SCALE_Y = 25;
     private static final double DIST_SIDE_TO_SCALE_X = -6;
+
+    // Drive Forward
+    // -------------
+    private static Path DRIVE_FORWARD;
     // Center Position
     // ---------------
     // Center to left switch
@@ -82,11 +82,21 @@ public class Paths
     private static Path SIDE_TO_SWITCH;
     // Left to left scale
     private static Path SIDE_TO_SCALE;
+    // Left switch to cube
+    // Left scale to cube
+    // Cube to left switch
+    // Cube to left scale
+    // Left to right switch
+    // Left to right scale
+    // Right switch to cube
+    // Right scale to cube
+    // Cube to right switch
+    // Cube to right scale
 
     static
     {
         SIDE_TO_SCALE = new Path(
-                new Waypoint[]{LEFT_START, /**new Waypoint(LEFT_START_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(90)),**/
+                new Waypoint[]{LEFT_START, /*new Waypoint(LEFT_START_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(90)),*/
                                new Waypoint(DIST_SIDE_TO_SCALE_X, DIST_SIDE_TO_SCALE_Y, Pathfinder.d2r(90))});
         SIDE_TO_SWITCH = new Path(new Waypoint[]{LEFT_START, new Waypoint(DIST_SIDE_TO_SWITCH_X - (ROBOT_LENGTH / 2),
                                                                           DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(0)),
@@ -113,21 +123,10 @@ public class Paths
                                                          new Waypoint(DIST_CENTER_X_TO_SWITCH, DIST_WALL_TO_SWITCH,
                                                                       Pathfinder.d2r(90))});
     }
-    // Left switch to cube
-    // Left scale to cube
-    // Cube to left switch
-    // Cube to left scale
-    // Left to right switch
-    // Left to right scale
-    // Right switch to cube
-    // Right scale to cube
-    // Cube to right switch
-    // Cube to right scale
 
     public static Command getAutoRoutine(String position, String priorityOne, String priorityTwo, String gameString,
                                          double wait)
     {
-        System.out.println("Starting auto algorithm");
         if((!Objects.equals(priorityOne, SCALE) && !Objects.equals(priorityOne, SWITCH)) ||
            (!Objects.equals(position, LEFT) && !Objects.equals(position, CENTER) && !Objects.equals(position, RIGHT)))
         {
@@ -144,7 +143,6 @@ public class Paths
                 }
                 else
                 {
-                    DriverStation.reportError("Starting double switch center", false);
                     return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_LEFT_SWITCH),
                                          new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(LEFT)),
                                          new CollectAuto(SWITCH_TO_PILE_TWO), new RunMP(PILE_TO_SWITCH_ONE),
@@ -170,33 +168,33 @@ public class Paths
         {
             if(priorityOne.equals(SWITCH))
             {
-                if(priorityTwo.equals(SWITCH))
-                {
-                    // position to switch to switch
-                }
-                else if(priorityTwo.equals(SCALE))
-                {
-                    // position to switch to scale
-                }
-                else
-                {
-                    return new AutoGroup(wait, new PlaceSwitchAuto(SIDE_TO_SWITCH, invertSide(position)));
-                }
+                //                if(priorityTwo.equals(SWITCH))
+                //                {
+                //                     position to switch to switch
+                //                }
+                //                else if(priorityTwo.equals(SCALE))
+                //                {
+                //                     position to switch to scale
+                //                }
+                //                else
+                //                {
+                return new AutoGroup(wait, new PlaceSwitchAuto(SIDE_TO_SWITCH, invertSide(position)));
+                //                }
             }
             else if(priorityOne.equals(SCALE))
             {
-                if(priorityTwo.equals(SWITCH))
-                {
-                    // position to scale to switch
-                }
-                else if(priorityTwo.equals(SCALE))
-                {
-                    // position to scale to scale
-                }
-                else
-                {
-                    return new AutoGroup(wait, new PlaceScaleAuto(SIDE_TO_SCALE, invertSide(position)));
-                }
+                //                if(priorityTwo.equals(SWITCH))
+                //                {
+                // position to scale to switch
+                //                }
+                //                else if(priorityTwo.equals(SCALE))
+                //                {
+                // position to scale to scale
+                //                }
+                //                else
+                //                {
+                return new AutoGroup(wait, new PlaceScaleAuto(SIDE_TO_SCALE, invertSide(position)));
+                //                }
             }
         }
         else if(position.equals(gameCharToString(gameString.charAt(priorityToCharPos(priorityTwo)))))

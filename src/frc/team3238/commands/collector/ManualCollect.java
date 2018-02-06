@@ -9,7 +9,7 @@ public class ManualCollect extends Command
 {
     public ManualCollect()
     {
-        super("Manual Collect");
+        super("Manual CollectCube");
         requires(collector);
     }
 
