@@ -38,7 +38,7 @@ public class Lift extends Subsystem
         lift.config_kF(LIFT_PID_SLOT, LIFT_F_VAL, TALON_TIMEOUT);
 
         lift.configMotionCruiseVelocity((int) MM_MAX_VEL * ENCODER_CLICKS_PER_FOOT * 10, TALON_TIMEOUT);
-        lift.configMotionAcceleration((int) MM_MAX_VEL * ENCODER_CLICKS_PER_FOOT * 10, TALON_TIMEOUT);
+        lift.configMotionAcceleration((int) MM_MAX_ACCCEL * ENCODER_CLICKS_PER_FOOT * 10, TALON_TIMEOUT);
 
         lift.configNominalOutputForward(NOMINAL_FORWARD_OUTPUT, TALON_TIMEOUT);
         lift.configNominalOutputReverse(NOMINAL_REVERSE_OUTPUT, TALON_TIMEOUT);
@@ -48,9 +48,9 @@ public class Lift extends Subsystem
         lift.setNeutralMode(NeutralMode.Brake);
 
         // set position to match absolute encoder position
-        // TODO: flip absPos if talon is inverted OR sensor is inverted, not both
         int absPos = lift.getSensorCollection().getPulseWidthPosition();
         absPos &= 0xFFF;
+        // TODO: flip absPos if talon is inverted OR sensor is inverted, not both
         lift.setSelectedSensorPosition(absPos, 0, TALON_TIMEOUT);
     }
 
@@ -58,6 +58,8 @@ public class Lift extends Subsystem
     public void periodic()
     {
         SmartDashboard.putNumber("Lift enc", lift.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Lift abs enc", lift.getSensorCollection().getPulseWidthPosition());
+        SmartDashboard.putNumber("Lift output", lift.getMotorOutputPercent());
     }
 
     // Manual methods
@@ -91,7 +93,13 @@ public class Lift extends Subsystem
     {
         lift.set(ControlMode.PercentOutput, speed);
 
-        return speed * 1023 / lift.getSelectedSensorVelocity(0);
+        double retVal = 0;
+        if(lift.getSelectedSensorVelocity(0) != 0)
+        {
+            retVal = speed * 1023 / lift.getSelectedSensorVelocity(0);
+        }
+
+        return retVal;
     }
 
     @Override

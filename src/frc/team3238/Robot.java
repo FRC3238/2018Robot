@@ -167,6 +167,12 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic()
     {
-        SmartDashboard.putNumber("Lift feed-forward", lift.calcFeedForward(stick.getY()));
+        if(stick.getRawButton(2))
+        {
+            collector.setCollector(stick.getThrottle());
+            //            collector.spinCollector(0, stick.getThrottle());
+            //            extender.setExtend(stick.getThrottle());
+        }
+        //        SmartDashboard.putNumber("Lift feed-forward", lift.calcFeedForward(stick.getY()));
     }
 }

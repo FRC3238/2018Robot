@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.team3238.RobotMap.Extender.EXTENDER_TALON_ID;
 import static frc.team3238.RobotMap.Global.TALON_TIMEOUT;
@@ -28,6 +29,12 @@ public class Extender extends Subsystem
         extend.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen,
                                               TALON_TIMEOUT);
         extend.overrideLimitSwitchesEnable(true);
+    }
+
+    @Override
+    public void periodic()
+    {
+        SmartDashboard.putNumber("Extend current", getCurrent());
     }
 
     public void setExtend(double power)
