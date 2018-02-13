@@ -49,9 +49,9 @@ public class DriverConfig
             super.extendID = 5;
             super.withdrawID = 3;
             super.cancelID = 3;
-            //            super.scaleID = 8;
-            //            super.switchID = 9;
-            //            super.lowerID = 10;
+            super.scaleID = 8;
+            super.switchID = 9;
+            super.lowerID = 10;
             super.upID = 6;
             super.downID = 4;
             super.climbID = 11;
@@ -76,11 +76,12 @@ public class DriverConfig
             super.extendID = 5;
             super.withdrawID = 3;
             super.cancelID = 3;
-            //            super.scaleID = 8;
-            //            super.switchID = 9;
-            //            super.lowerID = 10;
+            super.scaleID = 8;
+            super.switchID = 9;
+            super.lowerID = 10;
             super.upID = 6;
             super.downID = 4;
+            super.climbID = 11;
 
             super.deadzone = 0.05;
             super.twistDeadzone = 0.15;

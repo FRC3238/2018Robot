@@ -16,16 +16,15 @@ public class Collect extends CommandGroup
         super("Collect");
         addParallel(new CollectCube());
         addSequential(new Extend());
-        addParallel(new CollectCube());
-        addSequential(new LowerLift());
-        addSequential(new CollectCube());
-        addSequential(new LiftToHold());
-        addSequential(new Withdraw());
+        //        addParallel(new CollectCube());
+        //        addSequential(new LowerLift());
+        //        addSequential(new LiftToHold());
+        //        addSequential(new Withdraw());
     }
 
     @Override
     public void end()
     {
-        Scheduler.getInstance().add(new Hold());
+        //        Scheduler.getInstance().add(new Hold());
     }
 }

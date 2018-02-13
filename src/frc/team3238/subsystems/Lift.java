@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,6 +25,13 @@ public class Lift extends Subsystem
         liftSlave = new TalonSRX(LIFT_SLAVE_TALON_ID);
 
         // TODO: add setInverted and/or setSensorPhase if needed
+        lift.setInverted(false);
+        liftSlave.setInverted(false);
+
+        lift.setSensorPhase(false);
+
+        lift.setNeutralMode(NeutralMode.Brake);
+        liftSlave.setNeutralMode(NeutralMode.Brake);
 
         liftSlave.follow(lift);
 
@@ -31,6 +39,11 @@ public class Lift extends Subsystem
         lift.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen,
                                             TALON_TIMEOUT);
         lift.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TALON_TIMEOUT);
+
+        lift.configForwardSoftLimitThreshold(UPPER_SOFT_LIMIT, TALON_TIMEOUT);
+        lift.configForwardSoftLimitEnable(true, TALON_TIMEOUT);
+        lift.configReverseSoftLimitThreshold(LOWER_SOFT_LIMIT, TALON_TIMEOUT);
+        lift.configReverseSoftLimitEnable(true, TALON_TIMEOUT);
 
         lift.config_kP(LIFT_PID_SLOT, LIFT_P_VAL, TALON_TIMEOUT);
         lift.config_kI(LIFT_PID_SLOT, LIFT_I_VAL, TALON_TIMEOUT);
@@ -45,8 +58,6 @@ public class Lift extends Subsystem
         lift.configPeakOutputForward(PEAK_FORWARD_OUTPUT, TALON_TIMEOUT);
         lift.configPeakOutputReverse(PEAK_REVERSE_OUTPUT, TALON_TIMEOUT);
 
-        lift.setNeutralMode(NeutralMode.Brake);
-
         // set position to match absolute encoder position
         int absPos = lift.getSensorCollection().getPulseWidthPosition();
         absPos &= 0xFFF;
@@ -60,6 +71,7 @@ public class Lift extends Subsystem
         SmartDashboard.putNumber("Lift enc", lift.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Lift abs enc", lift.getSensorCollection().getPulseWidthPosition());
         SmartDashboard.putNumber("Lift output", lift.getMotorOutputPercent());
+        SmartDashboard.putNumber("Lift current", lift.getOutputCurrent());
     }
 
     // Manual methods
@@ -84,6 +96,12 @@ public class Lift extends Subsystem
         // lift.set(ControlMode.MotionMagic, pos); // motion magic
     }
 
+    public void resetEncoder()
+    {
+        lift.setSelectedSensorPosition(0, 0, TALON_TIMEOUT);
+        DriverStation.reportError("Resetting lift encoders", false);
+    }
+
     public boolean isOnTarget(int target)
     {
         return Math.abs(lift.getSelectedSensorPosition(0) - target) < ALLOWED_ERROR;
@@ -91,7 +109,7 @@ public class Lift extends Subsystem
 
     public double calcFeedForward(double speed)
     {
-        lift.set(ControlMode.PercentOutput, speed);
+        setLift(speed);
 
         double retVal = 0;
         if(lift.getSelectedSensorVelocity(0) != 0)

@@ -42,15 +42,15 @@ public class RobotMap
         public static final int RIGHT_DRIVE_TALON_ID = 2;
         public static final int RIGHT_DRIVE_SLAVE_TALON_ID = 3;
         // talon constants
-        public static final double OPEN_LOOP_RAMP_RATE = 1; // seconds from neutral to full
+        public static final double OPEN_LOOP_RAMP_RATE = 0.25; // seconds from neutral to full
         public static final double ALLOWED_ERROR = 100;
         // motion profiling run constants
         public static final double MOTION_PROFILE_FRAME_PERIOD = 0.005;
         public static final int MP_PIDF_SLOT = 0;
-        public static final double MP_P_VAL = 0.075;
+        public static final double MP_P_VAL = 0.0; //0.075;
         public static final double MP_I_VAL = 0;
         public static final double MP_D_VAL = 0;
-        public static final double MP_F_VAL = 2;
+        public static final double MP_F_VAL = 0.0; //2;
         public static final int MP_MIN_POINTS_IN_TALON = 5;
         // motion profiling path constants
         public static final Trajectory.FitMethod MP_FIT_METHOD = Trajectory.FitMethod.HERMITE_QUINTIC;
@@ -74,11 +74,12 @@ public class RobotMap
         public static final double EJECT_POWER = -0.5;
         public static final double HOLD_POWER = 0.3;
         // timing
-        public static final double EJECT_TIME = 2;
+        public static final double EJECT_TIME = 0.5;
         public static final double SHAKE_TIME = 0.5;
         public static final double HOLD_TIMEOUT = 4;
         // sensing
-        public static final double CURRENT_THRESHOLD = 25;
+        public static final double HIGH_CURRENT_THRESHOLD = 30;
+        public static final double LOW_CURRENT_THRESHOLD = 15;
         public static final int CURRENT_MIN_DURATION = 10;
     }
 
@@ -87,10 +88,10 @@ public class RobotMap
         // talon ids
         public static final int EXTENDER_TALON_ID = 6;
         // power
-        public static final double EXTEND_POWER = -0.5;
+        public static final double EXTEND_POWER = 0.85;
         public static final double WITHDRAW_POWER = -EXTEND_POWER;
         // sensing
-        public static final double CURRENT_THRESHOLD = 20;
+        public static final double CURRENT_THRESHOLD = 8;
         public static final int CURRENT_MIN_DURATION = 10;
     }
 
@@ -103,14 +104,15 @@ public class RobotMap
         public static final double UP_POWER = 0.5;
         public static final double DOWN_POWER = -0.5;
         // encoder positions
-        public static final int UPPER_SOFT_LIMIT = 10000; // encoder clicks
-        public static final double HOLD_HEIGHT = 1;
+        public static final int UPPER_SOFT_LIMIT = 24500; // encoder clicks
+        public static final int LOWER_SOFT_LIMIT = 25; // encoder clicks
+        public static final double HOLD_HEIGHT = 1; // feet
         public static final double SWITCH_HEIGHT = 2;
-        public static final double SCALE_HEIGHT = 7;
-        public static final int ENCODER_CLICKS_PER_FOOT = 4096;
+        public static final double SCALE_HEIGHT = 6.5;
+        public static final int ENCODER_CLICKS_PER_FOOT = 3500;
         // PID values
         public static final int LIFT_PID_SLOT = 0;
-        public static final double LIFT_P_VAL = 0;
+        public static final double LIFT_P_VAL = 0.02;
         public static final double LIFT_I_VAL = 0;
         public static final double LIFT_D_VAL = 0;
         public static final double LIFT_F_VAL = 0;
@@ -122,7 +124,7 @@ public class RobotMap
         public static final double NOMINAL_FORWARD_OUTPUT = 0;
         public static final double NOMINAL_REVERSE_OUTPUT = 0;
         public static final double PEAK_FORWARD_OUTPUT = 1;
-        public static final double PEAK_REVERSE_OUTPUT = 0.5;
+        public static final double PEAK_REVERSE_OUTPUT = -1;
     }
 
     public static class Climber
@@ -132,5 +134,6 @@ public class RobotMap
         public static final int CLIMB_SLAVE_TALON_ID = 10;
         // power
         public static final double UP_POWER = 0.75;
+        public static final double DOWN_POWER = -0.25;
     }
 }

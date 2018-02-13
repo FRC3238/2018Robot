@@ -32,7 +32,7 @@ public class Withdraw extends Command
     {
         extender.setExtend(WITHDRAW_POWER);
 
-        isFinished = currentSwitch.get(extender.getCurrent()) || extender.getForwardLimit();
+        isFinished = currentSwitch.get(extender.getCurrent()) || extender.getReverseLimit();
     }
 
     @Override

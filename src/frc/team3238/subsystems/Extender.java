@@ -21,6 +21,7 @@ public class Extender extends Subsystem
         super("Extender");
 
         extend = new TalonSRX(EXTENDER_TALON_ID);
+        extend.setInverted(false);
 
         extend.enableVoltageCompensation(true);
 
@@ -35,6 +36,8 @@ public class Extender extends Subsystem
     public void periodic()
     {
         SmartDashboard.putNumber("Extend current", getCurrent());
+        SmartDashboard.putBoolean("Extend fwd", extend.getSensorCollection().isFwdLimitSwitchClosed());
+        SmartDashboard.putBoolean("Extend rev", extend.getSensorCollection().isRevLimitSwitchClosed());
     }
 
     public void setExtend(double power)

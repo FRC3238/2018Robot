@@ -28,6 +28,11 @@ public class Climber extends Subsystem
         climb.set(ControlMode.PercentOutput, power);
     }
 
+    public void stopMotors()
+    {
+        climb.set(ControlMode.PercentOutput, 0.0);
+    }
+
     public void initDefaultCommand()
     {
 

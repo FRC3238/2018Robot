@@ -24,7 +24,7 @@ public class LiftDown extends Command
     {
         double throttle = oi.getThrottleMult();
 
-        lift.setLift(throttle);
+        lift.setLift(-throttle);
     }
 
     @Override

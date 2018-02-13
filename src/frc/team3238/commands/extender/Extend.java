@@ -32,7 +32,7 @@ public class Extend extends Command
     {
         extender.setExtend(EXTEND_POWER);
 
-        isFinished = currentSwitch.get(extender.getCurrent()) || extender.getReverseLimit();
+        isFinished = currentSwitch.get(extender.getCurrent()) || extender.getForwardLimit();
     }
 
     @Override

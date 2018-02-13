@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import frc.team3238.autonomous.Paths;
 import frc.team3238.commands.chassis.RunMM;
 import frc.team3238.commands.chassis.RunMP;
+import frc.team3238.commands.climber.ClimbDown;
 import frc.team3238.commands.climber.ClimbUp;
+import frc.team3238.commands.collector.CollectCube;
 import frc.team3238.commands.collector.Eject;
 import frc.team3238.commands.collector.ManualCollect;
 import frc.team3238.commands.collector.ManualEject;
@@ -12,8 +14,7 @@ import frc.team3238.commands.extender.Extend;
 import frc.team3238.commands.extender.ManualExtend;
 import frc.team3238.commands.extender.ManualWithdraw;
 import frc.team3238.commands.extender.Withdraw;
-import frc.team3238.commands.lift.LiftDown;
-import frc.team3238.commands.lift.LiftUp;
+import frc.team3238.commands.lift.*;
 import frc.team3238.commands.routines.Collect;
 import frc.team3238.triggers.POV;
 import frc.team3238.triggers.POVButton;
@@ -36,6 +37,9 @@ public class OI
     private POVButton upButton = new POVButton(mainStick, driver.upID);
     private POVButton downButton = new POVButton(mainStick, driver.downID);
     private POVButton climbButton = new POVButton(mainStick, driver.climbID);
+    private POVButton switchButton = new POVButton(mainStick, driver.switchID);
+    private POVButton scaleButton = new POVButton(mainStick, driver.scaleID);
+    private POVButton lowerButton = new POVButton(mainStick, driver.lowerID);
 
     private POVButton cancelButton = new POVButton(mainStick, driver.cancelID);
 
@@ -53,6 +57,10 @@ public class OI
         LiftDown down = new LiftDown();
         ClimbUp climb = new ClimbUp();
 
+        LowerLift lower = new LowerLift();
+        LiftToScale toScale = new LiftToScale();
+        LiftToSwitch toSwitch = new LiftToSwitch();
+
         new POV(mainStick, new ManualExtend(), new ManualWithdraw(), new ManualEject(), new ManualCollect());
 
         collectButton.whenPressed(collect);
@@ -63,6 +71,10 @@ public class OI
         downButton.whileHeld(down);
         climbButton.whileHeld(climb);
 
+        scaleButton.whenPressed(toScale);
+        switchButton.whenPressed(toSwitch);
+        lowerButton.whenPressed(lower);
+
         cancelButton.cancelWhenPressed(collect);
         cancelButton.cancelWhenPressed(eject);
         cancelButton.whenPressed(withdraw);
@@ -72,8 +84,8 @@ public class OI
         //new Path(new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)),
         //                                                                           new Waypoint(2, 4, Pathfinder.d2r(-15)),
         //                                            new Waypoint(5, 11.666, Pathfinder.d2r(90))});
-        mpButton.whenPressed(new RunMP(path));
-        mmButton.whenPressed(new RunMM(5));
+        //        mpButton.whenPressed(new RunMP(path));
+        mmButton.whileHeld(new ClimbDown());
     }
 
     public void setDriver(DriverConfig driver)

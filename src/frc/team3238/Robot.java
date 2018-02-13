@@ -23,8 +23,6 @@ import static frc.team3238.RobotMap.Global.*;
 
 public class Robot extends TimedRobot
 {
-    public static boolean isCubeOnboard;
-
     public static OI oi;
 
     public static Chassis chassis = new Chassis();
@@ -51,8 +49,6 @@ public class Robot extends TimedRobot
 
         oi = new OI();
 
-        DriverStation.reportError("" + Paths.ROBOT_WIDTH, false);
-
         posChooser = new SendableChooser<>();
         priorityOneChooser = new SendableChooser<>();
         priorityTwoChooser = new SendableChooser<>();
@@ -73,7 +69,7 @@ public class Robot extends TimedRobot
         sendDriverOptions(DriverConfig.configs, driverChooser);
         SmartDashboard.putData("Driver Selection", driverChooser);
 
-        isCubeOnboard = false;
+        lift.resetEncoder();
     }
 
     private void sendAutoOptions(String[] options, SendableChooser chooser)
@@ -117,7 +113,7 @@ public class Robot extends TimedRobot
     @Override
     public void disabledInit()
     {
-
+        chassis.setCoastMode();
     }
 
     @Override
@@ -129,6 +125,8 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
+        lift.resetEncoder();
+
         autoCommand =
                 Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],
                                      PRIORITIES[priorityTwoChooser.getSelected()],
@@ -169,10 +167,11 @@ public class Robot extends TimedRobot
     {
         if(stick.getRawButton(2))
         {
-            collector.setCollector(stick.getThrottle());
+            //            collector.setCollector(stick.getThrottle());
             //            collector.spinCollector(0, stick.getThrottle());
             //            extender.setExtend(stick.getThrottle());
         }
+        lift.setLift(-stick.getY());
         //        SmartDashboard.putNumber("Lift feed-forward", lift.calcFeedForward(stick.getY()));
     }
 }
