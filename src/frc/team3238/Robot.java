@@ -1,10 +1,7 @@
 package frc.team3238;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,6 +18,7 @@ import static frc.team3238.RobotMap.Auto.POSITIONS;
 import static frc.team3238.RobotMap.Auto.PRIORITIES;
 import static frc.team3238.RobotMap.Global.*;
 
+
 public class Robot extends TimedRobot
 {
     public static OI oi;
@@ -34,6 +32,7 @@ public class Robot extends TimedRobot
     private SendableChooser<Integer> posChooser;
     private SendableChooser<Integer> priorityOneChooser;
     private SendableChooser<Integer> priorityTwoChooser;
+    // TODO: remove before competition
     private SendableChooser<DriverConfig> driverChooser;
 
     private Command autoCommand;
@@ -125,7 +124,7 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
-        lift.resetEncoder();
+        lift.setEncoder(100);
 
         autoCommand =
                 Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],

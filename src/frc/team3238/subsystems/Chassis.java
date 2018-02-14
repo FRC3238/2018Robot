@@ -19,6 +19,7 @@ import frc.team3238.commands.chassis.Drive;
 
 import java.util.ArrayList;
 
+import static frc.team3238.Robot.oi;
 import static frc.team3238.RobotMap.Chassis.*;
 import static frc.team3238.RobotMap.Global.TALON_NEUTRAL_DEADBAND;
 import static frc.team3238.RobotMap.Global.TALON_TIMEOUT;
@@ -136,9 +137,14 @@ public class Chassis extends Subsystem
     public void cheesyDrive(double y, double twist, double scale, double cheeziness, double cheezyX, double twistScale,
                             double cheezyScale)
     {
-        if(Math.abs(y) < cheezyX)
+        if(Math.abs(y) < oi.getDeadzone())
         {
-            twist *= ((twistScale - 1 + cheeziness) / Math.pow(cheezyX, 2)) * Math.pow(Math.abs(y) - cheezyX, 2) + 1 -
+            twist *= 1;
+        }
+        else if(Math.abs(y) < cheezyX)
+        {
+            twist *= ((twistScale - 1 + cheeziness) / Math.pow(cheezyX - oi.getDeadzone(), 2)) *
+                     Math.pow(Math.abs(y) - cheezyX, 2) + 1 -
                      cheeziness;
         }
         else

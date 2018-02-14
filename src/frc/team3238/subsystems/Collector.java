@@ -4,20 +4,23 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import static frc.team3238.RobotMap.Collector.LEFT_COLLECT_TALON_ID;
-import static frc.team3238.RobotMap.Collector.RIGHT_COLLECT_TALON_ID;
+import static frc.team3238.RobotMap.Collector.*;
 import static frc.team3238.RobotMap.Global.TALON_TIMEOUT;
 
 public class Collector extends Subsystem
 {
     private TalonSRX left, right;
+    private AnalogInput ir;
 
     public Collector()
     {
         super("Collector");
+
+        ir = new AnalogInput(LIMIT_SENSOR_PORT);
 
         left = new TalonSRX(LEFT_COLLECT_TALON_ID);
         right = new TalonSRX(RIGHT_COLLECT_TALON_ID);
@@ -28,15 +31,16 @@ public class Collector extends Subsystem
         left.enableVoltageCompensation(true);
         right.enableVoltageCompensation(true);
 
-        left.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen,
+        left.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyOpen,
                                             TALON_TIMEOUT);
-        left.overrideLimitSwitchesEnable(true);
+        left.overrideLimitSwitchesEnable(false);
     }
 
     @Override
     public void periodic()
     {
         SmartDashboard.putNumber("Collect max current", getMaxCurrent());
+        SmartDashboard.putNumber("IR Avg Val", ir.getAverageValue());
     }
 
     public void setCollector(double power)
@@ -59,7 +63,7 @@ public class Collector extends Subsystem
 
     public boolean getLimitSwitch()
     {
-        return left.getSensorCollection().isFwdLimitSwitchClosed();
+        return ir.getAverageValue() > IR_CUBE_VAL;
     }
 
     public double getMinCurrent()

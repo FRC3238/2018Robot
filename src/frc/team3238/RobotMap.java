@@ -69,17 +69,21 @@ public class RobotMap
         // talon ids
         public static final int LEFT_COLLECT_TALON_ID = 4;
         public static final int RIGHT_COLLECT_TALON_ID = 5;
+        // ports
+        public static final int LIMIT_SENSOR_PORT = 0;
         // power
         public static final double COLLECT_POWER = 0.75;
-        public static final double EJECT_POWER = -0.5;
+        public static final double EJECT_POWER = -0.75;
         public static final double HOLD_POWER = 0.3;
         // timing
-        public static final double EJECT_TIME = 0.5;
+        public static final double EJECT_TIME = 1;
         public static final double SHAKE_TIME = 0.5;
-        public static final double HOLD_TIMEOUT = 4;
+        public static final double HOLD_TIMEOUT = 2;
         // sensing
+        public static final int IR_CUBE_VAL = 2000;
         public static final double HIGH_CURRENT_THRESHOLD = 30;
         public static final double LOW_CURRENT_THRESHOLD = 15;
+        public static final double HOLD_CURRENT_THRESHOLD = 10;
         public static final int CURRENT_MIN_DURATION = 10;
     }
 
@@ -91,8 +95,8 @@ public class RobotMap
         public static final double EXTEND_POWER = 0.85;
         public static final double WITHDRAW_POWER = -EXTEND_POWER;
         // sensing
-        public static final double CURRENT_THRESHOLD = 8;
-        public static final int CURRENT_MIN_DURATION = 10;
+        public static final double CURRENT_THRESHOLD = 6;
+        public static final int CURRENT_MIN_DURATION = 5;
     }
 
     public static class Lift
@@ -105,18 +109,19 @@ public class RobotMap
         public static final double DOWN_POWER = -0.5;
         // encoder positions
         public static final int UPPER_SOFT_LIMIT = 24500; // encoder clicks
-        public static final int LOWER_SOFT_LIMIT = 25; // encoder clicks
+        public static final int LOWER_SOFT_LIMIT = 50; // encoder clicks
         public static final double HOLD_HEIGHT = 1; // feet
         public static final double SWITCH_HEIGHT = 2;
         public static final double SCALE_HEIGHT = 6.5;
         public static final int ENCODER_CLICKS_PER_FOOT = 3500;
         // PID values
         public static final int LIFT_PID_SLOT = 0;
-        public static final double LIFT_P_VAL = 0.02;
-        public static final double LIFT_I_VAL = 0;
-        public static final double LIFT_D_VAL = 0;
+        public static final double LIFT_P_VAL = 0.1;
+        public static final double LIFT_I_VAL = 0.0;
+        public static final double LIFT_D_VAL = 0.0;
         public static final double LIFT_F_VAL = 0;
-        public static final int ALLOWED_ERROR = 50;
+        public static final int LIFT_I_ZONE = 50;
+        public static final int ALLOWED_ERROR = 100;
 
         public static final double MM_MAX_VEL = 3; // ft/s
         public static final double MM_MAX_ACCCEL = 9; // ft/s/s

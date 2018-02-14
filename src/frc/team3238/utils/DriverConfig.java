@@ -49,12 +49,12 @@ public class DriverConfig
             super.extendID = 5;
             super.withdrawID = 3;
             super.cancelID = 3;
-            super.scaleID = 8;
-            super.switchID = 9;
-            super.lowerID = 10;
+            super.switchID = 7;
+            super.scaleID = 9;
+            super.lowerID = 11;
             super.upID = 6;
             super.downID = 4;
-            super.climbID = 11;
+            super.climbID = 12;
 
             super.deadzone = 0.1;
             super.twistDeadzone = 0.25;
@@ -76,12 +76,12 @@ public class DriverConfig
             super.extendID = 5;
             super.withdrawID = 3;
             super.cancelID = 3;
-            super.scaleID = 8;
+            super.scaleID = 7;
             super.switchID = 9;
-            super.lowerID = 10;
+            super.lowerID = 11;
             super.upID = 6;
             super.downID = 4;
-            super.climbID = 11;
+            super.climbID = 12;
 
             super.deadzone = 0.05;
             super.twistDeadzone = 0.15;

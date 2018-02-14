@@ -31,7 +31,7 @@ public class LiftToHeight extends Command
     @Override
     protected boolean isFinished()
     {
-        return lift.isOnTarget(target);
+        return false; //lift.isOnTarget(target);
     }
 
     @Override

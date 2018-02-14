@@ -73,7 +73,7 @@ public class OI
 
         scaleButton.whenPressed(toScale);
         switchButton.whenPressed(toSwitch);
-        lowerButton.whenPressed(lower);
+        //        lowerButton.whenPressed(lower);
 
         cancelButton.cancelWhenPressed(collect);
         cancelButton.cancelWhenPressed(eject);
@@ -85,7 +85,7 @@ public class OI
         //                                                                           new Waypoint(2, 4, Pathfinder.d2r(-15)),
         //                                            new Waypoint(5, 11.666, Pathfinder.d2r(90))});
         //        mpButton.whenPressed(new RunMP(path));
-        mmButton.whileHeld(new ClimbDown());
+        //        mmButton.whileHeld(new ClimbDown());
     }
 
     public void setDriver(DriverConfig driver)
@@ -100,6 +100,10 @@ public class OI
         downButton.setID(driver.downID);
         cancelButton.setID(driver.cancelID);
         climbButton.setID(driver.climbID);
+
+        switchButton.setID(driver.switchID);
+        scaleButton.setID(driver.scaleID);
+        //        lowerButton.setID(driver.lowerID);
     }
 
     public boolean getEjectHeld()
@@ -158,6 +162,11 @@ public class OI
     public double getCheezyScale()
     {
         return driver.cheezyScale;
+    }
+
+    public double getDeadzone()
+    {
+        return driver.deadzone;
     }
 
     private double scaleRawJoyVal(double y, double deadzone, double power)

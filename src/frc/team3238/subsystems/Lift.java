@@ -49,6 +49,7 @@ public class Lift extends Subsystem
         lift.config_kI(LIFT_PID_SLOT, LIFT_I_VAL, TALON_TIMEOUT);
         lift.config_kD(LIFT_PID_SLOT, LIFT_D_VAL, TALON_TIMEOUT);
         lift.config_kF(LIFT_PID_SLOT, LIFT_F_VAL, TALON_TIMEOUT);
+        lift.config_IntegralZone(LIFT_PID_SLOT, LIFT_I_ZONE, TALON_TIMEOUT);
 
         lift.configMotionCruiseVelocity((int) MM_MAX_VEL * ENCODER_CLICKS_PER_FOOT * 10, TALON_TIMEOUT);
         lift.configMotionAcceleration((int) MM_MAX_ACCCEL * ENCODER_CLICKS_PER_FOOT * 10, TALON_TIMEOUT);
@@ -100,6 +101,12 @@ public class Lift extends Subsystem
     {
         lift.setSelectedSensorPosition(0, 0, TALON_TIMEOUT);
         DriverStation.reportError("Resetting lift encoders", false);
+    }
+
+    public void setEncoder(int pos)
+    {
+        lift.setSelectedSensorPosition(pos, 0, TALON_TIMEOUT);
+        DriverStation.reportError("Setting lift encoder to " + pos, false);
     }
 
     public boolean isOnTarget(int target)
