@@ -1,5 +1,6 @@
 package frc.team3238.commands.lift;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 import static frc.team3238.Robot.lift;
@@ -19,7 +20,7 @@ public class LiftToHeight extends Command
     @Override
     protected void initialize()
     {
-
+        DriverStation.reportError("Starting lift to " + target, false);
     }
 
     @Override

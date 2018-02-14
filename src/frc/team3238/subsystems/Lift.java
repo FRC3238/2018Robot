@@ -60,10 +60,10 @@ public class Lift extends Subsystem
         lift.configPeakOutputReverse(PEAK_REVERSE_OUTPUT, TALON_TIMEOUT);
 
         // set position to match absolute encoder position
-        int absPos = lift.getSensorCollection().getPulseWidthPosition();
-        absPos &= 0xFFF;
+        //        int absPos = lift.getSensorCollection().getPulseWidthPosition();
+        //        absPos &= 0xFFF;
         // TODO: flip absPos if talon is inverted OR sensor is inverted, not both
-        lift.setSelectedSensorPosition(absPos, 0, TALON_TIMEOUT);
+        //        lift.setSelectedSensorPosition(absPos, 0, TALON_TIMEOUT);
     }
 
     @Override

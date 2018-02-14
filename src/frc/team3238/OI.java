@@ -65,6 +65,8 @@ public class OI
 
         collectButton.whenPressed(collect);
         ejectButton.whenPressed(eject);
+        ejectButton.cancelWhenPressed(toSwitch);
+        ejectButton.cancelWhenPressed(toScale);
         extendButton.whenPressed(extend);
         withdrawButton.whenPressed(withdraw);
         upButton.whileHeld(up);
@@ -78,6 +80,8 @@ public class OI
         cancelButton.cancelWhenPressed(collect);
         cancelButton.cancelWhenPressed(eject);
         cancelButton.whenPressed(withdraw);
+        cancelButton.cancelWhenPressed(toSwitch);
+        cancelButton.cancelWhenPressed(toScale);
 
         // TODO: delete these when testing is finished
         Path path = Paths.CENTER_TO_LEFT_SWITCH;

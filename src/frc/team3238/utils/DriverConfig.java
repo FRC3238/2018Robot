@@ -76,8 +76,8 @@ public class DriverConfig
             super.extendID = 5;
             super.withdrawID = 3;
             super.cancelID = 3;
-            super.scaleID = 7;
-            super.switchID = 9;
+            super.scaleID = 9;
+            super.switchID = 7;
             super.lowerID = 11;
             super.upID = 6;
             super.downID = 4;
