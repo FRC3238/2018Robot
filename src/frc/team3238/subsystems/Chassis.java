@@ -252,6 +252,10 @@ public class Chassis extends Subsystem
 
     // Common
     // ------
+    public void resetSetPoint()
+    {
+    }
+
     public void setCoastMode()
     {
         left.setNeutralMode(NeutralMode.Coast);

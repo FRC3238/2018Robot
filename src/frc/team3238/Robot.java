@@ -1,7 +1,9 @@
 package frc.team3238;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -16,7 +18,10 @@ import frc.team3238.utils.DriverConfig;
 
 import static frc.team3238.RobotMap.Auto.POSITIONS;
 import static frc.team3238.RobotMap.Auto.PRIORITIES;
-import static frc.team3238.RobotMap.Global.*;
+import static frc.team3238.RobotMap.Global.CAMERA_FPS;
+import static frc.team3238.RobotMap.Global.CAMERA_X_RES;
+import static frc.team3238.RobotMap.Global.CAMERA_Y_RES;
+import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
 
 
 public class Robot extends TimedRobot
@@ -158,19 +163,9 @@ public class Robot extends TimedRobot
         Scheduler.getInstance().run();
     }
 
-    // TODO: remove this once finished w/ testing
-    Joystick stick = new Joystick(MAIN_JOYSTICK_PORT);
-
     @Override
     public void testPeriodic()
     {
-        if(stick.getRawButton(2))
-        {
-            //            collector.setCollector(stick.getThrottle());
-            //            collector.spinCollector(0, stick.getThrottle());
-            //            extender.setExtend(stick.getThrottle());
-        }
-        lift.setLift(-stick.getY());
-        //        SmartDashboard.putNumber("Lift feed-forward", lift.calcFeedForward(stick.getY()));
+
     }
 }

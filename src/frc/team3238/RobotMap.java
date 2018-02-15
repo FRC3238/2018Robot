@@ -107,6 +107,9 @@ public class RobotMap
         // power
         public static final double UP_POWER = 0.5;
         public static final double DOWN_POWER = -0.5;
+        // chassis ramp rate params
+        public static final double DOWN_RAMP_RATE = 2; // percent per second
+        public static final double UP_RAMP_RATE = 0.5; // percent per second
         // encoder positions
         public static final int UPPER_SOFT_LIMIT = 24500; // encoder clicks
         public static final int LOWER_SOFT_LIMIT = 50; // encoder clicks

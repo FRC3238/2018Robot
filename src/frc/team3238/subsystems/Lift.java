@@ -6,16 +6,20 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
 import static frc.team3238.RobotMap.Global.TALON_TIMEOUT;
 import static frc.team3238.RobotMap.Lift.*;
 
 public class Lift extends Subsystem
 {
     private TalonSRX lift, liftSlave;
+
+    // Convert from per second to per loop, calc slope of line
+    private final double rampRateMult =
+            ((UP_RAMP_RATE * ROBOT_PERIOD) - (DOWN_RAMP_RATE * ROBOT_PERIOD)) / UPPER_SOFT_LIMIT;
 
     public Lift()
     {
@@ -24,7 +28,6 @@ public class Lift extends Subsystem
         lift = new TalonSRX(LIFT_TALON_ID);
         liftSlave = new TalonSRX(LIFT_SLAVE_TALON_ID);
 
-        // TODO: add setInverted and/or setSensorPhase if needed
         lift.setInverted(false);
         liftSlave.setInverted(false);
 
@@ -58,27 +61,36 @@ public class Lift extends Subsystem
         lift.configNominalOutputReverse(NOMINAL_REVERSE_OUTPUT, TALON_TIMEOUT);
         lift.configPeakOutputForward(PEAK_FORWARD_OUTPUT, TALON_TIMEOUT);
         lift.configPeakOutputReverse(PEAK_REVERSE_OUTPUT, TALON_TIMEOUT);
-
-        // set position to match absolute encoder position
-        //        int absPos = lift.getSensorCollection().getPulseWidthPosition();
-        //        absPos &= 0xFFF;
-        // TODO: flip absPos if talon is inverted OR sensor is inverted, not both
-        //        lift.setSelectedSensorPosition(absPos, 0, TALON_TIMEOUT);
     }
 
     @Override
     public void periodic()
     {
-        SmartDashboard.putNumber("Lift enc", lift.getSelectedSensorPosition(0));
-        SmartDashboard.putNumber("Lift abs enc", lift.getSensorCollection().getPulseWidthPosition());
+        SmartDashboard.putNumber("Lift enc", getPosition());
         SmartDashboard.putNumber("Lift output", lift.getMotorOutputPercent());
         SmartDashboard.putNumber("Lift current", lift.getOutputCurrent());
     }
 
-    // Manual methods
+    // Setters
     public void setLift(double power)
     {
         lift.set(ControlMode.PercentOutput, power);
+    }
+
+    public void setPosition(int pos)
+    {
+        lift.set(ControlMode.Position, pos);
+    }
+
+    // Common
+    public int feetToEncPos(double ft)
+    {
+        return (int) (ft * ENCODER_CLICKS_PER_FOOT);
+    }
+
+    private int getPosition()
+    {
+        return lift.getSelectedSensorPosition(0);
     }
 
     public void stopMotors()
@@ -86,32 +98,19 @@ public class Lift extends Subsystem
         lift.set(ControlMode.PercentOutput, 0.0);
     }
 
-    public int feetToEncPos(double ft)
-    {
-        return (int) (ft * ENCODER_CLICKS_PER_FOOT);
-    }
-
-    public void setPosition(int pos)
-    {
-        lift.set(ControlMode.Position, pos); // position
-        // lift.set(ControlMode.MotionMagic, pos); // motion magic
-    }
-
     public void resetEncoder()
     {
         lift.setSelectedSensorPosition(0, 0, TALON_TIMEOUT);
-        DriverStation.reportError("Resetting lift encoders", false);
     }
 
     public void setEncoder(int pos)
     {
         lift.setSelectedSensorPosition(pos, 0, TALON_TIMEOUT);
-        DriverStation.reportError("Setting lift encoder to " + pos, false);
     }
 
     public boolean isOnTarget(int target)
     {
-        return Math.abs(lift.getSelectedSensorPosition(0) - target) < ALLOWED_ERROR;
+        return Math.abs(getPosition() - target) < ALLOWED_ERROR;
     }
 
     public double calcFeedForward(double speed)
@@ -127,10 +126,17 @@ public class Lift extends Subsystem
         return retVal;
     }
 
+    // Internal
     @Override
     public void initDefaultCommand()
     {
 
+    }
+
+    // External
+    public double getChassisAccel()
+    {
+        return rampRateMult * getPosition() + (DOWN_RAMP_RATE * ROBOT_PERIOD);
     }
 }
 
