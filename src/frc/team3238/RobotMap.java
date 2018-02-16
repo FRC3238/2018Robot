@@ -42,7 +42,7 @@ public class RobotMap
         public static final int RIGHT_DRIVE_TALON_ID = 2;
         public static final int RIGHT_DRIVE_SLAVE_TALON_ID = 3;
         // talon constants
-        public static final double OPEN_LOOP_RAMP_RATE = 0.25; // seconds from neutral to full
+        public static final double OPEN_LOOP_RAMP_RATE = 0; // seconds from neutral to full
         public static final double ALLOWED_ERROR = 100;
         // motion profiling run constants
         public static final double MOTION_PROFILE_FRAME_PERIOD = 0.005;
@@ -109,17 +109,17 @@ public class RobotMap
         public static final double DOWN_POWER = -0.5;
         // chassis ramp rate params
         public static final double DOWN_RAMP_RATE = 2; // percent per second
-        public static final double UP_RAMP_RATE = 0.5; // percent per second
+        public static final double UP_RAMP_RATE = 0.3; // percent per second
         // encoder positions
         public static final int UPPER_SOFT_LIMIT = 24500; // encoder clicks
         public static final int LOWER_SOFT_LIMIT = 50; // encoder clicks
         public static final double HOLD_HEIGHT = 1; // feet
         public static final double SWITCH_HEIGHT = 2.5;
         public static final double SCALE_HEIGHT = 6.5;
-        public static final int ENCODER_CLICKS_PER_FOOT = 3500;
+        public static final int ENCODER_CLICKS_PER_FOOT = 3250;
         // PID values
         public static final int LIFT_PID_SLOT = 0;
-        public static final double LIFT_P_VAL = 0.7;
+        public static final double LIFT_P_VAL = 0.5;
         public static final double LIFT_I_VAL = 0.0;
         public static final double LIFT_D_VAL = 0.0;
         public static final double LIFT_F_VAL = 0;

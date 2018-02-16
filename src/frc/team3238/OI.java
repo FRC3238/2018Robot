@@ -75,7 +75,7 @@ public class OI
 
         scaleButton.whenPressed(toScale);
         switchButton.whenPressed(toSwitch);
-        //        lowerButton.whenPressed(lower);
+        lowerButton.whenPressed(lower);
 
         cancelButton.cancelWhenPressed(collect);
         cancelButton.cancelWhenPressed(eject);
