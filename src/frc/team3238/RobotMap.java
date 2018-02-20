@@ -47,17 +47,17 @@ public class RobotMap
         // motion profiling run constants
         public static final double MOTION_PROFILE_FRAME_PERIOD = 0.005;
         public static final int MP_PIDF_SLOT = 0;
-        public static final double MP_P_VAL = 0.0; //0.075;
+        public static final double MP_P_VAL = 0.075;
         public static final double MP_I_VAL = 0;
         public static final double MP_D_VAL = 0;
-        public static final double MP_F_VAL = 0.0; //2;
+        public static final double MP_F_VAL = 2;
         public static final int MP_MIN_POINTS_IN_TALON = 5;
         // motion profiling path constants
         public static final Trajectory.FitMethod MP_FIT_METHOD = Trajectory.FitMethod.HERMITE_QUINTIC;
         public static final int MP_SAMPLE_RATE = Trajectory.Config.SAMPLES_LOW;
         public static final double MP_TIMESTEP = 0.01; // s
-        public static final double MP_MAX_VELOCITY = 15; // ft/s
-        public static final double MP_MAX_ACCEL = 60; // ft/s/s
+        public static final double MP_MAX_VELOCITY = 5; // ft/s
+        public static final double MP_MAX_ACCEL = 20; // ft/s/s
         public static final double MP_MAX_JERK = 600; // ft/s/s/s
         public static final double MP_WHEELBASE_WIDTH = 2.488; // ft, not actual width, calculated.
         public static final double MP_WHEEL_DIAMETER = 8; // in
@@ -92,7 +92,7 @@ public class RobotMap
         // talon ids
         public static final int EXTENDER_TALON_ID = 6;
         // power
-        public static final double EXTEND_POWER = 0.85;
+        public static final double EXTEND_POWER = 0.55;
         public static final double WITHDRAW_POWER = -EXTEND_POWER;
         // sensing
         public static final double CURRENT_THRESHOLD = 6;
@@ -111,12 +111,13 @@ public class RobotMap
         public static final double DOWN_RAMP_RATE = 2; // percent per second
         public static final double UP_RAMP_RATE = 0.3; // percent per second
         // encoder positions
-        public static final int UPPER_SOFT_LIMIT = 24500; // encoder clicks
+        public static final int UPPER_SOFT_LIMIT = 32800; // encoder clicks
         public static final int LOWER_SOFT_LIMIT = 50; // encoder clicks
         public static final double HOLD_HEIGHT = 1; // feet
         public static final double SWITCH_HEIGHT = 2.5;
         public static final double SCALE_HEIGHT = 6.5;
-        public static final int ENCODER_CLICKS_PER_FOOT = 3250;
+        public static final double MAX_LIFT_HEIGHT = 7;
+        public static final int ENCODER_CLICKS_PER_FOOT = (int) (UPPER_SOFT_LIMIT / MAX_LIFT_HEIGHT);
         // PID values
         public static final int LIFT_PID_SLOT = 0;
         public static final double LIFT_P_VAL = 0.5;

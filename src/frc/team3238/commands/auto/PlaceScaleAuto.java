@@ -19,6 +19,6 @@ public class PlaceScaleAuto extends CommandGroup
         super("Autonomous to Scale");
         addParallel(new LiftToScale());
         addSequential(new RunMP(profile, flip));
-        addSequential(new Eject());
+        //        addSequential(new Eject());
     }
 }

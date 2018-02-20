@@ -129,8 +129,6 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
-        lift.setEncoder(100);
-
         autoCommand =
                 Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],
                                      PRIORITIES[priorityTwoChooser.getSelected()],

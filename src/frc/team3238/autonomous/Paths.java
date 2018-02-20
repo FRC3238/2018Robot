@@ -44,7 +44,7 @@ public class Paths
     // All constants are in feet
     // TODO: adjust robot dimensions, in ft
     public static final double ROBOT_WIDTH = 2.833;
-    private static final double ROBOT_LENGTH = 3;
+    private static final double ROBOT_LENGTH = 3.166;
     private static final double CUBE_WIDTH = 1.083;
 
     private static final Waypoint CENTER_START = new Waypoint((ROBOT_WIDTH / 2) - 1, ROBOT_LENGTH, Pathfinder.d2r(90));
@@ -115,7 +115,7 @@ public class Paths
                                                      new Waypoint(0, (DIST_SWITCH_TO_CUBE_PICKUP - (CUBE_WIDTH * 3)),
                                                                   Pathfinder.d2r(90))});
         DRIVE_FORWARD = new Path(
-                new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)), new Waypoint(0, 30, Pathfinder.d2r(90))});
+                new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)), new Waypoint(0, 8, Pathfinder.d2r(90))});
         CENTER_TO_LEFT_SWITCH = new Path(new Waypoint[]{CENTER_START,
                                                         new Waypoint(-DIST_CENTER_X_TO_SWITCH, DIST_WALL_TO_SWITCH,
                                                                      Pathfinder.d2r(90))});

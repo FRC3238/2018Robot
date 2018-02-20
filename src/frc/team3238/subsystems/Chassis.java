@@ -113,6 +113,8 @@ public class Chassis extends Subsystem
 
         fillMPBufferSide(leftPoints, left);
         fillMPBufferSide(rightPoints, right);
+
+        SmartDashboard.putNumber("Chassis current", Math.max(left.getOutputCurrent(), right.getOutputCurrent()));
     }
 
     public void initDefaultCommand()

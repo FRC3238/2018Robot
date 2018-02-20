@@ -69,6 +69,11 @@ public class Lift extends Subsystem
         SmartDashboard.putNumber("Lift enc", getPosition());
         SmartDashboard.putNumber("Lift output", lift.getMotorOutputPercent());
         SmartDashboard.putNumber("Lift current", lift.getOutputCurrent());
+
+        if(getPosition() < 0)
+        {
+            resetEncoder();
+        }
     }
 
     // Setters
@@ -100,7 +105,7 @@ public class Lift extends Subsystem
 
     public void resetEncoder()
     {
-        lift.setSelectedSensorPosition(0, 0, TALON_TIMEOUT);
+        setEncoder(0);
     }
 
     public void setEncoder(int pos)
