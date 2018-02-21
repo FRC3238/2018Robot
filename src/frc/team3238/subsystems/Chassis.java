@@ -115,6 +115,10 @@ public class Chassis extends Subsystem
         fillMPBufferSide(rightPoints, right);
 
         SmartDashboard.putNumber("Chassis current", Math.max(left.getOutputCurrent(), right.getOutputCurrent()));
+
+        SmartDashboard.putNumber("Chassis error", left.getClosedLoopError(0));
+
+        printSpeedDif();
     }
 
     public void initDefaultCommand()
@@ -256,6 +260,45 @@ public class Chassis extends Subsystem
     // ------
     public void resetSetPoint()
     {
+    }
+
+    public double getLeftSpeed()
+    {
+        return left.getSelectedSensorVelocity(0);
+    }
+
+    public double getLeftOutput()
+    {
+        return left.getMotorOutputPercent();
+    }
+
+    public double getRightOutput()
+    {
+        return right.getMotorOutputPercent();
+    }
+
+    public double getRightSpeed()
+    {
+        return right.getSelectedSensorVelocity(0);
+    }
+
+    public void printSpeedDif()
+    {
+        SmartDashboard.putNumber("Chassis dif real", Math.abs(getLeftSpeed() - getRightSpeed()));
+        SmartDashboard.putNumber("Chassis dif output", Math.abs(getLeftOutput() - getRightOutput()));
+    }
+
+    public double calcFeedForward(double throttle)
+    {
+        drive(throttle, 0, 1);
+
+        double retVal = 0;
+        if(left.getSelectedSensorVelocity(0) != 0)
+        {
+            retVal = throttle * 1023 / left.getSelectedSensorVelocity(0);
+        }
+
+        return retVal;
     }
 
     public void setCoastMode()

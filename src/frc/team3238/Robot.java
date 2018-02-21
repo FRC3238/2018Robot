@@ -3,6 +3,7 @@ package frc.team3238;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -161,9 +162,11 @@ public class Robot extends TimedRobot
         Scheduler.getInstance().run();
     }
 
+    Joystick stick = new Joystick(0);
+
     @Override
     public void testPeriodic()
     {
-
+        SmartDashboard.putNumber("Chassis feed forward", chassis.calcFeedForward(stick.getY()));
     }
 }

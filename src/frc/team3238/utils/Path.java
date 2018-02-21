@@ -16,14 +16,25 @@ public class Path
 {
     private ArrayList<TrajectoryPoint> left, right;
 
+    // TODO: delete if not used
+    private Trajectory traj;
+
+    private int flip = 1;
+
     public Path(Waypoint[] points)
     {
         try
         {
+            if(points[0].y > points[points.length - 1].y)
+            {
+                flip = -1;
+            }
+
             Trajectory.Config config =
                     new Trajectory.Config(MP_FIT_METHOD, MP_SAMPLE_RATE, MP_TIMESTEP, MP_MAX_VELOCITY, MP_MAX_ACCEL,
                                           MP_MAX_JERK);
             Trajectory trajectory = Pathfinder.generate(points, config);
+            traj = trajectory;
 
             TankModifier modifier = new TankModifier(trajectory);
             modifier.modify(RobotMap.Chassis.MP_WHEELBASE_WIDTH);
@@ -43,6 +54,11 @@ public class Path
         }
     }
 
+    public Trajectory getTrajectory()
+    {
+        return traj;
+    }
+
     private void mapTrajectory(Trajectory trajectory, ArrayList<TrajectoryPoint> array)
     {
         for(int i = 0; i < trajectory.length(); i++)
@@ -51,10 +67,10 @@ public class Path
 
             TrajectoryPoint point = new TrajectoryPoint();
 
-            point.position = segment.position * RobotMap.Chassis.SENSOR_UNITS_PER_ROTATION;
-            //                             (Math.PI * RobotMap.Chassis.MP_WHEEL_DIAMETER);
-            point.velocity =
-                    segment.velocity * RobotMap.Chassis.SENSOR_UNITS_PER_ROTATION / (600); // rpm to units per 100 ms
+            point.position = flip * segment.position * RobotMap.Chassis.SENSOR_UNITS_PER_ROTATION /
+                             (Math.PI * (RobotMap.Chassis.MP_WHEEL_DIAMETER / 12));
+            point.velocity = flip * segment.velocity * RobotMap.Chassis.SENSOR_UNITS_PER_ROTATION /
+                             (600 * Math.PI * (RobotMap.Chassis.MP_WHEEL_DIAMETER / 12)); // rpm to units per 100 ms
             point.headingDeg = 0;
             point.profileSlotSelect0 = 0;
             point.profileSlotSelect1 = 0;

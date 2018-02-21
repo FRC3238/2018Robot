@@ -29,10 +29,10 @@ public class Drive extends Command
         double y = oi.getDriveY();
         double twist = oi.getDriveTwist();
         double scale = oi.getScale();
-        double cheeziness = oi.getCheeziness();
-        double cheezyX = oi.getCheezyX();
-        double twistScale = oi.getTwistScale();
-        double cheezyScale = oi.getCheezyScale();
+        //        double cheeziness = oi.getCheeziness();
+        //        double cheezyX = oi.getCheezyX();
+        //        double twistScale = oi.getTwistScale();
+        //        double cheezyScale = oi.getCheezyScale();
 
         double delta = y - setPoint;
         if(Math.abs(delta) > lift.getChassisAccel())
@@ -41,7 +41,9 @@ public class Drive extends Command
         }
         setPoint += delta;
 
-        chassis.cheesyDrive(setPoint, twist, scale, cheeziness, cheezyX, twistScale, cheezyScale);
+        chassis.drive(setPoint, twist, scale);
+
+        //        chassis.cheesyDrive(setPoint, twist, scale, cheeziness, cheezyX, twistScale, cheezyScale);
     }
 
     @Override

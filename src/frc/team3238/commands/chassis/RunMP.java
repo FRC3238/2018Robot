@@ -130,7 +130,7 @@ public class RunMP extends Command
                 }
                 break;
             case 1:
-                DriverStation.reportWarning("In case 1 runMp", false);
+                DriverStation.reportWarning("In case 1 runMp" + setVal.value, false);
                 if(leftStatus.activePointValid && leftStatus.isLast && rightStatus.activePointValid &&
                    rightStatus.isLast)
                 {

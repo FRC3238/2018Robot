@@ -14,7 +14,7 @@ public class DriverConfig
     public static DriverConfig[] configs = new DriverConfig[]{new Programmer(), new Driver(), new Logan(), new Nick()};
     // joystick mapping
     public int collectID = 2;
-    public int ejectID = 3;
+    public int ejectID = 1;
     public int extendID = 5;
     public int withdrawID = 3;
     public int cancelID = 3;

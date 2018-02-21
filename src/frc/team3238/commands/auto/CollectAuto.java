@@ -16,7 +16,7 @@ public class CollectAuto extends CommandGroup
     public CollectAuto(Path profile, boolean flip)
     {
         super("Autonomous CollectCube");
-        addParallel(new RunMP(profile, flip));
         addParallel(new CollectCube());
+        addSequential(new RunMP(profile, flip));
     }
 }

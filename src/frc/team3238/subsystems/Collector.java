@@ -25,8 +25,8 @@ public class Collector extends Subsystem
         left = new TalonSRX(LEFT_COLLECT_TALON_ID);
         right = new TalonSRX(RIGHT_COLLECT_TALON_ID);
 
-        left.setInverted(false);
-        right.setInverted(true);
+        left.setInverted(true);
+        right.setInverted(false);
 
         left.enableVoltageCompensation(true);
         right.enableVoltageCompensation(true);

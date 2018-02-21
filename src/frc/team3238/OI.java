@@ -107,7 +107,7 @@ public class OI
 
         switchButton.setID(driver.switchID);
         scaleButton.setID(driver.scaleID);
-        //        lowerButton.setID(driver.lowerID);
+        lowerButton.setID(driver.lowerID);
     }
 
     public boolean getEjectHeld()
