@@ -114,7 +114,7 @@ public class DriverConfig
             super.driveTwistPower = 2;
 
             super.cheeziness = 0.25;
-            super.twistScale = 0.9;
+            super.twistScale = 0.7;
         }
     }
 

@@ -34,14 +34,14 @@ public class Drive extends Command
         //        double twistScale = oi.getTwistScale();
         //        double cheezyScale = oi.getCheezyScale();
 
-        double delta = y - setPoint;
-        if(Math.abs(delta) > lift.getChassisAccel())
-        {
-            delta = Math.copySign(lift.getChassisAccel(), delta);
-        }
-        setPoint += delta;
+        //        double delta = y - setPoint;
+        //        if(Math.abs(delta) > lift.getChassisAccel())
+        //        {
+        //            delta = Math.copySign(lift.getChassisAccel(), delta);
+        //        }
+        //        setPoint += delta;
 
-        chassis.drive(setPoint, twist, scale);
+        chassis.drive(y, twist, scale);
 
         //        chassis.cheesyDrive(setPoint, twist, scale, cheeziness, cheezyX, twistScale, cheezyScale);
     }

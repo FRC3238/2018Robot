@@ -57,8 +57,8 @@ public class Paths
     private static final Waypoint LEFT_START = new Waypoint(LEFT_START_X, ROBOT_LENGTH, Pathfinder.d2r(90));
     private static final double DIST_SIDE_TO_SWITCH_Y = 16;
     private static final double DIST_SIDE_TO_SWITCH_X = -6.375;
-    private static final double DIST_SIDE_TO_SCALE_Y = 25;
-    private static final double DIST_SIDE_TO_SCALE_X = -6;
+    private static final double DIST_SIDE_TO_SCALE_Y = 24.4;
+    private static final double DIST_SIDE_TO_SCALE_X = -7;
 
     // Drive Forward
     // -------------

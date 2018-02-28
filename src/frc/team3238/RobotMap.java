@@ -12,8 +12,8 @@ public class RobotMap
         // joysticks
         public static final int MAIN_JOYSTICK_PORT = 0;
         // camera constants
-        public static final int CAMERA_X_RES = 640;
-        public static final int CAMERA_Y_RES = 480;
+        public static final int CAMERA_X_RES = 480;
+        public static final int CAMERA_Y_RES = 320;
         public static final int CAMERA_FPS = 20;
         // misc
         public static final double TALON_NEUTRAL_DEADBAND = 0.01;
@@ -108,8 +108,8 @@ public class RobotMap
         public static final double UP_POWER = 0.5;
         public static final double DOWN_POWER = -0.5;
         // chassis ramp rate params
-        public static final double DOWN_RAMP_RATE = 2; // percent per second
-        public static final double UP_RAMP_RATE = 0.3; // percent per second
+        public static final double DOWN_RAMP_RATE = 10; // percent per second
+        public static final double UP_RAMP_RATE = 0.5; // percent per second
         // encoder positions
         public static final int UPPER_SOFT_LIMIT = 31900; // encoder clicks
         public static final int LOWER_SOFT_LIMIT = 100; // encoder clicks

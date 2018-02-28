@@ -1,10 +1,7 @@
 package frc.team3238;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -50,7 +47,7 @@ public class Robot extends TimedRobot
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture("Camera", 0);
         camera.setResolution(CAMERA_X_RES, CAMERA_Y_RES);
-        camera.setFPS(CAMERA_FPS);
+        //        camera.setFPS(CAMERA_FPS);
 
         oi = new OI();
 
@@ -75,6 +72,8 @@ public class Robot extends TimedRobot
         SmartDashboard.putData("Driver Selection", driverChooser);
 
         lift.resetEncoder();
+
+        SmartDashboard.putData(new PowerDistributionPanel());
     }
 
     private void sendAutoOptions(String[] options, SendableChooser chooser)
