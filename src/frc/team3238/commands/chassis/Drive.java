@@ -3,7 +3,6 @@ package frc.team3238.commands.chassis;
 import edu.wpi.first.wpilibj.command.Command;
 
 import static frc.team3238.Robot.chassis;
-import static frc.team3238.Robot.lift;
 import static frc.team3238.Robot.oi;
 
 public class Drive extends Command
@@ -28,7 +27,6 @@ public class Drive extends Command
     {
         double y = oi.getDriveY();
         double twist = oi.getDriveTwist();
-        double scale = oi.getScale();
         //        double cheeziness = oi.getCheeziness();
         //        double cheezyX = oi.getCheezyX();
         //        double twistScale = oi.getTwistScale();
@@ -41,7 +39,7 @@ public class Drive extends Command
         //        }
         //        setPoint += delta;
 
-        chassis.drive(y, twist, scale);
+        chassis.drive(y, twist);
 
         //        chassis.cheesyDrive(setPoint, twist, scale, cheeziness, cheezyX, twistScale, cheezyScale);
     }

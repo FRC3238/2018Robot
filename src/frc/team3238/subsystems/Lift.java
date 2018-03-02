@@ -1,9 +1,6 @@
 package frc.team3238.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -43,10 +40,6 @@ public class Lift extends Subsystem
 
         liftSlave.follow(lift);
 
-        // TODO: ensure that this should be reverse
-        //        lift.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed,
-        //                                            TALON_TIMEOUT);
-        //        lift.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TALON_TIMEOUT);
         lift.overrideLimitSwitchesEnable(false);
 
         lift.configForwardSoftLimitThreshold(UPPER_SOFT_LIMIT, TALON_TIMEOUT);

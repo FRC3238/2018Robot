@@ -16,8 +16,6 @@ public class Path
 {
     private ArrayList<TrajectoryPoint> left, right;
 
-    // TODO: delete if not used
-    private Trajectory traj;
 
     private int flip = 1;
 
@@ -34,7 +32,6 @@ public class Path
                     new Trajectory.Config(MP_FIT_METHOD, MP_SAMPLE_RATE, MP_TIMESTEP, MP_MAX_VELOCITY, MP_MAX_ACCEL,
                                           MP_MAX_JERK);
             Trajectory trajectory = Pathfinder.generate(points, config);
-            traj = trajectory;
 
             TankModifier modifier = new TankModifier(trajectory);
             modifier.modify(RobotMap.Chassis.MP_WHEELBASE_WIDTH);
@@ -52,11 +49,6 @@ public class Path
         {
             DriverStation.reportError("Pathfinder could not generate profile", false);
         }
-    }
-
-    public Trajectory getTrajectory()
-    {
-        return traj;
     }
 
     private void mapTrajectory(Trajectory trajectory, ArrayList<TrajectoryPoint> array)

@@ -1,7 +1,10 @@
 package frc.team3238;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -12,15 +15,14 @@ import frc.team3238.subsystems.Climber;
 import frc.team3238.subsystems.Collector;
 import frc.team3238.subsystems.Extender;
 import frc.team3238.subsystems.Lift;
-import frc.team3238.utils.DriverConfig;
+
+import java.util.Objects;
 
 import static frc.team3238.RobotMap.Auto.POSITIONS;
 import static frc.team3238.RobotMap.Auto.PRIORITIES;
-import static frc.team3238.RobotMap.Global.CAMERA_FPS;
 import static frc.team3238.RobotMap.Global.CAMERA_X_RES;
 import static frc.team3238.RobotMap.Global.CAMERA_Y_RES;
 import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
-
 
 public class Robot extends TimedRobot
 {
@@ -34,9 +36,7 @@ public class Robot extends TimedRobot
 
     private SendableChooser<Integer> posChooser;
     private SendableChooser<Integer> priorityOneChooser;
-    private SendableChooser<Integer> priorityTwoChooser;
-    // TODO: remove before competition
-    private SendableChooser<DriverConfig> driverChooser;
+    //    private SendableChooser<Integer> priorityTwoChooser;
 
     private Command autoCommand;
 
@@ -53,11 +53,11 @@ public class Robot extends TimedRobot
 
         posChooser = new SendableChooser<>();
         priorityOneChooser = new SendableChooser<>();
-        priorityTwoChooser = new SendableChooser<>();
+        //        priorityTwoChooser = new SendableChooser<>();
 
         sendAutoOptions(POSITIONS, posChooser);
         sendAutoOptions(PRIORITIES, priorityOneChooser);
-        sendAutoOptions(PRIORITIES, priorityTwoChooser);
+        //        sendAutoOptions(PRIORITIES, priorityTwoChooser);
         if(SmartDashboard.getNumber("Auto Wait", 0) == 0)
         {
             SmartDashboard.putNumber("Auto Wait", 0);
@@ -65,11 +65,7 @@ public class Robot extends TimedRobot
 
         SmartDashboard.putData("Position", posChooser);
         SmartDashboard.putData("Priority One", priorityOneChooser);
-        SmartDashboard.putData("Priority Two", priorityTwoChooser);
-
-        driverChooser = new SendableChooser<>();
-        sendDriverOptions(DriverConfig.configs, driverChooser);
-        SmartDashboard.putData("Driver Selection", driverChooser);
+        //        SmartDashboard.putData("Priority Two", priorityTwoChooser);
 
         lift.resetEncoder();
 
@@ -91,26 +87,9 @@ public class Robot extends TimedRobot
         }
     }
 
-    private void sendDriverOptions(DriverConfig[] configs, SendableChooser chooser)
-    {
-        for(int i = 0; i < configs.length; i++)
-        {
-            if(i == 0)
-            {
-                chooser.addDefault(configs[i].getClass().getSimpleName(), configs[i]);
-            }
-            else
-            {
-                chooser.addObject(configs[i].getClass().getSimpleName(), configs[i]);
-            }
-        }
-    }
-
     @Override
     public void robotPeriodic()
     {
-        // TODO: delete this after testing
-        SmartDashboard.putNumber("Throttle Mult", oi.getThrottleMult());
         SmartDashboard.putData(Scheduler.getInstance());
     }
 
@@ -129,10 +108,16 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
+        int timeout = 100;
+        String gameMessage;
+        do
+        {
+            gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+            timeout--;
+        } while(Objects.equals(gameMessage, "") && timeout > 0);
         autoCommand =
                 Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],
-                                     PRIORITIES[priorityTwoChooser.getSelected()],
-                                     DriverStation.getInstance().getGameSpecificMessage(),
+                                     PRIORITIES[0], gameMessage,
                                      SmartDashboard.getNumber("Auto Wait", 0));
         DriverStation.reportWarning("Starting command " + autoCommand.getName(), false);
         autoCommand.start();
@@ -147,8 +132,6 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit()
     {
-        oi.setDriver(driverChooser.getSelected());
-
         if(autoCommand != null && autoCommand.isRunning())
         {
             autoCommand.cancel();
@@ -161,11 +144,9 @@ public class Robot extends TimedRobot
         Scheduler.getInstance().run();
     }
 
-    Joystick stick = new Joystick(0);
-
     @Override
     public void testPeriodic()
     {
-        SmartDashboard.putNumber("Chassis feed forward", chassis.calcFeedForward(stick.getY()));
+
     }
 }

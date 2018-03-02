@@ -19,6 +19,30 @@ public class RobotMap
         public static final double TALON_NEUTRAL_DEADBAND = 0.01;
     }
 
+    public static class Driver
+    {
+        // buttons
+        public static final int COLLECT_ID = 2;
+        public static final int EJECT_ID = 1;
+        public static final int EXTEND_ID = 5;
+        public static final int WITHDRAW_ID = 3;
+        public static final int CANCEL_ID = 3;
+        public static final int SCALE_ID = 7;
+        public static final int SWITCH_ID = 9;
+        public static final int LOWER_ID = 11;
+        public static final int PORTAL_ID = 13;
+        public static final int UP_ID = 6;
+        public static final int DOWN_ID = 4;
+        public static final int CLIMB_ID = 12;
+        // driving
+        public static final double TWIST_SCALE = 0.7;
+        // driving constants
+        public static final double DEADZONE = 0.1;
+        public static final double DRIVE_POWER = 2;
+        public static final double TWIST_DEADZONE = 0.2;
+        public static final double DRIVE_TWIST_POWER = 2;
+    }
+
     public static class Auto
     {
         public static final boolean INVERT_LEFT_PROFILES = false;

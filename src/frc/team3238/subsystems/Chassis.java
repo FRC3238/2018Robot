@@ -9,17 +9,14 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3238.RobotMap;
 import frc.team3238.commands.chassis.Drive;
 
 import java.util.ArrayList;
 
-import static frc.team3238.Robot.oi;
 import static frc.team3238.RobotMap.Chassis.*;
 import static frc.team3238.RobotMap.Global.TALON_NEUTRAL_DEADBAND;
 import static frc.team3238.RobotMap.Global.TALON_TIMEOUT;
@@ -31,21 +28,9 @@ public class Chassis extends Subsystem
     private MotionProfileStatus status = new MotionProfileStatus();
     private ArrayList<TrajectoryPoint> leftPoints = new ArrayList<>(), rightPoints = new ArrayList<>();
 
-    // TODO: delete if not being used
-    private AHRS navX;
-
     public Chassis()
     {
         super("Chassis");
-
-        // TODO: delete if not being used
-        try
-        {
-            navX = new AHRS(SPI.Port.kMXP);
-        } catch(Exception e)
-        {
-            DriverStation.reportError("Failed to create navX object" + e.getMessage(), false);
-        }
 
         // initialize talons
         left = new TalonSRX(LEFT_DRIVE_TALON_ID);
@@ -128,30 +113,26 @@ public class Chassis extends Subsystem
 
     // Drive Command
     // -------------
-    public void drive(double y, double twist, double scale)
+    public void drive(double y, double twist)
     {
         double lSpeed = y + twist;
         double rSpeed = y - twist;
-
-        lSpeed *= scale;
-        rSpeed *= scale;
 
         left.set(ControlMode.PercentOutput, lSpeed);
         right.set(ControlMode.PercentOutput, rSpeed);
     }
 
-    public void cheesyDrive(double y, double twist, double scale, double cheeziness, double cheezyX, double twistScale,
+    public void cheesyDrive(double y, double twist, double cheeziness, double cheezyX, double twistScale,
                             double cheezyScale)
     {
-        if(Math.abs(y) < oi.getDeadzone())
+        if(Math.abs(y) < RobotMap.Driver.DEADZONE)
         {
             twist *= 1;
         }
         else if(Math.abs(y) < cheezyX)
         {
-            twist *= ((twistScale - 1 + cheeziness) / Math.pow(cheezyX - oi.getDeadzone(), 2)) *
-                     Math.pow(Math.abs(y) - cheezyX, 2) + 1 -
-                     cheeziness;
+            twist *= ((twistScale - 1 + cheeziness) / Math.pow(cheezyX - RobotMap.Driver.DEADZONE, 2)) *
+                     Math.pow(Math.abs(y) - cheezyX, 2) + 1 - cheeziness;
         }
         else
         {
@@ -159,7 +140,7 @@ public class Chassis extends Subsystem
                      1 - cheeziness;
         }
 
-        drive(y, twist, scale);
+        drive(y, twist);
     }
 
     // Motion Profile Command
@@ -288,19 +269,6 @@ public class Chassis extends Subsystem
         SmartDashboard.putNumber("Chassis dif output", Math.abs(getLeftOutput() - getRightOutput()));
     }
 
-    public double calcFeedForward(double throttle)
-    {
-        drive(throttle, 0, 1);
-
-        double retVal = 0;
-        if(left.getSelectedSensorVelocity(0) != 0)
-        {
-            retVal = throttle * 1023 / left.getSelectedSensorVelocity(0);
-        }
-
-        return retVal;
-    }
-
     public void setCoastMode()
     {
         left.setNeutralMode(NeutralMode.Coast);
@@ -331,17 +299,6 @@ public class Chassis extends Subsystem
     public void setTalonPIDSlot(int slot)
     {
         left.selectProfileSlot(slot, 0);
-    }
-
-    // TODO: delete if not being used
-    public double getAngle()
-    {
-        return navX.getAngle();
-    }
-
-    public void resetAngle()
-    {
-        navX.reset();
     }
 
     private void enableVoltageCompensation()
