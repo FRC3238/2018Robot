@@ -1,9 +1,7 @@
 package frc.team3238.autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.team3238.commands.auto.AutoGroup;
-import frc.team3238.commands.auto.PlaceScaleAuto;
-import frc.team3238.commands.auto.PlaceSwitchAuto;
+import frc.team3238.commands.auto.*;
 import frc.team3238.commands.chassis.RunMP;
 import frc.team3238.utils.Path;
 import jaci.pathfinder.Pathfinder;
@@ -90,7 +88,7 @@ public class Paths
     // Cube to right switch
     // Cube to right scale
 
-    static
+    public static void calcPaths()
     {
         SIDE_TO_SCALE = new Path(
                 new Waypoint[]{LEFT_START, new Waypoint(LEFT_START_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(90)),
@@ -136,32 +134,32 @@ public class Paths
         {
             if(gameCharToString(gameString.charAt(0)).equals(LEFT))
             {
-                // run center left
-                //                if(!priorityTwo.equals(SWITCH))
-                //                {
+                //                 run center left
+                if(!priorityTwo.equals(SWITCH))
+                {
                     return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_LEFT_SWITCH));
-                //                }
-                //                else
-                //                {
-                //                    return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_LEFT_SWITCH),
-                //                                         new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(LEFT)),
-                //                                         new CollectAuto(SWITCH_TO_PILE_TWO), new RunMP(PILE_TO_SWITCH_ONE),
-                //                                         new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(LEFT)));
-                //                }
+                }
+                else
+                {
+                    return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_LEFT_SWITCH),
+                                         new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(LEFT)),
+                                         new CollectAuto(SWITCH_TO_PILE_TWO), new RunMP(PILE_TO_SWITCH_ONE),
+                                         new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(LEFT)));
+                }
             }
             else
             {
-                //                if(!priorityTwo.equals(SWITCH))
-                //                {
+                if(!priorityTwo.equals(SWITCH))
+                {
                     return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_RIGHT_SWITCH));
-                //                }
-                //                else
-                //                {
-                //                    return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_RIGHT_SWITCH),
-                //                                         new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(RIGHT)),
-                //                                         new CollectAuto(SWITCH_TO_PILE_TWO), new RunMP(PILE_TO_SWITCH_ONE),
-                //                                         new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(RIGHT)));
-                //                }
+                }
+                else
+                {
+                    return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_RIGHT_SWITCH),
+                                         new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(RIGHT)),
+                                         new CollectAuto(SWITCH_TO_PILE_TWO), new RunMP(PILE_TO_SWITCH_ONE),
+                                         new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(RIGHT)));
+                }
             }
         }
         else if(position.equals(gameCharToString(gameString.charAt(priorityToCharPos(priorityOne)))))

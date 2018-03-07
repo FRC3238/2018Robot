@@ -36,28 +36,27 @@ public class Robot extends TimedRobot
 
     private SendableChooser<Integer> posChooser;
     private SendableChooser<Integer> priorityOneChooser;
-    //    private SendableChooser<Integer> priorityTwoChooser;
+    private SendableChooser<Integer> priorityTwoChooser;
 
     private Command autoCommand;
 
     @Override
     public void robotInit()
     {
+        Paths.calcPaths();
         setPeriod(ROBOT_PERIOD);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture("Camera", 0);
         camera.setResolution(CAMERA_X_RES, CAMERA_Y_RES);
         //        camera.setFPS(CAMERA_FPS);
 
-        oi = new OI();
-
         posChooser = new SendableChooser<>();
         priorityOneChooser = new SendableChooser<>();
-        //        priorityTwoChooser = new SendableChooser<>();
+        priorityTwoChooser = new SendableChooser<>();
 
         sendAutoOptions(POSITIONS, posChooser);
         sendAutoOptions(PRIORITIES, priorityOneChooser);
-        //        sendAutoOptions(PRIORITIES, priorityTwoChooser);
+        sendAutoOptions(PRIORITIES, priorityTwoChooser);
         if(SmartDashboard.getNumber("Auto Wait", 0) == 0)
         {
             SmartDashboard.putNumber("Auto Wait", 0);
@@ -65,11 +64,11 @@ public class Robot extends TimedRobot
 
         SmartDashboard.putData("Position", posChooser);
         SmartDashboard.putData("Priority One", priorityOneChooser);
-        //        SmartDashboard.putData("Priority Two", priorityTwoChooser);
+        SmartDashboard.putData("Priority Two", priorityTwoChooser);
 
         lift.resetEncoder();
 
-        SmartDashboard.putData(new PowerDistributionPanel());
+        oi = new OI();
     }
 
     private void sendAutoOptions(String[] options, SendableChooser chooser)
@@ -108,17 +107,16 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
-        int timeout = 100;
+        //        int timeout = 100;
         String gameMessage;
-        do
-        {
-            gameMessage = DriverStation.getInstance().getGameSpecificMessage();
-            timeout--;
-        } while(Objects.equals(gameMessage, "") && timeout > 0);
+        //        do
+        //        {
+        gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+        //            timeout--;
+        //        } while(Objects.equals(gameMessage, "") && timeout > 0);
         autoCommand =
                 Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],
-                                     PRIORITIES[0], gameMessage,
-                                     SmartDashboard.getNumber("Auto Wait", 0));
+                                     PRIORITIES[0], gameMessage, SmartDashboard.getNumber("Auto Wait", 0));
         DriverStation.reportWarning("Starting command " + autoCommand.getName(), false);
         autoCommand.start();
     }
@@ -126,6 +124,7 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousPeriodic()
     {
+        //        DriverStation.reportWarning("In auto periodic");
         Scheduler.getInstance().run();
     }
 

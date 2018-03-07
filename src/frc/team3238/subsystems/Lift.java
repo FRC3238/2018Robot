@@ -70,7 +70,7 @@ public class Lift extends Subsystem
         SmartDashboard.putNumber("Lift current", lift.getOutputCurrent());
         SmartDashboard.putBoolean("Lift limit", isLimit());
 
-        if(getPosition() < 0 || isLimit())
+        if(getPosition() < 0)
         {
             resetEncoder();
         }

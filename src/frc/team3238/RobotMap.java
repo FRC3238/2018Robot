@@ -30,10 +30,10 @@ public class RobotMap
         public static final int SCALE_ID = 7;
         public static final int SWITCH_ID = 9;
         public static final int LOWER_ID = 11;
-        public static final int PORTAL_ID = 13;
+        public static final int PORTAL_ID = 12;
         public static final int UP_ID = 6;
         public static final int DOWN_ID = 4;
-        public static final int CLIMB_ID = 12;
+        public static final int CLIMB_ID = 10;
         // driving
         public static final double TWIST_SCALE = 0.7;
         // driving constants
@@ -138,6 +138,7 @@ public class RobotMap
         public static final int UPPER_SOFT_LIMIT = 31900; // encoder clicks
         public static final int LOWER_SOFT_LIMIT = 100; // encoder clicks
         public static final double HOLD_HEIGHT = 0.9; // feet
+        public static final double PORTAL_HEIGHT = 2.3;
         public static final double SWITCH_HEIGHT = 2;
         public static final double SCALE_HEIGHT = 6;
         public static final double MAX_LIFT_HEIGHT = 6.25;

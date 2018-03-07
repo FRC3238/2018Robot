@@ -8,7 +8,7 @@ public class LiftSwitchHold extends CommandGroup
 
     public LiftSwitchHold()
     {
-        addParallel(new DelayedHold());
-        addParallel(new LiftToSwitch());
+        addParallel(new DelayedHold(), 2);
+        addSequential(new LiftToSwitch());
     }
 }
