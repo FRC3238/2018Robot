@@ -138,7 +138,7 @@ public class RobotMap
         public static final int UPPER_SOFT_LIMIT = 31900; // encoder clicks
         public static final int LOWER_SOFT_LIMIT = 100; // encoder clicks
         public static final double HOLD_HEIGHT = 0.9; // feet
-        public static final double PORTAL_HEIGHT = 2.3;
+        public static final double PORTAL_HEIGHT = 1.8;
         public static final double SWITCH_HEIGHT = 2;
         public static final double SCALE_HEIGHT = 6;
         public static final double MAX_LIFT_HEIGHT = 6.25;
@@ -158,7 +158,7 @@ public class RobotMap
         public static final double NOMINAL_FORWARD_OUTPUT = 0;
         public static final double NOMINAL_REVERSE_OUTPUT = 0;
         public static final double PEAK_FORWARD_OUTPUT = 1;
-        public static final double PEAK_REVERSE_OUTPUT = -0.5;
+        public static final double PEAK_REVERSE_OUTPUT = -0.65;
     }
 
     public static class Climber

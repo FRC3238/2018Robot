@@ -3,6 +3,8 @@ package frc.team3238.autonomous;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team3238.commands.auto.*;
 import frc.team3238.commands.chassis.RunMP;
+import frc.team3238.commands.collector.Eject;
+import frc.team3238.commands.lift.LiftToSwitch;
 import frc.team3238.utils.Path;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
@@ -82,6 +84,7 @@ public class Paths
     // Cube to left switch
     // Cube to left scale
     // Left to right switch
+    private static Path SIDE_TO_OPP_SWITCH;
     // Left to right scale
     // Right switch to cube
     // Right scale to cube
@@ -120,6 +123,11 @@ public class Paths
         CENTER_TO_RIGHT_SWITCH = new Path(new Waypoint[]{CENTER_START,
                                                          new Waypoint(DIST_CENTER_X_TO_SWITCH, DIST_WALL_TO_SWITCH,
                                                                       Pathfinder.d2r(90))});
+
+        SIDE_TO_OPP_SWITCH = new Path(new Waypoint[]{LEFT_START,
+                                                     new Waypoint(LEFT_START_X + ROBOT_LENGTH, 21.8 - (ROBOT_WIDTH / 2),
+                                                                  Pathfinder.d2r(30)),
+                                                     new Waypoint(2, 19, Pathfinder.d2r(-30))});
     }
 
     public static Command getAutoRoutine(String position, String priorityOne, String priorityTwo, String gameString,
@@ -162,7 +170,7 @@ public class Paths
                 }
             }
         }
-        else if(position.equals(gameCharToString(gameString.charAt(priorityToCharPos(priorityOne)))))
+        else if(isTargetEasy(position, priorityOne, gameString))
         {
             if(priorityOne.equals(SWITCH))
             {
@@ -195,7 +203,7 @@ public class Paths
                 //                }
             }
         }
-        else if(position.equals(gameCharToString(gameString.charAt(priorityToCharPos(priorityTwo)))))
+        else if(isTargetEasy(position, priorityTwo, gameString))
         {
             if(priorityTwo.equals(SWITCH))
             {
@@ -208,10 +216,43 @@ public class Paths
         }
         else
         {
-            // run to opposite side
-            // need to decide whether we should support placing in scale on opposite side
+            if(priorityOne.equals(SWITCH))
+            {
+                //                if(priorityTwo.equals(SWITCH))
+                //                {
+                //                     position to switch to switch
+                //                }
+                //                else if(priorityTwo.equals(SCALE))
+                //                {
+                //                     position to switch to scale
+                //                }
+                //                else
+                //                {
+                return new AutoGroup(wait, new RunMP(SIDE_TO_OPP_SWITCH));
+                //                }
+            }
+            else if(priorityOne.equals(SCALE))
+            {
+                //                if(priorityTwo.equals(SWITCH))
+                //                {
+                // position to scale to switch
+                //                }
+                //                else if(priorityTwo.equals(SCALE))
+                //                {
+                // position to scale to scale
+                //                }
+                //                else
+                //                {
+
+                //                }
+            }
         }
 
         return new AutoGroup(wait, new RunMP(DRIVE_FORWARD));
+    }
+
+    private static boolean isTargetEasy(String position, String target, String gameString)
+    {
+        return position.equals(gameCharToString(gameString.charAt(priorityToCharPos(target))));
     }
 }

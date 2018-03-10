@@ -69,6 +69,8 @@ public class Robot extends TimedRobot
         lift.resetEncoder();
 
         oi = new OI();
+
+        SmartDashboard.putData(new PowerDistributionPanel());
     }
 
     private void sendAutoOptions(String[] options, SendableChooser chooser)
