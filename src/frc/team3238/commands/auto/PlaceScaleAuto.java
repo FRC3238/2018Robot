@@ -17,8 +17,8 @@ public class PlaceScaleAuto extends CommandGroup
     public PlaceScaleAuto(Path profile, boolean flip)
     {
         super("Autonomous to Scale");
+        addParallel(new LiftScaleHold());
         addSequential(new RunMP(profile, flip));
-        addSequential(new LiftToScale());
         addSequential(new Eject());
     }
 }

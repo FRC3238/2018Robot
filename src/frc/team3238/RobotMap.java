@@ -135,13 +135,13 @@ public class RobotMap
         public static final double DOWN_RAMP_RATE = 10; // percent per second
         public static final double UP_RAMP_RATE = 0.5; // percent per second
         // encoder positions
-        public static final int UPPER_SOFT_LIMIT = 31900; // encoder clicks
+        public static final int UPPER_SOFT_LIMIT = 32700; // encoder clicks
         public static final int LOWER_SOFT_LIMIT = 100; // encoder clicks
         public static final double HOLD_HEIGHT = 0.9; // feet
         public static final double PORTAL_HEIGHT = 1.8;
         public static final double SWITCH_HEIGHT = 2;
-        public static final double SCALE_HEIGHT = 6;
-        public static final double MAX_LIFT_HEIGHT = 6.25;
+        public static final double SCALE_HEIGHT = 6.3;
+        public static final double MAX_LIFT_HEIGHT = 6.4166666666;
         public static final int ENCODER_CLICKS_PER_FOOT = (int) (UPPER_SOFT_LIMIT / MAX_LIFT_HEIGHT);
         // PID values
         public static final int LIFT_PID_SLOT = 0;

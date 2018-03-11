@@ -5,7 +5,6 @@ import frc.team3238.commands.lift.LiftToSwitch;
 
 public class LiftSwitchHold extends CommandGroup
 {
-
     public LiftSwitchHold()
     {
         addParallel(new DelayedHold(), 2);

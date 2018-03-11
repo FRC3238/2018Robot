@@ -46,7 +46,7 @@ public class Paths
 
     private static final Waypoint CENTER_START = new Waypoint((ROBOT_WIDTH / 2) - 1, ROBOT_LENGTH, Pathfinder.d2r(90));
     private static final double DIST_CENTER_X_TO_SWITCH = 4.254;
-    private static final double DIST_WALL_TO_SWITCH = 11.667;
+    private static final double DIST_WALL_TO_SWITCH = 12;
     private static final double DIST_SWITCH_TO_CUBE_PICKUP = 8;
 
     private static final double LEFT_START_X = -(11 - (ROBOT_WIDTH / 2));
@@ -54,7 +54,7 @@ public class Paths
     private static final double DIST_SIDE_TO_SWITCH_Y = 16;
     private static final double DIST_SIDE_TO_SWITCH_X = -6.375;
     private static final double DIST_SIDE_TO_SCALE_Y = 24.4;
-    private static final double DIST_SIDE_TO_SCALE_X = -7;
+    private static final double DIST_SIDE_TO_SCALE_X = -6.5;
 
     // Drive Forward
     // -------------
@@ -96,8 +96,9 @@ public class Paths
         SIDE_TO_SCALE = new Path(
                 new Waypoint[]{LEFT_START, new Waypoint(LEFT_START_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(90)),
                                new Waypoint(DIST_SIDE_TO_SCALE_X, DIST_SIDE_TO_SCALE_Y, Pathfinder.d2r(90))});
-        SIDE_TO_SWITCH = new Path(new Waypoint[]{LEFT_START, //new Waypoint(DIST_SIDE_TO_SWITCH_X + (ROBOT_LENGTH),
-                                                 //           DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(0)),
+        SIDE_TO_SWITCH = new Path(new Waypoint[]{LEFT_START, //new Waypoint(DIST_SIDE_TO_SWITCH_X - (ROBOT_LENGTH),
+                                                 //                                                            DIST_SIDE_TO_SWITCH_Y - ROBOT_LENGTH, Pathfinder.d2r(30)),
+                                                 //                                                 new Waypoint(DIST_SIDE_TO_SWITCH_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(0))});
                                                  new Waypoint(DIST_SIDE_TO_SWITCH_X - (ROBOT_WIDTH / 50),
                                                               DIST_SIDE_TO_SWITCH_Y - (ROBOT_LENGTH),
                                                               Pathfinder.d2r(45))});
