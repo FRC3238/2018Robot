@@ -1,105 +1,153 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.team3238;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team3238.autonomous.Paths;
+import frc.team3238.subsystems.Chassis;
+import frc.team3238.subsystems.Climber;
+import frc.team3238.subsystems.Collector;
+import frc.team3238.subsystems.Extender;
+import frc.team3238.subsystems.Lift;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
- * project.
- */
-// If you rename or move this class, update the build.properties file in the project root
-public class Robot extends TimedRobot 
+import java.util.Objects;
+
+import static frc.team3238.RobotMap.Auto.POSITIONS;
+import static frc.team3238.RobotMap.Auto.PRIORITIES;
+import static frc.team3238.RobotMap.Global.CAMERA_X_RES;
+import static frc.team3238.RobotMap.Global.CAMERA_Y_RES;
+import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
+
+public class Robot extends TimedRobot
 {
-
     public static OI oi;
 
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
+    public static Chassis chassis = new Chassis();
+    public static Collector collector = new Collector();
+    public static Extender extender = new Extender();
+    public static Lift lift = new Lift();
+    public static Climber climber = new Climber();
+
+    private SendableChooser<Integer> posChooser;
+    private SendableChooser<Integer> priorityOneChooser;
+    private SendableChooser<Integer> priorityTwoChooser;
+
+    private Command autoCommand;
+
     @Override
-    public void robotInit() 
+    public void robotInit()
     {
+        Paths.calcPaths();
+        setPeriod(ROBOT_PERIOD);
+
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture("Camera", 0);
+        camera.setResolution(CAMERA_X_RES, CAMERA_Y_RES);
+        //        camera.setFPS(CAMERA_FPS);
+
+        posChooser = new SendableChooser<>();
+        priorityOneChooser = new SendableChooser<>();
+        priorityTwoChooser = new SendableChooser<>();
+
+        sendAutoOptions(POSITIONS, posChooser);
+        sendAutoOptions(PRIORITIES, priorityOneChooser);
+        sendAutoOptions(PRIORITIES, priorityTwoChooser);
+        if(SmartDashboard.getNumber("Auto Wait", 0) == 0)
+        {
+            SmartDashboard.putNumber("Auto Wait", 0);
+        }
+
+        SmartDashboard.putData("Position", posChooser);
+        SmartDashboard.putData("Priority One", priorityOneChooser);
+        SmartDashboard.putData("Priority Two", priorityTwoChooser);
+
+        lift.resetEncoder();
+
         oi = new OI();
+
+        SmartDashboard.putData(new PowerDistributionPanel());
     }
 
-    /**
-     * This function is called once each time the robot enters Disabled mode.
-     * You can use it to reset any subsystem information you want to clear when
-     * the robot is disabled.
-     */
-    @Override
-    public void disabledInit() 
+    private void sendAutoOptions(String[] options, SendableChooser chooser)
     {
-        
+        for(int i = 0; i < options.length; i++)
+        {
+            if(i == 0)
+            {
+                chooser.addDefault(options[i], i);
+            }
+            else
+            {
+                chooser.addObject(options[i], i);
+            }
+        }
     }
 
     @Override
-    public void disabledPeriodic() 
+    public void robotPeriodic()
     {
-        Scheduler.getInstance().run();
+        SmartDashboard.putData(Scheduler.getInstance());
     }
 
-    /**
-     * This autonomous (along with the chooser code above) shows how to select
-     * between different autonomous modes using the dashboard. The sendable
-     * chooser code works with the Java SmartDashboard. If you prefer the
-     * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-     * getString code to get the auto name from the text box below the Gyro
-     *
-     * <p>You can add additional auto modes by adding additional commands to the
-     * chooser code above (like the commented example) or additional comparisons
-     * to the switch structure below with additional strings & commands.
-     */
     @Override
-    public void autonomousInit() 
+    public void disabledInit()
     {
-
+        chassis.setCoastMode();
     }
 
-    /**
-     * This function is called periodically during autonomous.
-     */
     @Override
-    public void autonomousPeriodic() 
+    public void disabledPeriodic()
     {
         Scheduler.getInstance().run();
     }
 
     @Override
-    public void teleopInit() 
+    public void autonomousInit()
     {
-
+        //        int timeout = 100;
+        String gameMessage;
+        //        do
+        //        {
+        gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+        //            timeout--;
+        //        } while(Objects.equals(gameMessage, "") && timeout > 0);
+        autoCommand =
+                Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],
+                                     PRIORITIES[0], gameMessage, SmartDashboard.getNumber("Auto Wait", 0));
+        DriverStation.reportWarning("Starting command " + autoCommand.getName(), false);
+        autoCommand.start();
     }
 
-    /**
-     * This function is called periodically during operator control.
-     */
     @Override
-    public void teleopPeriodic() 
+    public void autonomousPeriodic()
+    {
+        //        DriverStation.reportWarning("In auto periodic");
+        Scheduler.getInstance().run();
+    }
+
+    @Override
+    public void teleopInit()
+    {
+        if(autoCommand != null && autoCommand.isRunning())
+        {
+            autoCommand.cancel();
+        }
+    }
+
+    @Override
+    public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
     }
 
-    /**
-     * This function is called periodically during test mode.
-     */
     @Override
-    public void testPeriodic() 
+    public void testPeriodic()
     {
-        
+
     }
 }
