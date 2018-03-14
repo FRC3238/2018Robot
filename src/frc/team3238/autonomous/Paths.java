@@ -3,8 +3,6 @@ package frc.team3238.autonomous;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team3238.commands.auto.*;
 import frc.team3238.commands.chassis.RunMP;
-import frc.team3238.commands.collector.Eject;
-import frc.team3238.commands.lift.LiftToSwitch;
 import frc.team3238.utils.Path;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
@@ -81,6 +79,10 @@ public class Paths
     private static Path SIDE_TO_SCALE;
     // Left switch to cube
     // Left scale to cube
+    private static Path SCALE_TO_CUBE_ONE;
+    private static Path SCALE_TO_CUBE_TWO;
+    private static Path CUBE_TO_SCALE_ONE;
+    private static Path CUBE_TO_SCALE_TWO;
     // Cube to left switch
     // Cube to left scale
     // Left to right switch
@@ -93,9 +95,14 @@ public class Paths
 
     public static void calcPaths()
     {
+        Waypoint scale = new Waypoint(DIST_SIDE_TO_SCALE_X, DIST_SIDE_TO_SCALE_Y, Pathfinder.d2r(90));
+        Waypoint scaleTwoMidpoint = new Waypoint(LEFT_START_X, DIST_SIDE_TO_SCALE_Y - 3, Pathfinder.d2r(0));
+        Waypoint cube = new Waypoint(-7, 17, Pathfinder.d2r(-30));
         SIDE_TO_SCALE = new Path(
                 new Waypoint[]{LEFT_START, new Waypoint(LEFT_START_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(90)),
-                               new Waypoint(DIST_SIDE_TO_SCALE_X, DIST_SIDE_TO_SCALE_Y, Pathfinder.d2r(90))});
+                               scale});
+        SCALE_TO_CUBE_ONE = new Path(new Waypoint[]{scale, scaleTwoMidpoint});
+        SCALE_TO_CUBE_TWO = new Path(new Waypoint[]{scaleTwoMidpoint, cube});
         SIDE_TO_SWITCH = new Path(new Waypoint[]{LEFT_START, //new Waypoint(DIST_SIDE_TO_SWITCH_X - (ROBOT_LENGTH),
                                                  //                                                            DIST_SIDE_TO_SWITCH_Y - ROBOT_LENGTH, Pathfinder.d2r(30)),
                                                  //                                                 new Waypoint(DIST_SIDE_TO_SWITCH_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(0))});
@@ -200,6 +207,12 @@ public class Paths
                 //                }
                 //                else
                 //                {
+                if(priorityTwo.equals(SCALE))
+                {
+                    return new AutoGroup(wait, new PlaceScaleAuto(SIDE_TO_SCALE, invertSide(position)),
+                                         new LowerAuto(SCALE_TO_CUBE_ONE, invertSide(position)),
+                                         new CollectAuto(SCALE_TO_CUBE_TWO, invertSide(position)));
+                }
                 return new AutoGroup(wait, new PlaceScaleAuto(SIDE_TO_SCALE, invertSide(position)));
                 //                }
             }
