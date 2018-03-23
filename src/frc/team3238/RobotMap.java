@@ -137,7 +137,7 @@ public class RobotMap
         // encoder positions
         public static final int UPPER_SOFT_LIMIT = 32700; // encoder clicks
         public static final int LOWER_SOFT_LIMIT = 100; // encoder clicks
-        public static final double HOLD_HEIGHT = 0.9; // feet
+        public static final double HOLD_HEIGHT = 0.2; // feet
         public static final double PORTAL_HEIGHT = 1.8;
         public static final double SWITCH_HEIGHT = 2;
         public static final double SCALE_HEIGHT = 6.3;

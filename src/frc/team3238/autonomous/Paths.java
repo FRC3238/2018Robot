@@ -52,7 +52,7 @@ public class Paths
     private static final double DIST_SIDE_TO_SWITCH_Y = 16;
     private static final double DIST_SIDE_TO_SWITCH_X = -6.375;
     private static final double DIST_SIDE_TO_SCALE_Y = 24.4;
-    private static final double DIST_SIDE_TO_SCALE_X = -6.5;
+    private static final double DIST_SIDE_TO_SCALE_X = -6.75;
 
     // Drive Forward
     // -------------
@@ -144,7 +144,7 @@ public class Paths
         if((!Objects.equals(priorityOne, SCALE) && !Objects.equals(priorityOne, SWITCH)) ||
            (!Objects.equals(position, LEFT) && !Objects.equals(position, CENTER) && !Objects.equals(position, RIGHT)))
         {
-            return new AutoGroup(wait, new RunMP(DRIVE_FORWARD));
+            return new AutoGroup(wait, new TimedDrive());
         }
         else if(position.equals(CENTER))
         {
@@ -262,7 +262,7 @@ public class Paths
             }
         }
 
-        return new AutoGroup(wait, new RunMP(DRIVE_FORWARD));
+        return new AutoGroup(wait, new TimedDrive());
     }
 
     private static boolean isTargetEasy(String position, String target, String gameString)

@@ -10,19 +10,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.autonomous.Paths;
-import frc.team3238.subsystems.Chassis;
-import frc.team3238.subsystems.Climber;
-import frc.team3238.subsystems.Collector;
-import frc.team3238.subsystems.Extender;
-import frc.team3238.subsystems.Lift;
-
-import java.util.Objects;
+import frc.team3238.subsystems.*;
 
 import static frc.team3238.RobotMap.Auto.POSITIONS;
 import static frc.team3238.RobotMap.Auto.PRIORITIES;
-import static frc.team3238.RobotMap.Global.CAMERA_X_RES;
-import static frc.team3238.RobotMap.Global.CAMERA_Y_RES;
-import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
+import static frc.team3238.RobotMap.Global.*;
 
 public class Robot extends TimedRobot
 {
@@ -121,16 +113,26 @@ public class Robot extends TimedRobot
                                      PRIORITIES[0], gameMessage, SmartDashboard.getNumber("Auto Wait", 0));
         DriverStation.reportWarning("Starting command " + autoCommand.getName(), false);
         autoCommand.start();
+        //        time = Timer.getFPGATimestamp();
     }
 
+    //    public double time;
     @Override
     public void autonomousPeriodic()
     {
         //        DriverStation.reportWarning("In auto periodic");
         Scheduler.getInstance().run();
+        //        if(Timer.getFPGATimestamp() - time < 6)
+        //        {
+        //            chassis.drive(0.2, 0);
+        //        }
+        //        else
+        //        {
+        //            chassis.drive(0, 0);
+        //        }
     }
 
-    @Override
+    @Override()
     public void teleopInit()
     {
         if(autoCommand != null && autoCommand.isRunning())
