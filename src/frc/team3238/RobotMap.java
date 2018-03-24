@@ -145,7 +145,7 @@ public class RobotMap
         public static final int ENCODER_CLICKS_PER_FOOT = (int) (UPPER_SOFT_LIMIT / MAX_LIFT_HEIGHT);
         // PID values
         public static final int LIFT_PID_SLOT = 0;
-        public static final double LIFT_P_VAL = 0.5;
+        public static final double LIFT_P_VAL = 0.25;
         public static final double LIFT_I_VAL = 0.0;
         public static final double LIFT_D_VAL = 0.0;
         public static final double LIFT_F_VAL = 0;
