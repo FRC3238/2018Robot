@@ -110,7 +110,8 @@ public class Robot extends TimedRobot
         //        } while(Objects.equals(gameMessage, "") && timeout > 0);
         autoCommand =
                 Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],
-                                     PRIORITIES[0], gameMessage, SmartDashboard.getNumber("Auto Wait", 0));
+                                     PRIORITIES[priorityTwoChooser.getSelected()], gameMessage,
+                                     SmartDashboard.getNumber("Auto Wait", 0));
         DriverStation.reportWarning("Starting command " + autoCommand.getName(), false);
         autoCommand.start();
         //        time = Timer.getFPGATimestamp();

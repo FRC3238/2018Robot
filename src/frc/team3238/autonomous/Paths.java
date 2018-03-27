@@ -159,8 +159,8 @@ public class Paths
                 {
                     return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_LEFT_SWITCH),
                                          new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(LEFT)),
-                                         new CollectAuto(SWITCH_TO_PILE_TWO), new RunMP(PILE_TO_SWITCH_ONE),
-                                         new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(LEFT)));
+                                         new CollectAuto(SWITCH_TO_PILE_TWO)//, new RunMP(PILE_TO_SWITCH_ONE),
+                            /*new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(LEFT))*/);
                 }
             }
             else
@@ -173,8 +173,8 @@ public class Paths
                 {
                     return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_RIGHT_SWITCH),
                                          new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(RIGHT)),
-                                         new CollectAuto(SWITCH_TO_PILE_TWO), new RunMP(PILE_TO_SWITCH_ONE),
-                                         new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(RIGHT)));
+                                         new CollectAuto(SWITCH_TO_PILE_TWO)//, new RunMP(PILE_TO_SWITCH_ONE),
+                            /*new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(RIGHT))*/);
                 }
             }
         }
