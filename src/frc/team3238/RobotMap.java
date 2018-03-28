@@ -158,7 +158,7 @@ public class RobotMap
         public static final double NOMINAL_FORWARD_OUTPUT = 0;
         public static final double NOMINAL_REVERSE_OUTPUT = 0;
         public static final double PEAK_FORWARD_OUTPUT = 1;
-        public static final double PEAK_REVERSE_OUTPUT = -0.65;
+        public static final double PEAK_REVERSE_OUTPUT = -0.5;
     }
 
     public static class Climber

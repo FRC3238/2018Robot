@@ -21,9 +21,14 @@ public class Path
 
     public Path(Waypoint[] points)
     {
+        this(points, points[0].y > points[points.length - 1].y);
+    }
+
+    public Path(Waypoint[] points, boolean backwards)
+    {
         try
         {
-            if(points[0].y > points[points.length - 1].y)
+            if(backwards)
             {
                 flip = -1;
             }

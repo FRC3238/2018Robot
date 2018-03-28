@@ -8,15 +8,16 @@ import frc.team3238.utils.Path;
 public class CollectAuto extends CommandGroup
 {
 
-    public CollectAuto(Path profile)
+    public CollectAuto(Path profileOne, Path profileTwo)
     {
-        this(profile, false);
+        this(profileOne, profileTwo, false);
     }
 
-    public CollectAuto(Path profile, boolean flip)
+    public CollectAuto(Path profileOne, Path profileTwo, boolean flip)
     {
         super("Autonomous CollectCube");
         addParallel(new CollectCube());
-        addSequential(new RunMP(profile, flip));
+        addSequential(new RunMP(profileOne, flip));
+        addSequential(new RunMP(profileTwo, flip));
     }
 }

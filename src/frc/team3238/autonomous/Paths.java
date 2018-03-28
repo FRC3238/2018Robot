@@ -97,12 +97,15 @@ public class Paths
     {
         Waypoint scale = new Waypoint(DIST_SIDE_TO_SCALE_X, DIST_SIDE_TO_SCALE_Y, Pathfinder.d2r(90));
         Waypoint scaleTwoMidpoint = new Waypoint(LEFT_START_X, DIST_SIDE_TO_SCALE_Y - 3, Pathfinder.d2r(0));
-        Waypoint cube = new Waypoint(-7, 17, Pathfinder.d2r(-30));
+        Waypoint cube = new Waypoint(-7, 17, Pathfinder.d2r(330));
         SIDE_TO_SCALE = new Path(
                 new Waypoint[]{LEFT_START, new Waypoint(LEFT_START_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(90)),
                                scale});
-        SCALE_TO_CUBE_ONE = new Path(new Waypoint[]{scale, scaleTwoMidpoint});
-        SCALE_TO_CUBE_TWO = new Path(new Waypoint[]{scaleTwoMidpoint, cube});
+        SCALE_TO_CUBE_ONE = new Path(new Waypoint[]{scale, scaleTwoMidpoint}, true);
+        SCALE_TO_CUBE_TWO = new Path(new Waypoint[]{scaleTwoMidpoint, cube}, false);
+        CUBE_TO_SCALE_ONE = new Path(new Waypoint[]{cube, scaleTwoMidpoint}, true);
+        CUBE_TO_SCALE_TWO = new Path(new Waypoint[]{scaleTwoMidpoint, scale}, false);
+
         SIDE_TO_SWITCH = new Path(new Waypoint[]{LEFT_START, //new Waypoint(DIST_SIDE_TO_SWITCH_X - (ROBOT_LENGTH),
                                                  //                                                            DIST_SIDE_TO_SWITCH_Y - ROBOT_LENGTH, Pathfinder.d2r(30)),
                                                  //                                                 new Waypoint(DIST_SIDE_TO_SWITCH_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(0))});
@@ -159,8 +162,8 @@ public class Paths
                 {
                     return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_LEFT_SWITCH),
                                          new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(LEFT)),
-                                         new CollectAuto(SWITCH_TO_PILE_TWO)//, new RunMP(PILE_TO_SWITCH_ONE),
-                            /*new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(LEFT))*/);
+                                         new CollectAuto(SWITCH_TO_PILE_TWO, PILE_TO_SWITCH_ONE),
+                                         new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(LEFT)));
                 }
             }
             else
@@ -173,8 +176,8 @@ public class Paths
                 {
                     return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_RIGHT_SWITCH),
                                          new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(RIGHT)),
-                                         new CollectAuto(SWITCH_TO_PILE_TWO)//, new RunMP(PILE_TO_SWITCH_ONE),
-                            /*new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(RIGHT))*/);
+                                         new CollectAuto(SWITCH_TO_PILE_TWO, PILE_TO_SWITCH_ONE),
+                                         new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(RIGHT)));
                 }
             }
         }
@@ -211,7 +214,8 @@ public class Paths
                 {
                     return new AutoGroup(wait, new PlaceScaleAuto(SIDE_TO_SCALE, invertSide(position)),
                                          new LowerAuto(SCALE_TO_CUBE_ONE, invertSide(position)),
-                                         new CollectAuto(SCALE_TO_CUBE_TWO, invertSide(position)));
+                                         new CollectAuto(SCALE_TO_CUBE_TWO, CUBE_TO_SCALE_ONE, invertSide(position)),
+                                         new PlaceScaleAuto(CUBE_TO_SCALE_TWO, invertSide(position)));
                 }
                 return new AutoGroup(wait, new PlaceScaleAuto(SIDE_TO_SCALE, invertSide(position)));
                 //                }
