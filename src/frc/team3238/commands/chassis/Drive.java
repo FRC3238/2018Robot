@@ -2,9 +2,8 @@ package frc.team3238.commands.chassis;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import static frc.team3238.Robot.chassis;
-import static frc.team3238.Robot.lift;
-import static frc.team3238.Robot.oi;
+import static frc.team3238.Robot.*;
+import static frc.team3238.RobotMap.Driver.TWIST_SCALE;
 
 public class Drive extends Command
 {
@@ -27,7 +26,7 @@ public class Drive extends Command
     protected void execute()
     {
         double y = oi.getDriveY();
-        double twist = oi.getDriveTwist();
+        double twist = oi.getDriveTwist() * TWIST_SCALE;
         //        double cheeziness = oi.getCheeziness();
         //        double cheezyX = oi.getCheezyX();
         //        double twistScale = oi.getTwistScale();

@@ -12,8 +12,8 @@ public class RobotMap
         // joysticks
         public static final int MAIN_JOYSTICK_PORT = 0;
         // camera constants
-        public static final int CAMERA_X_RES = 480;
-        public static final int CAMERA_Y_RES = 320;
+        public static final int CAMERA_X_RES = 360;
+        public static final int CAMERA_Y_RES = 240;
         public static final int CAMERA_FPS = 20;
         // misc
         public static final double TALON_NEUTRAL_DEADBAND = 0.01;
@@ -80,7 +80,7 @@ public class RobotMap
         public static final Trajectory.FitMethod MP_FIT_METHOD = Trajectory.FitMethod.HERMITE_QUINTIC;
         public static final int MP_SAMPLE_RATE = Trajectory.Config.SAMPLES_LOW;
         public static final double MP_TIMESTEP = 0.01; // s
-        public static final double MP_MAX_VELOCITY = 7; // ft/s
+        public static final double MP_MAX_VELOCITY = 11; // ft/s
         public static final double MP_MAX_ACCEL = 10; // ft/s/s
         public static final double MP_MAX_JERK = 400; // ft/s/s/s
         public static final double MP_WHEELBASE_WIDTH = 2.488; // ft, not actual width, calculated.
@@ -105,7 +105,7 @@ public class RobotMap
         public static final double HOLD_TIMEOUT = 2;
         // sensing
         public static final int IR_CUBE_VAL = 2000;
-        public static final double HIGH_CURRENT_THRESHOLD = 40;
+        public static final double HIGH_CURRENT_THRESHOLD = 45;
         public static final double LOW_CURRENT_THRESHOLD = 15;
         public static final double HOLD_CURRENT_THRESHOLD = 10;
         public static final int CURRENT_MIN_DURATION = 10;
@@ -138,7 +138,7 @@ public class RobotMap
         public static final int UPPER_SOFT_LIMIT = 32700; // encoder clicks
         public static final int LOWER_SOFT_LIMIT = 100; // encoder clicks
         public static final double HOLD_HEIGHT = 0.2; // feet
-        public static final double PORTAL_HEIGHT = 1.8;
+        public static final double PORTAL_HEIGHT = 1.6;
         public static final double SWITCH_HEIGHT = 2;
         public static final double SCALE_HEIGHT = 6.3;
         public static final double MAX_LIFT_HEIGHT = 6.4166666666;
@@ -167,7 +167,7 @@ public class RobotMap
         public static final int CLIMB_TALON_ID = 9;
         public static final int CLIMB_SLAVE_TALON_ID = 10;
         // power
-        public static final double UP_POWER = 0.75;
+        public static final double UP_POWER = 1;
         public static final double DOWN_POWER = -0.25;
     }
 }

@@ -1,8 +1,11 @@
 package frc.team3238.autonomous;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.team3238.commands.auto.*;
 import frc.team3238.commands.chassis.RunMP;
+import frc.team3238.commands.collector.Eject;
+import frc.team3238.commands.lift.LiftToScale;
 import frc.team3238.utils.Path;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
@@ -43,8 +46,8 @@ public class Paths
     private static final double CUBE_WIDTH = 1.083;
 
     private static final Waypoint CENTER_START = new Waypoint((ROBOT_WIDTH / 2) - 1, ROBOT_LENGTH, Pathfinder.d2r(90));
-    private static final double DIST_CENTER_X_TO_SWITCH = 4.254;
-    private static final double DIST_WALL_TO_SWITCH = 12;
+    private static final double DIST_CENTER_X_TO_SWITCH = 4;
+    private static final double DIST_WALL_TO_SWITCH = 12.5;
     private static final double DIST_SWITCH_TO_CUBE_PICKUP = 8;
 
     private static final double LEFT_START_X = -(11 - (ROBOT_WIDTH / 2));
@@ -88,6 +91,7 @@ public class Paths
     // Left to right switch
     private static Path SIDE_TO_OPP_SWITCH;
     // Left to right scale
+    private static Path SIDE_TO_OPP_SCALE;
     // Right switch to cube
     // Right scale to cube
     // Cube to right switch
@@ -106,39 +110,33 @@ public class Paths
         CUBE_TO_SCALE_ONE = new Path(new Waypoint[]{cube, scaleTwoMidpoint}, true);
         CUBE_TO_SCALE_TWO = new Path(new Waypoint[]{scaleTwoMidpoint, scale}, false);
 
-        SIDE_TO_SWITCH = new Path(new Waypoint[]{LEFT_START, //new Waypoint(DIST_SIDE_TO_SWITCH_X - (ROBOT_LENGTH),
-                                                 //                                                            DIST_SIDE_TO_SWITCH_Y - ROBOT_LENGTH, Pathfinder.d2r(30)),
-                                                 //                                                 new Waypoint(DIST_SIDE_TO_SWITCH_X, DIST_SIDE_TO_SWITCH_Y, Pathfinder.d2r(0))});
-                                                 new Waypoint(DIST_SIDE_TO_SWITCH_X - (ROBOT_WIDTH / 50),
-                                                              DIST_SIDE_TO_SWITCH_Y - (ROBOT_LENGTH),
-                                                              Pathfinder.d2r(45))});
-        PILE_TO_SWITCH_TWO = new Path(new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)),
-                                                     new Waypoint(-DIST_CENTER_X_TO_SWITCH, DIST_SWITCH_TO_CUBE_PICKUP,
-                                                                  Pathfinder.d2r(90))});
-        PILE_TO_SWITCH_ONE = new Path(new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)),
-                                                     new Waypoint(0, -(DIST_SWITCH_TO_CUBE_PICKUP - (CUBE_WIDTH * 3)),
-                                                                  Pathfinder.d2r(90))});
-        SWITCH_TO_PILE_ONE = new Path(new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)),
-                                                     new Waypoint(-DIST_CENTER_X_TO_SWITCH, -DIST_SWITCH_TO_CUBE_PICKUP,
-                                                                  Pathfinder.d2r(90))});
-        SWITCH_TO_PILE_TWO = new Path(new Waypoint[]{new Waypoint(0, 0, Pathfinder.d2r(90)),
-                                                     new Waypoint(0, (DIST_SWITCH_TO_CUBE_PICKUP - (CUBE_WIDTH * 3)),
-                                                                  Pathfinder.d2r(90))});
+        SIDE_TO_SWITCH = new Path(new Waypoint[]{LEFT_START, new Waypoint(DIST_SIDE_TO_SWITCH_X - (ROBOT_WIDTH / 50),
+                                                                          DIST_SIDE_TO_SWITCH_Y - (ROBOT_LENGTH),
+                                                                          Pathfinder.d2r(45))});
         DRIVE_FORWARD = new Path(new Waypoint[]{new Waypoint(0, ROBOT_LENGTH, Pathfinder.d2r(90)),
                                                 new Waypoint(0, DIST_WALL_TO_SWITCH, Pathfinder.d2r(90))});
 
 
-        CENTER_TO_LEFT_SWITCH = new Path(new Waypoint[]{CENTER_START,
-                                                        new Waypoint(-DIST_CENTER_X_TO_SWITCH, DIST_WALL_TO_SWITCH,
-                                                                     Pathfinder.d2r(90))});
-        CENTER_TO_RIGHT_SWITCH = new Path(new Waypoint[]{CENTER_START,
-                                                         new Waypoint(DIST_CENTER_X_TO_SWITCH, DIST_WALL_TO_SWITCH,
-                                                                      Pathfinder.d2r(90))});
+        Waypoint LEFT_SWITCH = new Waypoint(-DIST_CENTER_X_TO_SWITCH, DIST_WALL_TO_SWITCH, Pathfinder.d2r(90));
+        Waypoint RIGHT_SWITCH = new Waypoint(DIST_CENTER_X_TO_SWITCH, DIST_WALL_TO_SWITCH, Pathfinder.d2r(90));
+        Waypoint CENTER_CUBE = new Waypoint(-0.2, 9, Pathfinder.d2r(90));
+        Waypoint CENTER_WALL = new Waypoint(0, 3.5, Pathfinder.d2r(90));
 
-        SIDE_TO_OPP_SWITCH = new Path(new Waypoint[]{LEFT_START,
-                                                     new Waypoint(LEFT_START_X + ROBOT_LENGTH, 21.8 - (ROBOT_WIDTH / 2),
-                                                                  Pathfinder.d2r(30)),
-                                                     new Waypoint(2, 19, Pathfinder.d2r(-30))});
+        CENTER_TO_LEFT_SWITCH = new Path(new Waypoint[]{CENTER_START, LEFT_SWITCH});
+        CENTER_TO_RIGHT_SWITCH = new Path(new Waypoint[]{CENTER_START, RIGHT_SWITCH});
+
+        SWITCH_TO_PILE_ONE = new Path(new Waypoint[]{LEFT_SWITCH, CENTER_WALL});
+        SWITCH_TO_PILE_TWO = new Path(new Waypoint[]{CENTER_WALL, CENTER_CUBE});
+        PILE_TO_SWITCH_ONE = new Path(new Waypoint[]{CENTER_CUBE, CENTER_WALL});
+        PILE_TO_SWITCH_TWO = new Path(new Waypoint[]{CENTER_WALL, LEFT_SWITCH}, false);
+
+        Waypoint oppTurn = new Waypoint(LEFT_START_X + ROBOT_LENGTH, 21.8 - (ROBOT_WIDTH / 2), Pathfinder.d2r(30));
+        SIDE_TO_OPP_SWITCH = new Path(new Waypoint[]{LEFT_START, oppTurn, new Waypoint(2, 19, Pathfinder.d2r(-30))});
+        SIDE_TO_OPP_SCALE = new Path(new Waypoint[]{LEFT_START, oppTurn, new Waypoint(-(LEFT_START_X + ROBOT_LENGTH),
+                                                                                      21.8 - (ROBOT_WIDTH / 2),
+                                                                                      Pathfinder.d2r(30)),
+                                                    new Waypoint(-DIST_SIDE_TO_SCALE_X, DIST_SIDE_TO_SCALE_Y,
+                                                                 Pathfinder.d2r(90))});
     }
 
     public static Command getAutoRoutine(String position, String priorityOne, String priorityTwo, String gameString,
@@ -147,7 +145,7 @@ public class Paths
         if((!Objects.equals(priorityOne, SCALE) && !Objects.equals(priorityOne, SWITCH)) ||
            (!Objects.equals(position, LEFT) && !Objects.equals(position, CENTER) && !Objects.equals(position, RIGHT)))
         {
-            return new AutoGroup(wait, new TimedDrive());
+            return new AutoGroup(5, new TimedDrive());
         }
         else if(position.equals(CENTER))
         {
@@ -161,7 +159,7 @@ public class Paths
                 else
                 {
                     return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_LEFT_SWITCH),
-                                         new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(LEFT)),
+                                         new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(RIGHT)),
                                          new CollectAuto(SWITCH_TO_PILE_TWO, PILE_TO_SWITCH_ONE),
                                          new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(LEFT)));
                 }
@@ -174,8 +172,9 @@ public class Paths
                 }
                 else
                 {
+                    DriverStation.reportWarning("debug", false);
                     return new AutoGroup(wait, new PlaceSwitchAuto(CENTER_TO_RIGHT_SWITCH),
-                                         new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(RIGHT)),
+                                         new LowerAuto(SWITCH_TO_PILE_ONE, invertSide(LEFT)),
                                          new CollectAuto(SWITCH_TO_PILE_TWO, PILE_TO_SWITCH_ONE),
                                          new PlaceSwitchAuto(PILE_TO_SWITCH_TWO, invertSide(RIGHT)));
                 }
@@ -234,7 +233,7 @@ public class Paths
         }
         else
         {
-            if(priorityOne.equals(SWITCH))
+            if(priorityOne.equals(SWITCH) && priorityTwo.equals(SWITCH))
             {
                 //                if(priorityTwo.equals(SWITCH))
                 //                {
@@ -246,10 +245,10 @@ public class Paths
                 //                }
                 //                else
                 //                {
-                return new AutoGroup(wait, new RunMP(SIDE_TO_OPP_SWITCH));
+                return new AutoGroup(wait, new PlaceSwitchAuto(SIDE_TO_OPP_SWITCH));
                 //                }
             }
-            else if(priorityOne.equals(SCALE))
+            else if(priorityOne.equals(SCALE) && priorityTwo.equals(SCALE))
             {
                 //                if(priorityTwo.equals(SWITCH))
                 //                {
@@ -261,7 +260,7 @@ public class Paths
                 //                }
                 //                else
                 //                {
-
+                return new AutoGroup(wait, new RunMP(SIDE_TO_OPP_SCALE), new LiftToScale(), new Eject());
                 //                }
             }
         }
