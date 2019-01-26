@@ -84,19 +84,8 @@ public class Path
         return right;
     }
 
-    private TrajectoryPoint.TrajectoryDuration getTimeDur(double timeDur)
+    private int getTimeDur(double timeDur)
     {
-        int timeDurMS = (int) (timeDur * 1000);
-
-        TrajectoryPoint.TrajectoryDuration duration = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_0ms;
-        duration = duration.valueOf(timeDurMS);
-
-        if(duration.value != timeDurMS)
-        {
-            DriverStation.reportError("Trajectory duration not supported", false);
-            duration = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_10ms;
-        }
-
-        return duration;
+        return (int) (timeDur * 1000);
     }
 }
