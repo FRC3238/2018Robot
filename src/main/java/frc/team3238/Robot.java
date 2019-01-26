@@ -16,8 +16,6 @@ import frc.team3238.subsystems.Collector;
 import frc.team3238.subsystems.Extender;
 import frc.team3238.subsystems.Lift;
 
-import java.util.Objects;
-
 import static frc.team3238.RobotMap.Auto.POSITIONS;
 import static frc.team3238.RobotMap.Auto.PRIORITIES;
 import static frc.team3238.RobotMap.Global.CAMERA_X_RES;
@@ -73,12 +71,12 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData(new PowerDistributionPanel());
     }
 
-    private void sendAutoOptions(String[] options, SendableChooser chooser) {
+    private void sendAutoOptions(String[] options, SendableChooser<Integer> chooser) {
         for (int i = 0; i < options.length; i++) {
             if (i == 0) {
-                chooser.addDefault(options[i], i);
+                chooser.setDefaultOption(options[i], i);
             } else {
-                chooser.addObject(options[i], i);
+                chooser.addOption(options[i], i);
             }
         }
     }
