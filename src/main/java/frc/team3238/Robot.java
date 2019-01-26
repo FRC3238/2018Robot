@@ -24,8 +24,7 @@ import static frc.team3238.RobotMap.Global.CAMERA_X_RES;
 import static frc.team3238.RobotMap.Global.CAMERA_Y_RES;
 import static frc.team3238.RobotMap.Global.ROBOT_PERIOD;
 
-public class Robot extends TimedRobot
-{
+public class Robot extends TimedRobot {
     public static OI oi;
 
     public static Chassis chassis = new Chassis();
@@ -40,11 +39,13 @@ public class Robot extends TimedRobot
 
     private Command autoCommand;
 
+    public Robot() {
+        super(ROBOT_PERIOD);
+    }
+
     @Override
-    public void robotInit()
-    {
+    public void robotInit() {
         Paths.calcPaths();
-        setPeriod(ROBOT_PERIOD);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture("Camera", 0);
         camera.setResolution(CAMERA_X_RES, CAMERA_Y_RES);
@@ -57,8 +58,7 @@ public class Robot extends TimedRobot
         sendAutoOptions(POSITIONS, posChooser);
         sendAutoOptions(PRIORITIES, priorityOneChooser);
         sendAutoOptions(PRIORITIES, priorityTwoChooser);
-        if(SmartDashboard.getNumber("Auto Wait", 0) == 0)
-        {
+        if (SmartDashboard.getNumber("Auto Wait", 0) == 0) {
             SmartDashboard.putNumber("Auto Wait", 0);
         }
 
@@ -73,42 +73,33 @@ public class Robot extends TimedRobot
         SmartDashboard.putData(new PowerDistributionPanel());
     }
 
-    private void sendAutoOptions(String[] options, SendableChooser chooser)
-    {
-        for(int i = 0; i < options.length; i++)
-        {
-            if(i == 0)
-            {
+    private void sendAutoOptions(String[] options, SendableChooser chooser) {
+        for (int i = 0; i < options.length; i++) {
+            if (i == 0) {
                 chooser.addDefault(options[i], i);
-            }
-            else
-            {
+            } else {
                 chooser.addObject(options[i], i);
             }
         }
     }
 
     @Override
-    public void robotPeriodic()
-    {
+    public void robotPeriodic() {
         SmartDashboard.putData(Scheduler.getInstance());
     }
 
     @Override
-    public void disabledInit()
-    {
+    public void disabledInit() {
         chassis.setCoastMode();
     }
 
     @Override
-    public void disabledPeriodic()
-    {
+    public void disabledPeriodic() {
         Scheduler.getInstance().run();
     }
 
     @Override
-    public void autonomousInit()
-    {
+    public void autonomousInit() {
         //        int timeout = 100;
         String gameMessage;
         //        do
@@ -118,36 +109,31 @@ public class Robot extends TimedRobot
         //        } while(Objects.equals(gameMessage, "") && timeout > 0);
         autoCommand =
                 Paths.getAutoRoutine(POSITIONS[posChooser.getSelected()], PRIORITIES[priorityOneChooser.getSelected()],
-                                     PRIORITIES[0], gameMessage, SmartDashboard.getNumber("Auto Wait", 0));
+                        PRIORITIES[0], gameMessage, SmartDashboard.getNumber("Auto Wait", 0));
         DriverStation.reportWarning("Starting command " + autoCommand.getName(), false);
         autoCommand.start();
     }
 
     @Override
-    public void autonomousPeriodic()
-    {
+    public void autonomousPeriodic() {
         //        DriverStation.reportWarning("In auto periodic");
         Scheduler.getInstance().run();
     }
 
     @Override
-    public void teleopInit()
-    {
-        if(autoCommand != null && autoCommand.isRunning())
-        {
+    public void teleopInit() {
+        if (autoCommand != null && autoCommand.isRunning()) {
             autoCommand.cancel();
         }
     }
 
     @Override
-    public void teleopPeriodic()
-    {
+    public void teleopPeriodic() {
         Scheduler.getInstance().run();
     }
 
     @Override
-    public void testPeriodic()
-    {
+    public void testPeriodic() {
 
     }
 }
